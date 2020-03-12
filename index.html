@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ua">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>LUX TUR</title>
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto&display=swap" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
@@ -110,7 +111,7 @@
 			Популярні напрямки
 		</h2>
 		<div class="directions">
-			<div class="directions_container">
+			<div class="directions_container directions_container_section1">
 				<div class="direction">
 					<img class="direction__img" src="img/boryspil.png" alt="Бориспіль">
 					<div class="direction__textblock">
@@ -131,7 +132,7 @@
 				</div>
 			</div>
 
-			<div class="directions_container">
+			<div class="directions_container directions_container_section2">
 				<div class="direction">
 					<img class="direction__img" src="img/kyiv.png" alt="Київ">
 					<div class="direction__textblock">
@@ -670,7 +671,21 @@
 			infinite: false,
 			speed: 300,
 			prevArrow: '.auto-button-prev',
-			nextArrow: '.auto-button-next'
+			nextArrow: '.auto-button-next',
+			responsive: [
+				{
+					breakpoint: 1400,
+					settings: {
+						slidesToShow: 2
+					}
+				},
+				{
+					breakpoint: 1080,
+					settings: {
+						slidesToShow: 1
+					}
+				}
+			]
 		});
 		
 		$('.order_form__button.next').on('click', (e) => {

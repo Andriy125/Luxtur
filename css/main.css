@@ -3,6 +3,8 @@
     padding: 0;
     margin: 0;
     font-family: 'Roboto';
+    /* overflow-x: hidden; */
+
 }
 body{
     background-color: #E6E6E6;
@@ -15,8 +17,10 @@ a{
     text-decoration: none;
     outline: none;
 }
-
+ /* тестування йооо */
 .block{
+    display: flex;
+    flex-direction: column;
     padding: 30px 50px;
     text-align: center;
 }
@@ -32,10 +36,13 @@ a{
     background-color: rgba(0, 0, 0, .6);
     background-blend-mode: multiply;
     color: #fff;
+    height: 100vh;
+    width: 100%;
 }
 .second{
     padding-top: 20px;
     background-color: #fff;
+    
 }
 .header_left{
     display: flex;
@@ -90,7 +97,8 @@ a{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 120px;
+    position: relative;
+    margin: auto;
     margin-bottom: 80px;
 }
 .text-box__main-text{
@@ -117,7 +125,7 @@ a{
     font-size: 25px;
     padding: 20px 85px;
     display: inline-block;
-    margin-right: 60px;
+    
     margin-bottom: 35px;
     font-weight: bold;
 }
@@ -134,21 +142,50 @@ a{
     display: flex;
     justify-content: center; 
     flex-direction: column; 
+    /* padding: 0; */
+    /* width: 100%;   */
+    
 }
 .service{
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
-    padding: 40px 0px;
+    flex-direction: row; 
+    height:  100%;
+    min-width: 100%;
+    /* padding: 5% 3% 5% 5%; */
+    
+    /* padding: 40px 0px; */
+}
+.service__img img {
+    display: inline-flex;
+    justify-content: center;
+
+    position: relative;
+    /* width: auto; */
+    /* max-width: 100%; */
+    /* display: block; */
+    max-width: 100%;
+    min-width: 300px;
+    height: auto;
+    margin: 5%;
+    box-sizing: border-box;
+    z-index: 2;
+}
+.service__img {
+    display: inline-flex;
+    justify-content: center;
+
 }
 .service:nth-child(2n){
     background-color: #EDEFF0;
 }
 .margin_right{
-    margin-right: 150px;
+    /* margin-right: 7%; */
 }
 .service_text{
     width: 450px;
+    margin: 5%;
 }
 .service__title{
     font-size: 35px;
@@ -156,15 +193,20 @@ a{
     margin-bottom: 35px;
 }
 .service__descr{
+    display: inline-flex;
+    justify-content: center;
     font-weight: 300;
     font-size: 18px;
-    text-align: left;
+    /* text-align: left; */
+    min-width: 350px;
 }
 .directions{
     display: flex;
-    flex-direction: column;
-    align-content: space-between;
-    justify-content: center;
+    /* flex-direction: column; */
+    /* align-content: space-between; */
+    justify-content: center ;
+    width: 100%;
+    height: 100%;
 }
 .directions_container{
     display: flex;
@@ -174,7 +216,20 @@ a{
 }
 .direction{
     margin-right: 30px;
+    margin-bottom: 30px;
     position: relative;
+}
+
+.directions_container_section1 {
+    flex-direction: column;
+
+}
+.directions_container_section2 {
+    flex-direction: column;
+}
+.direction__img {
+    height: 100%;
+    width: 100%;
 }
 .direction__city{
     font-family: 'Roboto';
@@ -191,17 +246,22 @@ a{
     background-color: #000;
 }
 .call{
-    margin: 100px 0px 50px 0px;
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+    /* margin: 100px 0px 50px 0px; */
 }
 .call_block{
-    display: flex;
+    display: inline-flex;
     background: #D6D5D0;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
     position: relative;
-    height: 209px;
+    flex-direction: collum;
+    /* height: 210px; */
 }
 .call_block__img{
-    position: absolute;
+    position: relative;
     content: '';
     left: 0;
 }
@@ -223,7 +283,8 @@ a{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: 120px;
+    margin-right: 3%;
+    /* padding-left: 120px; */
 }
 .call_block__link{
     background: #000;
@@ -575,7 +636,7 @@ a{
 }
 .reviews_text{
     margin-bottom: 70px;
-    padding: 0px 500px;
+    padding: 0px 9%;
 }
 .reviews_text__title{
     font-weight: bold;
@@ -589,7 +650,7 @@ a{
 }
 .review{
     background-color: rgba(0, 0, 0, 0.5);
-    padding: 20px 250px 30px;
+    padding: 20px 2% 30px;
 }
 .review__title{
     font-family: 'Open Sans';
@@ -1087,4 +1148,17 @@ opacity: 1;
 border-radius: 50%;
 border: 3px solid #FFD362;
 background-color: #FFD362;
+}
+
+/* media  */
+@media (max-width: 768px) {
+    .service {
+        display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+    }
+}
+
+@media (max-width: 980px){
+
 }
