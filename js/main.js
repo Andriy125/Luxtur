@@ -210,6 +210,18 @@ document.querySelector('.all_info').addEventListener('click', (e) => {
     }
 })
 
+document.querySelector('.burger_icon').addEventListener('click', (e) => {
+    if(document.querySelector('.burger_icon').classList.contains('change')){
+        $('.burger_icon').toggleClass('change', false)
+        $('.header_right__ul').toggleClass('burger_active', false)
+    }
+    else{
+        $('.burger_icon').toggleClass('change', true)
+        $('.header_right__ul').toggleClass('burger_active', true)
+
+    }
+})
+
 
 // const DistanceSum = (arr) => {
 //     let sum = 0;
