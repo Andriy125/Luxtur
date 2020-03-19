@@ -6,9 +6,10 @@ let apikey_weather = '3042b9bfd374130956c1e55d218c8156';                        
 // Get the modal
 let modal_call = document.getElementById("modal_call");
 let modal_calc = document.getElementById("modal_calculate");
+let modal_review = document.getElementById("modal_review");
 // Get the button that opens the modal
 let btn = document.getElementById("call");
-
+let btn_review = document.getElementById("review_button");
 // Get the <span> element that closes the modal
 let span = document.getElementsByClassName("close")[0];
 $('.all_info__input')[0].checked = false;
@@ -40,6 +41,10 @@ btn.onclick = function() {
     modal_call.style.display = "block";
 }
 
+btn_review.onclick = function() {
+    modal_review.style.display = "block";
+}
+
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
     modal_call.style.display = "none";
@@ -55,6 +60,9 @@ window.onclick = function(event) {
     }
     else if(event.target == modal_calc){
         modal_calc.style.display = "none";
+    }
+    else if(event.target == modal_review){
+        modal_review.style.display = "none";
     }
 }
 
@@ -169,7 +177,6 @@ calculate.addEventListener('click', () =>{                                      
     document.querySelectorAll('.form__input').forEach(el => el.value = '');             // очищення масиву координат і полів вводу
     arr_obj = [];
 });
-
 
 document.querySelector('.order_add').addEventListener('click', (e) => {
     let addresses = document.querySelectorAll('.address');
