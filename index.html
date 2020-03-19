@@ -631,6 +631,7 @@
 	<script src="./js/main.js"></script>
 	<script>
 	$(document).ready(function(){
+		let counter = 0;
 		$('.review_slider').slick({
 			dots: false,
 			infinite: true,
@@ -700,6 +701,10 @@
 		$('.order_form__button.next').on('click', (e) => {
 			e.preventDefault();
 			$('.slider_container').slick('slickNext');
+			counter++;
+			if(counter === 5){
+				setTimeout(()=>$('.slider_container').slick("slickGoTo", 0, false) , 3500)
+			}
 		});
 
 		$('.order_form__button.prev').on('click', (e) => {
