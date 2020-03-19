@@ -703,7 +703,14 @@
 			$('.slider_container').slick('slickNext');
 			counter++;
 			if(counter === 5){
-				setTimeout(()=>$('.slider_container').slick("slickGoTo", 0, false) , 3500)
+				setTimeout(
+					() => {
+						$('.slider_container')
+						.slick("slickGoTo", 0, false);
+						counter = 0;
+
+					}, 3500
+				)
 			}
 		});
 
