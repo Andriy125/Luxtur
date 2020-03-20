@@ -49,6 +49,7 @@
 			</div>
 		</div>
 	</div>
+
 	<div class="second" id="services">
 		<h2 class="title">
 			Наші послуги
@@ -110,6 +111,7 @@
 
 		</div>
 	</div>
+
 	<div class="block third" id="directions">
 		<h2 class="title">
 			Популярні напрямки
@@ -242,8 +244,45 @@
 	</div>	
 
 	<div id="modal_autopark" class="modal">
-		<div class="modal_autopark__container">
-			
+		<div class="modal_autopark_wrapper">
+			<div class="modal_autopark__container">
+				<h2>Mercedes-bens 519</h2>
+				<div class="modal_autopark_slider_wrap">
+					<div class="modal_autopark_slider">
+						<img src="./img/auto_1.png" alt="auto">
+						<img src="./img/auto_1.png" alt="auto">
+						<img src="./img/auto_1.png" alt="auto">
+						<img src="./img/auto_1.png" alt="auto">
+					</div>
+					<div class="modal_autopark_buttons">
+						<div class="modal_autopark__button left btn yellow_button modal_autopark__button-prev">
+							<i class="fas fa-angle-left"></i>
+						</div>
+						<div class="modal_autopark__button slider_button__right right btn yellow_button modal_autopark__button-next">
+							<i class="fas fa-angle-left"></i>
+						</div>
+					</div>
+				</div>
+				<div class="modal_autopark_slider_lower">
+					
+					<div class="modal_autopark_slider_lower__item active">
+						<img src="./img/auto_1.png" alt="auto">
+					</div>
+
+					<div class="modal_autopark_slider_lower__item">
+						<img src="./img/auto_1.png" alt="auto">
+					</div>
+
+					<div class="modal_autopark_slider_lower__item">
+						<img src="./img/auto_1.png" alt="auto">
+					</div>
+
+					<div class="modal_autopark_slider_lower__item">
+						<img src="./img/auto_1.png" alt="auto">
+					</div>
+
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -645,6 +684,7 @@
 	<script>
 	$(document).ready(function(){
 		let counter = 0;
+
 		$('.review_slider').slick({
 			dots: false,
 			infinite: true,
@@ -711,6 +751,27 @@
 			]
 		});
 		
+		$('.modal_autopark_slider').slick({
+			slidesToShow: 1,
+			slidesToScroll: 1,
+			fade: true,
+			asNavFor: '.modal_autopark_slider_lower',
+			nextArrow: '.modal_autopark__button-next',
+			prevArrow: '.modal_autopark__button-prev'
+		});
+		$('.modal_autopark_slider_lower').slick({
+			slidesToShow: 4,
+			slidesToScroll: 1,
+			asNavFor: '.modal_autopark_slider',
+			centerMode: true,
+			focusOnSelect: true,
+			dotsClass: '.modal_autopark_slider_lower__item'
+		});
+
+
+
+
+
 		$('.order_form__button.next').on('click', (e) => {
 			e.preventDefault();
 			$('.slider_container').slick('slickNext');

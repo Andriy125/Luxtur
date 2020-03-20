@@ -11,7 +11,7 @@ let modal_autopark = document.getElementById("modal_autopark");
 // Get the button that opens the modal
 let btn = document.getElementById("call");
 let btn_review = document.getElementById("review_button");
-let btn_auto_card = document.getElementById("auto_card");
+let btn_auto_card = document.querySelectorAll("#auto_card");
 
 // Get the <span> element that closes the modal
 let span = document.getElementsByClassName("close")[0];
@@ -48,9 +48,9 @@ btn_review.onclick = function() {
     modal_review.style.display = "block";
 }
 
-btn_auto_card.onclick = function() {
+btn_auto_card.forEach(el => el.onclick = function() {
     modal_autopark.style.display = "block";
-}
+})
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
