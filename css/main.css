@@ -410,6 +410,8 @@ a{
     justify-content: center;
     align-items: center;
     background-color: #000;
+    border: 1px solid #000;
+    color: #fff;
     padding: 40px 15px;
     top: 220px;
 }
@@ -608,20 +610,19 @@ a{
 .auto_slider__button{
     background-color: #fff;
     border-radius: 50%;
+    color: #000;
+    z-index: 1;
     width: 30px;
     height: 30px;
+    padding-left: 7px;
+    text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .auto_slider__button:hover{
     cursor: pointer;
-}
-.auto_slider__button img{
-    width: 10px;
-    height: 19px;
-    color: #000;
-    z-index: 1;
+    color: #fff;
 }
 .auto-order-button-prev{
     position: absolute;
@@ -686,7 +687,8 @@ a{
 }
 .slider_button{
     border: 1px solid #fff;
-    padding: 5px 10px;
+    padding: 0px 0px 0px 10px;
+    text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
