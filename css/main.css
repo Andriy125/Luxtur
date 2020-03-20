@@ -457,6 +457,11 @@ a{
     margin-right: 65px;
     outline: none;
 }
+.auto_item:hover{
+    cursor: pointer;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+    background-color: rgba(255, 255, 255, .7);
+}
 .auto_item__img{
     width: 100%;
 }

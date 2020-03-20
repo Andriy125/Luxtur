@@ -7,9 +7,12 @@ let apikey_weather = '3042b9bfd374130956c1e55d218c8156';                        
 let modal_call = document.getElementById("modal_call");
 let modal_calc = document.getElementById("modal_calculate");
 let modal_review = document.getElementById("modal_review");
+let modal_autopark = document.getElementById("modal_autopark");
 // Get the button that opens the modal
 let btn = document.getElementById("call");
 let btn_review = document.getElementById("review_button");
+let btn_auto_card = document.getElementById("auto_card");
+
 // Get the <span> element that closes the modal
 let span = document.getElementsByClassName("close")[0];
 $('.all_info__input')[0].checked = false;
@@ -45,6 +48,10 @@ btn_review.onclick = function() {
     modal_review.style.display = "block";
 }
 
+btn_auto_card.onclick = function() {
+    modal_autopark.style.display = "block";
+}
+
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
     modal_call.style.display = "none";
@@ -55,7 +62,6 @@ span.onclick = function() {
 window.onclick = function(event) {
     if (event.target == modal_call) {
         modal_call.style.display = "none";
-
         ClearCallInputs();
     }
     else if(event.target == modal_calc){
@@ -63,6 +69,9 @@ window.onclick = function(event) {
     }
     else if(event.target == modal_review){
         modal_review.style.display = "none";
+    }
+    else if(event.target == modal_autopark){
+        modal_autopark.style.display = "none";
     }
 }
 
