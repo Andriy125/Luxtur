@@ -177,7 +177,7 @@ a{
 .service__img {
     display: inline-flex;
     justify-content: center;
-
+    /* box-shadow: 0px 0px 10px rgba(0, 0, 0, .1); */
 }
 .service:nth-child(2n){
     background-color: #EDEFF0;
@@ -452,7 +452,7 @@ a{
     background-color: #fff;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.13);
     border-radius: 6px;
-    max-width: 400px;
+    max-width: 450px;
     padding: 25px 25px 40px;
     margin-right: 65px;
     outline: none;
@@ -1346,6 +1346,7 @@ background-color: #FFD362;
     .service__img img {
         min-width: auto;
         max-width: 70%;
+
     }
     .service {
         display: flex;
