@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ua">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>LUX TUR</title>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto&display=swap" rel="stylesheet">
+	<script defer src="./js/all.js"></script>
+	<link rel="stylesheet" href="css/admin.css">
+
+</head>
+<body>
+    <header class="admin_header">
+        <div class="menu_icon">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="admin_button">
+            <h2>
+                Logout
+            </h2>
+        </div>
+    </header>
+    <div class="side_menu active">
+        <div class="side_menu_header">
+            <h2>Menu</h2>
+            <div class="close_icon">
+                <h3>
+                    <i class="far fa-times-circle"></i>
+                </h3> 
+            </div>
+        </div>
+        <div class="side_menu__content">
+            <div class="side_menu__item">
+                <h3>
+                    Редагувати ціни
+                </h3> 
+            </div>
+            <div class="side_menu__item">
+                <h3>
+                    Замовлення
+                </h3> 
+            </div>
+            <div class="side_menu__item">
+                <h3>
+                    Редагувати відгуки
+                </h3> 
+            </div>
+            <div class="side_menu__item">
+                <h3>
+                    Редагувати автопарк
+                </h3> 
+            </div>
+
+        </div>
+    </div>
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            // const side_menu = document.querySelector('.side_menu');
+            // const icon_open = document.querySelector('.menu_icon');
+            document.querySelector('.menu_icon').addEventListener('click', (e) => {
+                $('.side_menu').toggleClass('active', true);
+            })
+
+            document.querySelector('.close_icon').addEventListener('click', (e) => {
+                $('.side_menu').toggleClass('active', false);
+            })
+            
+            // window.onclick = function(event) {
+            //     if (event.target == side_menu && event.target == icon_open) {
+            //         $('.side_menu').toggleClass('active', false);
+            //     }
+            // }
+        });
+    </script>
+</body>
+</html>

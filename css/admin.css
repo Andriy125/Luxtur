@@ -1,0 +1,129 @@
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: 'Roboto';
+    /* overflow-x: hidden; */
+
+}
+body{
+    background-color: #E6E6E6;
+    position: relative;
+}
+
+/* Admin panel */
+
+
+/* header  */
+.admin_header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3% 5%;
+    background-color: #fff;
+    box-shadow: 0px 5px 0px 0px rgba(0, 0, 0, .1);
+}
+
+.admin_button{
+    transition: .3s all;
+    position: relative;
+
+}
+.admin_button:before{
+    content: '';
+    display: block;
+    width: 110%;
+    height: 121%;
+    position: absolute;
+    right: -5px;
+    top: -5px;
+    border: 2px solid #831e1e;
+    border-left: none;
+    border-bottom: none;
+    transition: .4s all;
+    transform: scale(0);
+    transform-origin: right top;
+}
+.admin_button:after{
+    content: '';
+    display: block;
+    width: 110%;
+    height: 121%;
+    position: absolute;
+    left: -5px;
+    bottom: -5px;
+    border: 2px solid #831e1e;
+    border-right: none;
+    border-top: none;
+    transition: .4s all;
+    transform: scale(0);
+    transform-origin: left bottom;
+}
+.admin_button:hover:after, .admin_button:hover:before{
+    transform: scale(1);
+}
+.admin_button:hover{
+    color: #462626;
+    cursor: pointer;
+}
+.menu_icon{
+    transition: ease .2s;
+    font-size: 28px;
+}
+.menu_icon:hover{
+    cursor: pointer;
+    color: blueviolet;
+}
+
+/* header  */
+
+
+/* side menu */
+
+.side_menu{
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #fff;
+    width: 300px;
+    box-shadow: 5px 0px 0px 0px rgba(0, 0, 0, .1);
+    transform: translateX(-500px);
+    transition: .5s all;
+}
+.side_menu.active{
+    transform: translateX(0px);
+}
+
+.side_menu_header{
+    background-color: #e7c3c3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 3% 5%;
+}
+.close_icon{
+    font-size: 28px;
+    float: right;
+}
+.close_icon:hover{
+    cursor: pointer;
+    color: blueviolet;
+}
+.side_menu__content{
+    padding: 3% 0%;
+    height: 100vh;
+}
+.side_menu__item{
+    margin-bottom: 15px;
+    width: 100%;
+    background-color: #f3f3fc;
+    padding: 15px 25px;
+}
+.side_menu__item:hover{
+    cursor: pointer;
+    background-color:#e7c3c3;
+}
+/* side menu */
+
+/* Admin panel */
