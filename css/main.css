@@ -774,7 +774,7 @@ a{
 
 .modal_calculate_block{
     width: 405px;
-    background: rgba(0, 0, 0, 0.54);
+    background: rgba(0, 0, 0, 0.84);
     border-radius: 3px;
     margin: 15% auto;
 }
@@ -783,6 +783,10 @@ a{
 }
 .results{
     color:#fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 .results_distances{
     background-color: #fff;
@@ -826,6 +830,10 @@ a{
 .results_distances__all{
     display: none;
 }
+.all_info{
+    min-width: 225px;
+}
+
 
 .modal_1{
     display: block;
