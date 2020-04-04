@@ -2,20 +2,22 @@ $(document).ready(function(){
     document.querySelector('.menu_icon').addEventListener('click', (e) => {
         $('.side_menu').toggleClass('active', true);
     })
-
     document.querySelector('.close_icon').addEventListener('click', (e) => {
-        $('.side_menu').toggleClass('active', false);
+        CloseMenu();
     })
-
     document.querySelectorAll('.side_menu__item').forEach((el) => {
         el.addEventListener('click', (e) => ShowContent(e, `id-${el.getAttribute('id')}`));
     });
     $('#main').click();
 });
 
+const CloseMenu = () => {
+    $('.side_menu').toggleClass('active', false);
+}
+
 const ShowContent = (e, name) => {
     // Declare all variables
-    var tabcontent, tablinks;
+    let tabcontent, tablinks;
 
     // Get all elements with class="tabcontent" and hide them
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -32,5 +34,6 @@ const ShowContent = (e, name) => {
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(name).style.display = "block";
     $(e.currentTarget).toggleClass("active", true);
-    $('.side_menu').toggleClass('active', false);
+    $('.admin_main_title').html($(e.currentTarget).text());
+    CloseMenu();
 }
