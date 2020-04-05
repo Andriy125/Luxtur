@@ -3,7 +3,6 @@ let calculate = document.querySelector('.calculate');                           
 let apikey_weather = '3042b9bfd374130956c1e55d218c8156';                                    // ключ для отримання координатів міст
 let apikey_geodata = '303691d597d34232b212232cb93cba14';
 let api_url = 'https://api.opencagedata.com/geocode/v1/json';
-let price = 0;
 const Reqursion = (cities, index = 0) => {                                         // рекурсивне отримання і запис координат міст                                                  
     if(index == cities.length){
         return;
@@ -82,16 +81,23 @@ calculate.addEventListener('click', () =>{                                      
         .then(response => {
             response.json().then(response => {
                 console.log(response);
-                price = 0;
+                let from = [];
+                let to = [];
+                let distances = [];
+                let distance_global = 0;
                 $('.results_distances__text').remove();
                 let text = '';
                 for (let i = 0; i < inputs.length - 1; i++){                            // формування виведення
                     let distance = response.distances[i][i+1] / 1000 > 0 ? (response.distances[i][i+1] / 1000).toFixed(0) : (response.distances[i][i+1] / 1000).toFixed(2);
-                 text += 'З ' + inputs[i] + ' дo ' + inputs[i+1] + ' = ' + distance + ' км <br>';
-                 CreateResultElement(inputs[i], inputs[i+1], distance, '.results_distances__all');
+                    text += 'З ' + inputs[i] + ' дo ' + inputs[i+1] + ' = ' + distance + ' км <br>';
+                    from.push(inputs[i]);
+                    to.push(inputs[i+1]);
+                    distances.push(distance);
+                    distance_global += Number(distance);
                 }                                                                       // виведення результатів
-                let distance_global = DistanceSum(response.distances, arr_obj);
-                CreateResultElement(inputs[0], inputs[inputs.length-1], distance_global, '.results_distances__standard');
+                CreateResultElement(from, to, distances, '.results_distances__all', distances.length);
+                let price = DistanceSum(response.distances, arr_obj);
+                CreateResultElement(from[0], to[to.length - 1], distance_global, '.results_distances__standard', 1);
                 console.log(text);
                 if(inputs.length < 3){
                     $('.all_info').css('display', 'none');
@@ -113,30 +119,31 @@ calculate.addEventListener('click', () =>{                                      
 });
 
 
-const CreateResultElement = (from, to, distance, insert) => {
-    //try to do it by one append
-    $(
-        `<p class="results_distances__text">
-            <span>${from}</span> 
-            <span>>></span> 
-            <span>${to}</span> 
-            <span>:</span> 
-            <span class="calc_distance">${distance} км.</span>
-        </p>`
-    ).appendTo(insert);
+const CreateResultElement = (from, to, distance, insert, count) => {
+    let append_elements_all = ``;
+    for(let i = 0; i < count; i++){
+        append_elements_all += 
+            `<p class="results_distances__text">
+                <span>${Array.isArray(from) ? from[i] : from}</span> 
+                <span>>></span> 
+                <span>${Array.isArray(to) ? to[i] : to}</span> 
+                <span>:</span> 
+                <span class="calc_distance">${Array.isArray(distance) ? distance[i] : distance} км.</span>
+            </p>`;
+    }
+    $(append_elements_all).appendTo(insert);
 }
 
 
 const DistanceSum = (arr, objects) => {
-    let sum = 0;
+    let price = 0;
     for(let i = 0; i < arr.length; i++){
         if(i + 1 === arr.length){
             break;
         }
-        sum += arr[i][i+1];
         price += objects[i+1].country == "UA" 
         ? (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * 10 : 10 
         : (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * 27 : 27;
     }
-    return sum > 1000 ? (sum / 1000).toFixed(0) : (sum / 1000).toFixed(2);
+    return price.toFixed(0);
 }
