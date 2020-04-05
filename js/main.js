@@ -1,18 +1,18 @@
 let add = document.querySelector('.add');                                                   // кнопка додавання полів
 // Get the modal
-let modal_call = document.getElementById("modal_call");
-let modal_calc = document.getElementById("modal_calculate");
-let modal_review = document.getElementById("modal_review");
-let modal_autopark = document.getElementById("modal_autopark");
+let modal_call = document.getElementById("modal_call");                                     //  модальне вікно замовлення дзвінку
+let modal_calc = document.getElementById("modal_calculate");                                //  модальне вікно для відображення результатів розрахунків
+let modal_review = document.getElementById("modal_review");                                 //  модальне вікно для додавання відгуку
+let modal_autopark = document.getElementById("modal_autopark");                             //  модальне вікно автопарку 
 // Get the button that opens the modal
-let btn = document.getElementById("call");
-let btn_review = document.getElementById("review_button");
-let btn_auto_card = document.querySelectorAll("#auto_card");
+let btn = document.getElementById("call");                                                  //  кнопка замовлення дзвінку
+let btn_review = document.getElementById("review_button");                                  //  кнопка додавання відгуку
+let btn_auto_card = document.querySelectorAll("#auto_card");                                //  карточки автопарку
 
 // Get the <span> element that closes the modal
-let span = document.getElementsByClassName("close")[0];
-$('.all_info__input')[0].checked = false;
-$('.order_remove').css('display', 'none');
+let span = document.getElementsByClassName("close")[0];                                     //  кнопка закриття форми замовлення дзвінка
+$('.all_info__input')[0].checked = false;                                                   //  встановлення кнопки "всі дані" в модальному вікні "розрахунки" по замовчування на офф
+$('.order_remove').css('display', 'none');                                                  
 
 let local = new Date();
 let local_date = local.getFullYear() + '-';
