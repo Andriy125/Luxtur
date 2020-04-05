@@ -3,7 +3,7 @@ let calculate = document.querySelector('.calculate');                           
 let apikey_weather = '3042b9bfd374130956c1e55d218c8156';                                    // ключ для отримання координатів міст
 let apikey_geodata = '303691d597d34232b212232cb93cba14';
 let api_url = 'https://api.opencagedata.com/geocode/v1/json';
-
+let price = 0;
 const Reqursion = (cities, index = 0) => {                                         // рекурсивне отримання і запис координат міст                                                  
     if(index == cities.length){
         return;
@@ -20,12 +20,15 @@ const Reqursion = (cities, index = 0) => {                                      
     fetch(request_url)
     .then(response => {
         response.json().then(response => {                                        // розпарсинг відповіді
-            console.log(response.results[0].geometry);
+            let obj = response.results[0];
+            console.log(obj);
             let newObj = {
-                'lat': response.results[0].geometry.lat, 
-                'long': response.results[0].geometry.lng
+                'lat': obj.geometry.lat, 
+                'long': obj.geometry.lng,
+                'country': obj.components["ISO_3166-1_alpha-2"]
             }
             arr_obj.push(newObj);
+            console.log(newObj);
             index += 1;
             Reqursion(cities, index);
         })
@@ -79,6 +82,7 @@ calculate.addEventListener('click', () =>{                                      
         .then(response => {
             response.json().then(response => {
                 console.log(response);
+                price = 0;
                 $('.results_distances__text').remove();
                 let text = '';
                 for (let i = 0; i < inputs.length - 1; i++){                            // формування виведення
@@ -86,7 +90,7 @@ calculate.addEventListener('click', () =>{                                      
                  text += 'З ' + inputs[i] + ' дo ' + inputs[i+1] + ' = ' + distance + ' км <br>';
                  CreateResultElement(inputs[i], inputs[i+1], distance, '.results_distances__all');
                 }                                                                       // виведення результатів
-                let distance_global = DistanceSum(response.distances);
+                let distance_global = DistanceSum(response.distances, arr_obj);
                 CreateResultElement(inputs[0], inputs[inputs.length-1], distance_global, '.results_distances__standard');
                 console.log(text);
                 if(inputs.length < 3){
@@ -95,6 +99,7 @@ calculate.addEventListener('click', () =>{                                      
                 else{
                     $('.all_info').css('display', 'flex');
                 }
+                $('.results_price__text').html(`Сума: ${$('#duo').prop( "checked" ) ? price * 2 : price} грн`);
                 modal_calc.style.display = "block";
             })
         })
@@ -122,13 +127,16 @@ const CreateResultElement = (from, to, distance, insert) => {
 }
 
 
-const DistanceSum = (arr) => {
+const DistanceSum = (arr, objects) => {
     let sum = 0;
     for(let i = 0; i < arr.length; i++){
         if(i + 1 === arr.length){
             break;
         }
-        sum += arr[arr.length-1][0];
+        sum += arr[i][i+1];
+        price += objects[i+1].country == "UA" 
+        ? (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * 10 : 10 
+        : (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * 27 : 27;
     }
-    return (sum / 1000) > 0 ? (sum / 1000).toFixed(0) : (sum / 1000).toFixed(2);
+    return sum > 1000 ? (sum / 1000).toFixed(0) : (sum / 1000).toFixed(2);
 }
