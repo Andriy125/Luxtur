@@ -11,6 +11,7 @@
 
 </head>
 <body>
+	<!-- блок головний -->
 	<div class="block first">
 		<div class="header">
 			<div class="header_left">
@@ -50,6 +51,7 @@
 		</div>
 	</div>
 
+	<!-- блок наші послуги -->
 	<div class="second" id="services">
 		<h2 class="title">
 			Наші послуги
@@ -112,6 +114,7 @@
 		</div>
 	</div>
 
+	<!-- блок популярні напрямки -->
 	<div class="block third" id="directions">
 		<h2 class="title">
 			Популярні напрямки
@@ -162,6 +165,7 @@
 		</div>
 	</div>
 
+	<!-- блок передзвоніть -->
 	<div class="block none_padding call">
 		<div class="call_block">
 			<div class="call_block__img">
@@ -267,7 +271,7 @@
 		</div>
 	</div>
 
-
+	<!-- блок автопарк -->
 	<div class="autopark_block" id="autopark">
 		<h2 class="title">Наш автопарк</h2>
 
@@ -409,6 +413,7 @@
 		</div>
 	</div>
 
+	<!-- блок розрахунків -->
 	<div class="block none_padding" id="price">
 		<div class="price_block">
 			<h2 class="title">
@@ -416,7 +421,7 @@
 			</h2>
 			<div class="wrap black_container">
 				<div class="wrap__container wrap_bordered_container">
-					<form class="form" action="" method="GET">
+					<form class="form_calc" action="" method="GET">
 							<input type="text" placeholder="Кількість пасажирів">
 							<div class="fixed_container calc">
 								<input type="text" placeholder="Адреса відправлення" class="form__input" required>
@@ -440,7 +445,7 @@
 							</div>
 
 						<div class="form_calculate">
-							<a class="btn white_button calculate">Розрахувати</a>
+							<button class="btn white_button calculate" type="submit">Розрахувати</button>
 						</div>
 					</form>
 				</div>
@@ -448,6 +453,7 @@
 		</div>
 	</div>
 
+	<!-- блок замовлення -->
 	<div class="order_form" id="order">
 		<div class="slider_container">
 
@@ -472,8 +478,8 @@
 						<h2 class="form_title">Маршрут поїздки</h2>
 						<form action="">
 							<div class="fixed_container">
-								<input type="text" placeholder="Адреса відправлення..." class="order_data_input address" required>
-								<input type="text" placeholder="Адреса прибуття..." class="order_data_input address" required>
+								<input type="text" placeholder="Адреса відправлення..." class="order_data_input address input" required>
+								<input type="text" placeholder="Адреса прибуття..." class="order_data_input address input" required>
 							</div>
 							<div class="crud_buttons">
 								<div class="crud_button order_add">
@@ -487,11 +493,11 @@
 							</div>
 
 							<div class="check_block">
-								<input id="one" name="type1" type="radio" checked="true" value="one" class="order_data_input">
+								<input id="one" name="type1" type="radio" checked="true" value="one" class="order_data_input iOS_input">
 								<label for="one" class="check_block__text">В один напрямок</label>
 							</div>
 							<div class="check_block">
-								<input id="duo" name="type1" type="radio" class="order_data_input" value="duo">
+								<input id="duo" name="type1" type="radio" class="order_data_input iOS_input" value="duo">
 								<label for="duo" class="check_block__text">В обидва напрямки</label>
 							</div>
 							<div class="submit_buttons">
@@ -581,6 +587,7 @@
 		</div>
 	</div>
 
+	<!-- блок відгуки -->
 	<div class="reviews">
 		<div class="reviews_text">
 			<h3 class="reviews_text__title">Відгуки клієнтів</h3>
@@ -630,14 +637,14 @@
 				<form action="">
 					<input type="text" placeholder="Ім'я">
 					<input type="text" placeholder="Email">
-					<textarea placeholder="Відгук" class="input"></textarea>
+					<textarea placeholder="Відгук" class="input input_review_feedback"></textarea>
 					<a class="btn yellow_button review_form_submit">Надіслати</a>
 				</form>
 			</div>
 		</div>
 	</div>
 
-
+	<!-- блок контакти -->
 	<div class="block six" id="contacts">
 		<h2 class="title">Наші контакти</h2>
 		<div class="contacts_block">
@@ -662,171 +669,7 @@
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 	<script src="./js/jquery.mask.js"></script>
 	<script src="./js/logic.js"></script>
+	<script src="./js/sliders.js"></script>
 	<script src="./js/main.js"></script>
-	<script>
-	$(document).ready(function(){
-		let counter = 0;
-
-		$('.review_slider').slick({
-			dots: false,
-			infinite: true,
-			speed: 300,
-			slidesToShow: 1,
-			slidesToScroll: 1,
-			prevArrow: '.swiper-button-prev',
-			nextArrow: '.swiper-button-next'
-		});
-
-		$('.slider_container').slick({
-			dots: false,
-			infinite: false,
-			speed: 300,
-			slidesToShow: 1,
-			slidesToScroll: 1,
-			arrows: false,
-			swipe: false
-		});
-
-		$('.order_slider_car').slick({
-			slidesToShow: 1,
-			slidesToScroll: 1,
-			infinite: true,
-			speed: 300,
-			fade: true,
-			cssEase: 'linear',
-			prevArrow: '.auto-order-button-prev',
-			nextArrow: '.auto-order-button-next'
-		});
-
-		$('.auto_img_slider').slick({
-			dots: true,
-			infinite: true,
-			speed: 300,
-			slidesToShow: 1,
-			slidesToScroll: 1,
-			dotsClass: 'my-dots', 
-			prevArrow: '.auto_prev',
-			nextArrow: '.auto_next'
-		});
-
-		$('.auto_slider').slick({
-			slidesToShow: 3,
-			dots: false,
-			slidesToScroll: 1,
-			infinite: false,
-			speed: 300,
-			prevArrow: '.auto-button-prev',
-			nextArrow: '.auto-button-next',
-			responsive: [
-				{
-					breakpoint: 1400,
-					settings: {
-						slidesToShow: 2
-					}
-				},
-				{
-					breakpoint: 1082,
-					settings: {
-						slidesToShow: 1
-					}
-				}
-			]
-		});
-		
-		$('.modal_autopark_slider').slick({
-			slidesToShow: 1,
-			slidesToScroll: 1,
-			fade: true,
-			asNavFor: '.modal_autopark_slider_lower',
-			nextArrow: '.modal_autopark__button-next',
-			prevArrow: '.modal_autopark__button-prev'
-		});
-		$('.modal_autopark_slider_lower').slick({
-			slidesToShow: 4,
-			slidesToScroll: 1,
-			draggble: false,
-			asNavFor: '.modal_autopark_slider',
-			centerMode: true,
-			focusOnSelect: true,
-			dotsClass: '.modal_autopark_slider_lower__item'
-		});
-
-
-		$('.order_form__button.next').on('click', (e) => {
-			e.preventDefault();
-			$('.slider_container').slick('slickNext');
-			counter++;
-			if(counter === 5){
-				setTimeout(
-					() => {
-						$('.slider_container')
-						.slick("slickGoTo", 0, false);
-						counter = 0;
-
-					}, 3500
-				)
-			}
-		});
-
-		$('.order_form__button.prev').on('click', (e) => {
-			e.preventDefault();
-			$('.slider_container').slick('slickPrev');
-		});
-
-		$('.auto_filter__btn').on('click', (e) => {
-			$('.auto_filter__btn.active').toggleClass('active', false);
-			$(e.target).toggleClass('active', true);
-		})
-
-		$('.auto_filter__btn.all').on('click', () => {
-			document.querySelectorAll('.auto_item').forEach(el => $(el).css('display','block'));
-		});
-
-		$('.auto_filter__btn.ukr').on('click', () => {
-			document.querySelectorAll('.auto_item').forEach(el => {
-				if(el.classList.contains('ukr')){
-					$(el).css('display','block');
-				}
-				else
-				{
-					$(el).css('display','none');
-				}
-			});
-		});
-
-		$('.auto_filter__btn.eu').on('click', () => {
-			document.querySelectorAll('.auto_item').forEach(el => {
-				if(el.classList.contains('eu')){
-					$(el).css('display','block');
-				}
-				else
-				{
-					$(el).css('display','none');
-				}
-			});
-		});
-
-	  // Add smooth scrolling to all links
-	  $("a").on('click', function(event) {
-	
-		// Make sure this.hash has a value before overriding default behavior
-		if (this.hash !== "") {
-		  // Prevent default anchor click behavior
-		  event.preventDefault();
-	
-		  // Store hash
-		  var hash = this.hash;
-	
-		  // Using jQuery's animate() method to add smooth page scroll
-		  // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-		  $('html, body').animate({
-			scrollTop: $(hash).offset().top
-		  }, 800, function(){
-	
-		  });
-		} // End if
-	  });
-	});
-	</script>
 </body>
 </html>

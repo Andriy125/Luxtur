@@ -381,7 +381,8 @@ a{
 .calculate{
     padding: 15px 0px;
     text-align: center;
-    font-size: bold;
+    font-weight: bold;
+    font-size: 16px;
     width: 220px;
     color: #000;
     background: #FFD362;
@@ -630,12 +631,12 @@ a{
 }
 .auto-order-button-prev{
     position: absolute;
-    left: 5%;
+    left: 2%;
     top: 45%;
 }
 .auto-order-button-next{
     position: absolute;
-    right:  5%;
+    right: 2%;
     top: 45%;
 }
 
@@ -882,7 +883,7 @@ a{
 .modal_form_review{
     display: flex;
     justify-content: center;
-    margin: 15% auto;
+    margin: 8% auto;
     width: 450px;
     padding: 15px;
     background-color: rgba(0, 0, 0, 0.76);
@@ -904,6 +905,11 @@ a{
     padding: 10px 40px;
     border: 1px solid #fff;
     margin-top: 20px;
+}
+.input_review_feedback{
+    width: 100%;
+    max-height: 250px;
+    resize: vertical;
 }
 
 
@@ -1037,7 +1043,7 @@ a{
 }
 .wrap_bordered_container{
     border: 1px solid #fff;
-    padding: 20px 90px;
+    padding: 5% 10%;
     /* padding: 10px 80px; */
     /* display: flex;
     justify-content: center;

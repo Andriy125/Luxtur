@@ -1,7 +1,9 @@
 // об єкти з широтою і довготою  
 let arr_obj = [];          
 // кнопка розрахунку                                                                                                                                      
-let calculate = document.querySelector('.calculate');                                       
+let calculate = document.querySelector('.calculate');  
+//  форма розрахунку                                     
+let calc_form = document.querySelector('.form_calc');                                       
 // ключ для отримання координатів міст                                    
 let apikey_geodata = '303691d597d34232b212232cb93cba14';
 // посилання для запиту (отримання координат)
@@ -48,7 +50,8 @@ const ErrorClear = () => {
     arr_obj = [];
 }
 //  розрахунок
-calculate.addEventListener('click', () =>{    
+calc_form.addEventListener('submit', (e) =>{
+    e.preventDefault();
     // якщо одне поле                                       
     if(document.querySelectorAll('.form__input').length <= 1){                      
         ErrorClear();
