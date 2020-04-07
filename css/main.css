@@ -496,7 +496,7 @@ a{
 }
 
 
-.order_form{
+.order_block{
     background-image: url('../img/form-zamovlenya.png');
     background-color: rgba(0, 0, 0, 0.6);
     background-blend-mode: multiply;
@@ -526,7 +526,7 @@ a{
     color:#fff;
 }
 .wrap{
-    margin-right: 10px;
+    width: 505px;
     text-align: center;
     padding: 15px;
 }
@@ -777,10 +777,10 @@ a{
     width: 405px;
     background: rgba(0, 0, 0, 0.84);
     border-radius: 3px;
-    margin: 15% auto;
+    margin: 10% auto;
 }
 .modal_calculate_container{
-    padding: 30px 90px 40px;
+    padding: 30px 30px 40px;
 }
 .results{
     color:#fff;
@@ -794,10 +794,17 @@ a{
     padding: 15px;
 }
 .results_distances__text{
+    width: 100%;
     font-weight: bold;
     font-size: 15px;
     line-height: 18px;
     color: #000;
+}
+.results_distances__text{
+    margin-top: 10px;
+}
+.results_distances__text:first-child{
+    margin-top: 0;
 }
 .calc_distance{
     color: #3D83AB;

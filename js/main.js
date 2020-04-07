@@ -91,7 +91,7 @@ const addStyles = (container, button) => {
     addScroll(container);
     $(button).css('display', 'inline-flex');
     $('.crud_buttons').css('margin-top', '15px');
-    $('.crud_buttons').css('justify-content', 'space-around');
+    $('.crud_buttons').css('justify-content', 'space-between');
     $('.crud_buttons').css('margin-bottom', '0px');
 }
 
@@ -102,7 +102,7 @@ const removeStyles = (button) => {
 }
 
 const CreateElement = ( _class, after ) => {                                                 // створення полів    
-    $('<input type="text" placeholder="Адреса пункту..." class="' + _class + '" required>')
+    $('<input type="text" placeholder="Адреса пункту..." class="' + _class + '" name="address" required>')
     .insertAfter(after);
 }
 

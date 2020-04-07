@@ -9,6 +9,14 @@ let apikey_geodata = '303691d597d34232b212232cb93cba14';
 // посилання для запиту (отримання координат)
 let api_url = 'https://api.opencagedata.com/geocode/v1/json';
 
+let usd_tariff = 1;
+
+fetch('https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11').then(response => {
+    response.json().then(response => {
+        usd_tariff = response[0].sale * 0.65;
+    });
+})
+
 // рекурсивне отримання і запис координат міст
 const Reqursion = (cities, index = 0) => {                                                                                           
     if(index == cities.length){
@@ -20,13 +28,13 @@ const Reqursion = (cities, index = 0) => {
         + 'key=' + apikey_geodata
         + '&q=' + encodeURIComponent(cities[index])
         + '&pretty=1'
-        + '&language=uk'
-        + '&no_annotations=1';
+        + '&language=uk';
+        // + '&no_annotations=1';
     // запит
     fetch(request_url)
     .then(response => {
         // розпарсинг відповіді
-        response.json().then(response => {                                        
+        response.json().then(response => {                                       
             let obj = response.results[0];
             let newObj = {
                 'lat': obj.geometry.lat, 
@@ -100,6 +108,8 @@ calc_form.addEventListener('submit', (e) =>{
                 let distance_global = 0;
                 // очистка попередніх елементів 
                 $('.results_distances__text').remove();
+                // отримання вартості поїздки
+                let price = getDistancePrice(response.distances, arr_obj);
                 for (let i = 0; i < inputs.length - 1; i++){                            
                     // отримання відстані з сервера
                     let distance = response.distances[i][i+1] / 1000 > 0 ? (response.distances[i][i+1] / 1000).toFixed(0) : (response.distances[i][i+1] / 1000).toFixed(2);
@@ -112,8 +122,7 @@ calc_form.addEventListener('submit', (e) =>{
                 }                                                                       
                 // додавання елементів в пункті "всі дані" в модальне вікно результатів розрахунку
                 insertElement(createResultElement(from, to, distances, distances.length), '.results_distances__all');
-                // отримання вартості поїздки
-                let price = getDistancePrice(response.distances, arr_obj);
+
                 // відображення голового шляху (від початкового місця до кінцевого)
                 insertElement(createResultElement(from[0], to[to.length - 1], distance_global), '.results_distances__standard');        
                 if(inputs.length < 3){
@@ -124,14 +133,14 @@ calc_form.addEventListener('submit', (e) =>{
                     $('.all_info').css('display', 'flex');
                 }
                 // додавання вартості 
-                $('.results_price__text').html(`Сума: ${price} грн`);     
+                $('.results_price__text').html(`Сума: ${price} грн`);  
                 modal_calc.style.display = "block";
             })
         })
         .catch(err => {
             console.log(err);
         });
-    }, inputs.length * 400);
+    }, inputs.length * 500);
     // очищення масиву координат і полів вводу
     document.querySelectorAll('.form__input').forEach(el => el.value = '');             
     arr_obj = [];
@@ -158,19 +167,37 @@ const getDistancePrice = (arr, objects) => {
     let price = 0;
     let count_passengers = Number($('.passenger_calc')[0].value);
     let uah_tariff = count_passengers <= 8 ? 7 : 10;
-    $('.results_tariff').text(`Тариф: ${uah_tariff} Гривень/км`);
+    
+    let usd_bool = false;
+    let uah_bool = false;
+    let tariff_text = "Тариф: ";
+
     for(let i = 0; i < arr.length; i++){
         if(i + 1 === arr.length){
             break;
         }
-
+        if(objects[i+1].country !== "UA"){
+            usd_bool = true;
+        }
+        else {
+            uah_bool = true;
+        }
         price += objects[i+1].country == "UA" 
         // якщо по Україні
         ? (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * uah_tariff : uah_tariff 
         // якщо не по Україні
-        : (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * 27 : 27;
+        : (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * usd_tariff : usd_tariff;
     }
+    if(uah_bool && usd_bool){
+        tariff_text += `${'0.65$/км + ' + uah_tariff + ' Гривень/км'}`
+    }
+    else {
+        tariff_text += `${usd_bool ? '0.65$/км' : uah_tariff + ' Гривень/км'}`
+    }
+    $('.results_tariff').text(tariff_text);
+    $('.passenger_calc')[0].value= "";
     return $('#duo').prop( "checked" ) ? price.toFixed(0) * 2 : price.toFixed(0);
+
 }
 
 //  вставка елементів
