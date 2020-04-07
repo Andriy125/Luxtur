@@ -46,14 +46,14 @@ const Reqursion = (cities, index = 0) => {
 }
 // помилка при введенні міста або присутності одного міста
 const ErrorClear = () => {                                                          
-    alert('You stupid kakashka!');
+    alert('Помилка! Не вірно вказані дані! Спробуйте знову!');
     arr_obj = [];
 }
 //  розрахунок
 calc_form.addEventListener('submit', (e) =>{
     e.preventDefault();
     // якщо одне поле                                       
-    if(document.querySelectorAll('.form__input').length <= 1){                      
+    if(document.querySelectorAll('.form__input').length <= 1 || Number($('.passenger_calc')[0].value) <= 0){                      
         ErrorClear();
         return;
     }
@@ -156,13 +156,17 @@ const createResultElement = (from, to, distance, count = 1) => {
 // вирахування вартості поїздки із перевіркою на зворотній шлях
 const getDistancePrice = (arr, objects) => {
     let price = 0;
+    let count_passengers = Number($('.passenger_calc')[0].value);
+    let uah_tariff = count_passengers <= 8 ? 7 : 10;
+    $('.results_tariff').text(`Тариф: ${uah_tariff} Гривень/км`);
     for(let i = 0; i < arr.length; i++){
         if(i + 1 === arr.length){
             break;
         }
+
         price += objects[i+1].country == "UA" 
         // якщо по Україні
-        ? (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * 10 : 10 
+        ? (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * uah_tariff : uah_tariff 
         // якщо не по Україні
         : (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * 27 : 27;
     }
