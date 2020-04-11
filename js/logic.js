@@ -8,79 +8,92 @@ let calc_form = document.querySelector('.form_calc');
 let apikey_geodata = '303691d597d34232b212232cb93cba14';
 // посилання для запиту (отримання координат)
 let api_url = 'https://api.opencagedata.com/geocode/v1/json';
+let order = {};             //  замовлення
+let usd_tariff = 1;         //  курс долара
+const hasNumber = /\d/;     //  функція перевірки рядка на наявність цифр
 
-let usd_tariff = 1;
-
-fetch('https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11').then(response => {
-    response.json().then(response => {
-        usd_tariff = response[0].sale * 0.65;
-    });
-})
-
-// рекурсивне отримання і запис координат міст
-const Reqursion = (cities, index = 0) => {                                                                                           
-    if(index == cities.length){
-        return;
-    }
-    // формування повної адреси запиту
-    let request_url = api_url 
-        + '?'
-        + 'key=' + apikey_geodata
-        + '&q=' + encodeURIComponent(cities[index])
-        + '&pretty=1'
-        + '&language=uk';
-        // + '&no_annotations=1';
-    // запит
-    fetch(request_url)
-    .then(response => {
-        // розпарсинг відповіді
-        response.json().then(response => {                                       
-            let obj = response.results[0];
-            let newObj = {
-                'lat': obj.geometry.lat, 
-                'long': obj.geometry.lng,
-                'country': obj.components["ISO_3166-1_alpha-2"]
-            }
-            arr_obj.push(newObj);
-            index += 1;
-            Reqursion(cities, index);
-        })
-    })
-    .catch(err => {
-        console.log(err);
-        ErrorClear();
-        return;
+//  функція для отримання поточного курсу долара
+const getUSD = async () => {
+    await fetch('https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11').then(response => {
+        response.json().then(response => {
+            usd_tariff = response[0].sale * 0.65;
+        });
     })
 }
-// помилка при введенні міста або присутності одного міста
+
+getUSD();
+
+//  функція отримання координат введених адрес
+const getCoordinates = async (cities) => {
+    let objs = [];
+    for(let i = 0; i < cities.length; i++){
+        // формування повної адреси запиту
+        let request_url = api_url 
+        + '?'
+        + 'key=' + apikey_geodata
+        + '&q=' + encodeURIComponent(cities[i])
+        + '&pretty=1'
+        + '&language=uk';
+        + '&no_annotations=1';
+        // запит
+        await fetch(request_url)
+        .then(async response => {
+            // розпарсинг відповіді
+            await response.json().then(response => {   
+                let obj = response.results[0];
+                if(obj.components["ISO_3166-1_alpha-2"] == "RU"){
+                    alert("Ми не здійснюємо перевезення в Росію!");
+                    arr_obj = [];
+                    return null;
+                }                                 
+                let newObj = {
+                    'lat': obj.geometry.lat, 
+                    'long': obj.geometry.lng,
+                    'country': obj.components["ISO_3166-1_alpha-2"]
+                }
+                arr_obj.push(newObj);
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            return null;
+        })
+    }
+    return objs;
+}
+
+// виведення помилки та очищення масиву координат для форми "розрахунок"
 const ErrorClear = () => {                                                          
     alert('Помилка! Не вірно вказані дані! Спробуйте знову!');
+    document.querySelector('.passenger_calc')[0].value = ""; 
     arr_obj = [];
 }
 //  розрахунок
-calc_form.addEventListener('submit', (e) =>{
+calc_form.addEventListener('submit', async (e) =>{
+
     e.preventDefault();
-    // якщо одне поле                                       
+    let inputs = [];
+    // якщо одне поле 
     if(document.querySelectorAll('.form__input').length <= 1 || Number($('.passenger_calc')[0].value) <= 0){                      
         ErrorClear();
         return;
     }
-    let inputs = [];
     // формування та форматування масиву адрес для подальшого використання
     document.querySelectorAll('.form__input').forEach((el) => {
-        el.value = el.value.toLowerCase();
-        inputs.push(el.value.charAt(0).toUpperCase() + el.value.slice(1));
+        let val = el.value;
+        val = el.value.toLowerCase();
+        inputs.push(val.charAt(0).toUpperCase() + val.slice(1));
     });
 
     calculate.textContent = 'Розрахунок...';
-    // запуск отримання координат
-    Reqursion(inputs);                                                              
-    let query = '';
 
-    setTimeout(() => {
+    // запуск отримання координат 
+    arr_obj = await getCoordinates(inputs).then(async ()=>{
+        let query = '';
         calculate.textContent = 'Розрахувати';
-         // якщо одне поле або не всі міста корректно написані
-        if(arr_obj.length !== inputs.length){                                          
+        // якщо одне поле або не всі міста корректно написані
+        if(arr_obj.length !== inputs.length){      
+            console.log(111);                                    
             ErrorClear();
             return;
         }
@@ -89,7 +102,7 @@ calc_form.addEventListener('submit', (e) =>{
             query += arr_obj[i].lat + "," + arr_obj[i].long + ';';                      
         }
         // здійснення запиту
-        fetch("https://trueway-matrix.p.rapidapi.com/CalculateDrivingMatrix?destinations="
+        await fetch("https://trueway-matrix.p.rapidapi.com/CalculateDrivingMatrix?destinations="
         + encodeURIComponent(query) + 
         "&origins=" + encodeURIComponent(query), {
             "method": "GET",
@@ -99,8 +112,8 @@ calc_form.addEventListener('submit', (e) =>{
             }
         })
         // отримання результатів
-        .then(response => {
-            response.json().then(response => {
+        .then(async response => {
+            await response.json().then(response => {
                 let from = [];
                 let to = [];
                 let distances = [];
@@ -140,9 +153,10 @@ calc_form.addEventListener('submit', (e) =>{
         .catch(err => {
             console.log(err);
         });
-    }, inputs.length * 500);
+    }); 
+    
     // очищення масиву координат і полів вводу
-    document.querySelectorAll('.form__input').forEach(el => el.value = '');             
+    document.querySelectorAll('.form__input').forEach(el => el.value = '');            
     arr_obj = [];
 });
 
@@ -204,3 +218,164 @@ const getDistancePrice = (arr, objects) => {
 const insertElement = (element, appendToElement) => {
     $(element).appendTo(appendToElement);
 }
+
+const checkElementUndefined = (el) => {
+    return el === undefined;
+}
+
+//  функція прокрутки слайдеру замовлення
+const nextSlide = () => {
+    $('.slider_container').slick('slickNext');
+    var currentSlide = $('.slider_container').slick('slickCurrentSlide');
+    if(currentSlide == $('.slider_container .wrap_order_request').length - 1){
+        setTimeout(
+            () => {
+                $('.slider_container').slick("slickGoTo", 0, false);
+            }, 3500
+        )
+    }
+}
+
+//  перевірка введених адрес в формі замовлення
+const checkAddressData = async (addresses) => {
+    let return_value = true; 
+    for(let i = 0; i < addresses.length; i++){
+        let request_url = api_url 
+        + '?'
+        + 'key=' + apikey_geodata
+        + '&q=' + encodeURIComponent(addresses[i].value)
+        + '&pretty=1'
+        + '&language=uk';
+        + '&no_annotations=1';
+        // запит
+        await fetch(request_url)
+        .then(async response => {
+            await response.json().then(data=>{
+                if(data.results.length == 0){
+                    return_value = false;
+                }
+            })
+        })
+        .catch(err => {
+            return false;
+        });
+    }
+    return return_value;
+}
+
+//  функція відправлення запиту
+const sendRequest = (url, order) => {
+    $.ajax({
+        url: `/${url}`,
+        type: "POST",
+        data: JSON.parse(JSON.stringify(order)),    
+        success: function (response) {
+            console.log(response);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
+         }
+    });
+}
+
+//  функція перевірки на коректність поля ім'я
+const checkName = (value) => {
+    if(value.trim().length < 2 || hasNumber.test(value)){
+        alert("Введіть коректне имя!");
+        return;
+    }
+}
+
+//  функція перевірки на коректність поля телефон
+const checkPhone = (value) => {
+    if(value.length !== 19){
+        alert("Введіть коректний номер телефону!");
+        return;
+    }
+}
+
+//  обробник відправки форми відгуки (в модальному вікні)
+document.querySelector('.form_review').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    name = e.target.elements.name.value;
+    checkName(name);
+    let review = {};
+    review["name"] = name;
+    review["email"] = e.target.elements.email.value;
+    review["review"] = e.target.elements.review.value;
+    sendRequest("review_api.php", review);
+    e.target.elements.name.value = e.target.elements.review.value = e.target.elements.email.value = "";
+    $('#modal_review').css("display", "none");
+});
+
+//  обробник відправки форми замовити дзвінок (в модальному вікні)
+document.querySelector('.call_form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    name = e.target.elements.name.value;
+    checkName(name);
+    checkPhone(e.target.elements.phone.value);
+    let call = {};
+    call["name"] = name;
+    call["phone"] = e.target.elements.phone.value;
+    call["email"] = e.target.elements.email.value;
+    sendRequest("orderCall_api.php", call);
+    e.target.elements.name.value = e.target.elements.phone.value = e.target.elements.email.value = "";
+    $('#modal_call').css("display", "none");
+});
+
+//  обробник відправки форми замовлення
+document.querySelector('.order_form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    let name, addresses = [], date, passengers;
+    //  перевірка на першу форму (контактні дані)
+    if(!checkElementUndefined(e.target.elements.name)){
+        name = e.target.elements.name.value;
+        checkName(name);
+        checkPhone(e.target.elements.phone.value);
+        nextSlide();
+        order["name"] = name;
+        order["phone"] = e.target.elements.phone.value;
+        order["email"] = e.target.elements.email.value;
+    }
+    //  перевірка на другу форму (місця і зворотній шлях)
+    else if(!checkElementUndefined(e.target.elements.address)){
+        let info_address = [];
+        addresses = document.querySelectorAll('.address');
+        let correct_addresses = await checkAddressData(addresses);
+        if(!correct_addresses){
+            alert('Введіть коректні пункти!');
+            return;
+        }
+        addresses.forEach(el=>{
+            info_address.push(el.value);
+        })
+        order["addresses"] = info_address;
+        order["goBack"] = $('#duo2').prop('checked');
+        nextSlide();     
+    }
+    //  перевірка на третю форму (дата і час)
+    else if(!checkElementUndefined(e.target.elements.date)){
+        date = e.target.elements.date;
+        time = e.target.elements.time;
+        order["date"] = date.value;
+        order["time"] = time.value;
+        nextSlide();
+    }
+    //  перевірка на четверту форму (к-сть пасажирів)
+    else if(!checkElementUndefined(e.target.elements.passengers)){
+        passengers = e.target.elements.passengers;
+        order["passenger_count"] = Number(passengers.value);
+        nextSlide();
+    }
+    //  перевірка на п'яту форму (автопарк)
+    else if(!checkElementUndefined(e.target.elements.autopark)){
+        let cars = $('.order_slider_car .order_car');
+        let currentSlide = $('.order_slider_car').slick('slickCurrentSlide');
+        let car_name = $($(cars[currentSlide])[0].querySelector(' .order_car__title'))[0].textContent;
+        order["car"] = car_name;
+        sendRequest("order_api.php", order);
+        $('.order_form').find("input[type=text], input[type=number], .order_email, textarea").val("");
+        $('.order_slider_car').slick("slickGoTo", 0, true);
+        $('#one1').prop('checked', true);
+    } 
+});

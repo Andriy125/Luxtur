@@ -1,3 +1,4 @@
+// додавання обробників івентів
 $(document).ready(function(){
     document.querySelector('.menu_icon').addEventListener('click', (e) => {
         $('.side_menu').toggleClass('active', true);
@@ -11,10 +12,12 @@ $(document).ready(function(){
     $('#main').click();
 });
 
+// закриття меню
 const CloseMenu = () => {
     $('.side_menu').toggleClass('active', false);
 }
 
+// відображення контенту після натискання на пункт меню 
 const ShowContent = (e, name) => {
     // Declare all variables
     let tabcontent, tablinks;
