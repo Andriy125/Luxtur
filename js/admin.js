@@ -6,9 +6,7 @@ $(document).ready(function(){
     document.querySelector('.close_icon').addEventListener('click', (e) => {
         CloseMenu();
     })
-    document.querySelectorAll('.side_menu__item').forEach((el) => {
-        el.addEventListener('click', (e) => ShowContent(e, `id-${el.getAttribute('id')}`));
-    });
+    $('.side_menu__item').on('click', (e) => ShowContent(e, `id-${$('.side_menu__item').prop('id')}`));
     $('#main').click();
 });
 

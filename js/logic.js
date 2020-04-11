@@ -324,7 +324,7 @@ document.querySelector('.call_form').addEventListener('submit', (e) => {
 });
 
 //  обробник відправки форми замовлення
-document.querySelector('.order_form').addEventListener('submit', async (e) => {
+$('.order_form').on('submit', async (e) => {
     e.preventDefault();
     let name, addresses = [], date, passengers;
     //  перевірка на першу форму (контактні дані)
@@ -341,7 +341,9 @@ document.querySelector('.order_form').addEventListener('submit', async (e) => {
     else if(!checkElementUndefined(e.target.elements.address)){
         let info_address = [];
         addresses = document.querySelectorAll('.address');
+        $('.address_check').html("Перевірка...");
         let correct_addresses = await checkAddressData(addresses);
+        $('.address_check').html("Далі");
         if(!correct_addresses){
             alert('Введіть коректні пункти!');
             return;

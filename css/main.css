@@ -30,7 +30,7 @@ a{
     align-items: center;
 }
 .first{
-    background-image: url('../img/main-min.jpg');
+    background-image: url('../img/main.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -302,7 +302,7 @@ a{
     padding: 0;
 }
 .price_block{
-    background-image: url('../img/price_background-min.png');
+    background-image: url('../img/price_background.png');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -356,7 +356,7 @@ a{
     width: 40px;
     height: 40px;
     background-repeat: no-repeat;
-    background-image: url('../img/Ellipse1.png');
+    background-image: url('../img/Ellipse.png');
 }
 .minus::before{
     content: '-';
@@ -711,7 +711,7 @@ a{
 }
 
 .six{
-    background-image: url('../img/contacts_background-min.jpg');
+    background-image: url('../img/contacts_background.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

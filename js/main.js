@@ -51,7 +51,6 @@ btn_auto_card.forEach(el => el.onclick = function(){
     showModal(modal_autopark);
 })
 
-
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
     modal_call.style.display = "none";
@@ -61,22 +60,26 @@ span.onclick = function() {
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
     if (event.target == modal_call) {
-        modal_call.style.display = "none";
+        hideModal(modal_call);
         ClearCallInputs();
     }
     else if(event.target == modal_calc){
-        modal_calc.style.display = "none";
+        hideModal(modal_calc);
     }
     else if(event.target == modal_review){
-        modal_review.style.display = "none";
+        hideModal(modal_review);
     }
     else if(event.target == modal_autopark){
-        modal_autopark.style.display = "none";
+        hideModal(modal_autopark);
     }
 }
 
 const showModal = (showElem) => {
     showElem.style.display = "block";
+}
+
+const hideModal = (showElem) => {
+    showElem.style.display = "none";
 }
 
 const ClearCallInputs = () => {
