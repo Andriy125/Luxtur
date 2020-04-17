@@ -1,3 +1,6 @@
+<?php 
+    include 'get_data.php';
+?>
 <!DOCTYPE html>
 <html lang="ua">
 <head>
@@ -21,6 +24,7 @@
             </h2>
         </div>
     </header>
+
     <div class="side_menu">
         <div class="side_menu_header">
             <h2>Menu</h2>
@@ -67,7 +71,50 @@
     </div>
       
     <div id="id-orders" class="tabcontent">
-        <!-- <h3>Замовлення</h3> -->
+        <div class="table">
+            <table>
+                <th class="column">Ім'я</th>
+                <th class="column">Телефон</th>
+                <th class="column">Email</th>
+                <th class="column">Маршрут</th>
+                <th class="column">Зворотній шлях</th>
+                <th class="column">Дата і час</th>
+                <th class="column">Кількість пасажирів</th>
+                <th class="column">Машина</th>
+                <th class="column">Ціна</th>
+                <!-- TODO: filter, CRUD, done or not -->
+                <?php 
+                    foreach ($result_orders as $order) {
+                        echo $order["goBack"] == 1 
+                        ? '<tr>
+                            <td>'.$order["name"].'</td>
+                            <td>'.$order["phone"].'</td>
+                            <td>'.$order["email"].'</td>
+                            <td>'.$order["addresses"].'</td>
+                            <td>Taк</td>
+                            <td>'.$order["time"] . "  " . $order["date"] . '</td>
+                            <td>'.$order["passengers"].'</td>
+                            <td>'.$order["car"].'</td>
+                            <td>'.$order["price"].' грн</td>
+
+                        </tr>' 
+                        : '<tr>
+                            <td>'.$order["name"].'</td>
+                            <td>'.$order["phone"].'</td>
+                            <td>'.$order["email"].'</td>
+                            <td>'.$order["addresses"].'</td>
+                            <td>Ні</td>
+                            <td>'.$order["time"] . "  " . $order["date"] . '</td>
+                            <td>'.$order["passengers"].'</td>
+                            <td>'.$order["car"].'</td>
+                            <td>'.$order["price"].' грн</td>
+                        </tr>' ;
+                    }
+                ?>
+
+            </table>
+        </div>
+
     </div>
       
     <div id="id-edit_review" class="tabcontent">

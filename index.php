@@ -1,3 +1,6 @@
+<?php 
+	include 'get_data.php';
+?>
 <!DOCTYPE html>
 <html lang="ua">
 <head>
@@ -595,26 +598,18 @@
 			</p>
 		</div>
 		<div class="review_slider">
-			<div class="review">
-				<h2 class="review__title">
-					Роман Сергійович, Директор музичної школи
-				</h2>
-				<p class="review__descr">
-					"З Рівненським перевізником Lux tur працюємо вже багато років. Це надійні партнери, які чітко і вчасно виконують всі домовленості, а в скрутних ситуаціях завжди можна розраховувати на їх підтримку.  Автобуси для поїздок 
-					подають вчасно, до туристів ставляться уважно. Чуємо багато позитивних 
-					відгуків про їх роботу від туристів."
-				</p>
-			</div>
-			<div class="review">
-				<h2 class="review__title">
-					Роман Сергійович, Директор музичної школи
-				</h2>
-				<p class="review__descr">
-					"З Рівненським перевізником Lux tur працюємо вже багато років. Це надійні партнери, які чітко і вчасно виконують всі домовленості, а в скрутних ситуаціях завжди можна розраховувати на їх підтримку.  Автобуси для поїздок 
-					подають вчасно, до туристів ставляться уважно. Чуємо багато позитивних 
-					відгуків про їх роботу від туристів."
-				</p>
-			</div>
+			<?php 
+				foreach ($result_reviews as $review) {
+					echo   '<div class="review">
+					<h2 class="review__title">
+						'. $review["name"] .'
+					</h2>
+					<p class="review__descr">
+						'. $review["review"] .'
+					</p>
+				</div>';
+				}
+			?>
 		</div>
 		<div class="slider_buttons">
 			<a href="#" class="slider_button swiper-button-prev btn black_button">
@@ -650,13 +645,25 @@
 			<div class="contacts">
 				<div class="contacts_text">	
 					<ul class="contacts_text__list">
-						<li><a href="tel:+380965138509" class="contacts_mail__link">+380965138509</a><img src="img/Kyivstar-white-1-1 1.png" alt="kyivstar"><img src="img/viber_PNG15 1.png" alt="viber"></li>
-						<li><a href="tel:+380509753923" class="contacts_mail__link">+380509753923 </a><img src="img/vodapfhone.png" alt="vodaphone"> <img src="img/viber_PNG15 1.png" alt="viber"></li>
-						<li><a href="tel:+380947395776" class="contacts_mail__link">+380947395776</a><img src="img/Kyivstar-white-1-1 1.png" alt="kyivstar"></li>
+					<?php foreach ($result_phones as $value) {
+							if($value["operator"] == "Kyivstar"){
+								echo strtolower($value["social_media"]) == "viber" ?'<li><a href="tel:'. $value["phone"] .'" class="contacts_mail__link">'. $value["phone"] .'</a><img src="img/Kyivstar-white-1-1 1.png" alt="kyivstar"><img src="img/viber_PNG15 1.png" alt="viber"></li>' : '<li><a href="tel:'. $value["phone"] .'" class="contacts_mail__link">'. $value["phone"] .'</a><img src="img/Kyivstar-white-1-1 1.png" alt="kyivstar"></li>';
+							}
+							else if($value["operator"] == "Vodaphone"){
+								echo strtolower($value["social_media"]) == "viber" 
+								?'<li><a href="tel:'. $value["phone"] .'" class="contacts_mail__link">'. $value["phone"] .' </a><img src="img/vodapfhone.png" alt="vodaphone"><img src="img/viber_PNG15 1.png" alt="viber"></li>' 
+								: '<li><a href="tel:'. $value["phone"] .'" class="contacts_mail__link">'. $value["phone"] .' </a><img src="img/vodapfhone.png" alt="vodaphone"></li>';
+							}
+						}?>
 					</ul>
 					<ul class="contacts_text__list">
 						Email:
-						<li><a class="contacts_mail__link" href="mailto:lux_tur@gmail.com">lux_tur@gmail.com</a></li>
+						<?php foreach ($result_emails as $value) {
+							foreach ($value as $email) {
+								echo '<li><a class="contacts_mail__link" href="mailto:'. $email .'">'. $email .'</a></li>';
+							}
+						}
+						?>
 					</ul>
 				</div>
 			</div>
@@ -670,5 +677,9 @@
 	<script src="./js/sliders.js"></script>
 	<script src="./js/jquery.mask.js"></script>
 	<script src="./js/main.js"></script>
+	<!-- <script>
+		let count_passengers = Number($('.passenger_calc')[0].value);
+    	let uah_tariff = count_passengers <= 8 ? 7 : ;
+	</script> -->
 </body>
 </html>

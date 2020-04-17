@@ -1,6 +1,6 @@
 // об єкти з широтою і довготою  
 let arr_obj = [];          
-// кнопка розрахунку                                                                                                                                      
+// кнопка розрахунку                                                                                                                                    
 let calculate = document.querySelector('.calculate');  
 //  форма розрахунку                                     
 let calc_form = document.querySelector('.form_calc');                                       
@@ -51,7 +51,7 @@ const getCoordinates = async (cities) => {
                     'long': obj.geometry.lng,
                     'country': obj.components["ISO_3166-1_alpha-2"]
                 }
-                arr_obj.push(newObj);
+                objs.push(newObj);
             })
         })
         .catch(err => {
@@ -92,8 +92,7 @@ calc_form.addEventListener('submit', async (e) =>{
         let query = '';
         calculate.textContent = 'Розрахувати';
         // якщо одне поле або не всі міста корректно написані
-        if(arr_obj.length !== inputs.length){      
-            console.log(111);                                    
+        if(arr_obj.length !== inputs.length){                                        
             ErrorClear();
             return;
         }
@@ -122,7 +121,7 @@ calc_form.addEventListener('submit', async (e) =>{
                 // очистка попередніх елементів 
                 $('.results_distances__text').remove();
                 // отримання вартості поїздки
-                let price = getDistancePrice(response.distances, arr_obj);
+                let price = getDistancePrice(response.distances, arr_obj, '.passenger_calc');
                 for (let i = 0; i < inputs.length - 1; i++){                            
                     // отримання відстані з сервера
                     let distance = response.distances[i][i+1] / 1000 > 0 ? (response.distances[i][i+1] / 1000).toFixed(0) : (response.distances[i][i+1] / 1000).toFixed(2);
@@ -177,9 +176,9 @@ const createResultElement = (from, to, distance, count = 1) => {
 }
 
 // вирахування вартості поїздки із перевіркою на зворотній шлях
-const getDistancePrice = (arr, objects) => {
+const getDistancePrice = (arr, objects, passenger_element) => {
     let price = 0;
-    let count_passengers = Number($('.passenger_calc')[0].value);
+    let count_passengers = Number($(passenger_element)[0].value);
     let uah_tariff = count_passengers <= 8 ? 7 : 10;
     
     let usd_bool = false;
@@ -239,6 +238,7 @@ const nextSlide = () => {
 //  перевірка введених адрес в формі замовлення
 const checkAddressData = async (addresses) => {
     let return_value = true; 
+    let coords = [];
     for(let i = 0; i < addresses.length; i++){
         let request_url = api_url 
         + '?'
@@ -254,23 +254,63 @@ const checkAddressData = async (addresses) => {
                 if(data.results.length == 0){
                     return_value = false;
                 }
+                let obj = data.results[0];
+                if(obj.components["ISO_3166-1_alpha-2"] == "RU"){
+                    alert("Ми не здійснюємо перевезення в Росію!");
+                }                                 
+                let newObj = {
+                    'lat': obj.geometry.lat, 
+                    'long': obj.geometry.lng,
+                    'country': obj.components["ISO_3166-1_alpha-2"]
+                }
+                coords.push(newObj);
             })
         })
         .catch(err => {
             return false;
         });
+        if(!return_value){
+            break;
+        }
     }
-    return return_value;
+    return {val: return_value, coords};
+}
+
+const getPrice = async (arr) => {
+    let price = 0;
+    let query = '';
+    // формування запиту
+    for(let i = 0; i < arr.length; i++){
+        query += arr[i].lat + "," + arr[i].long + ';';                      
+    }
+    // здійснення запиту
+    await fetch("https://trueway-matrix.p.rapidapi.com/CalculateDrivingMatrix?destinations="
+    + encodeURIComponent(query) + 
+    "&origins=" + encodeURIComponent(query), {
+        "method": "GET",
+        "headers": {
+            "x-rapidapi-host": "trueway-matrix.p.rapidapi.com",
+            "x-rapidapi-key": "07f42e69cbmshe9b66757eca013dp10519bjsn718397e16c42"
+        }
+    })
+    // отримання результатів
+    .then(async response => {
+        await response.json().then(response => {
+            // отримання вартості поїздки
+            price = getDistancePrice(response.distances, arr, '.order_pasengers');                                         
+        })
+    })
+    return price;
 }
 
 //  функція відправлення запиту
-const sendRequest = (url, order) => {
+const sendRequest = (data) => {
     $.ajax({
-        url: `/${url}`,
+        url: `/request_api.php`,
         type: "POST",
-        data: JSON.parse(JSON.stringify(order)),    
+        data: JSON.parse(JSON.stringify(data)),    
         success: function (response) {
-            console.log(response);
+            alert("Все пройшло вдало!");
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log(textStatus, errorThrown);
@@ -282,28 +322,33 @@ const sendRequest = (url, order) => {
 const checkName = (value) => {
     if(value.trim().length < 2 || hasNumber.test(value)){
         alert("Введіть коректне имя!");
-        return;
+        return false;
     }
+    return true;
 }
 
 //  функція перевірки на коректність поля телефон
 const checkPhone = (value) => {
     if(value.length !== 19){
         alert("Введіть коректний номер телефону!");
-        return;
+        return false;
     }
+    return true;
 }
 
 //  обробник відправки форми відгуки (в модальному вікні)
 document.querySelector('.form_review').addEventListener('submit', (e)=>{
     e.preventDefault();
     name = e.target.elements.name.value;
-    checkName(name);
+    if(!checkName(name)){
+        return;
+    }
     let review = {};
     review["name"] = name;
     review["email"] = e.target.elements.email.value;
     review["review"] = e.target.elements.review.value;
-    sendRequest("review_api.php", review);
+    review["is_review"] = true;
+    sendRequest(review);
     e.target.elements.name.value = e.target.elements.review.value = e.target.elements.email.value = "";
     $('#modal_review').css("display", "none");
 });
@@ -312,13 +357,18 @@ document.querySelector('.form_review').addEventListener('submit', (e)=>{
 document.querySelector('.call_form').addEventListener('submit', (e) => {
     e.preventDefault();
     name = e.target.elements.name.value;
-    checkName(name);
-    checkPhone(e.target.elements.phone.value);
+    if(!checkName(name)){
+        return;
+    }
+    if(!checkPhone(e.target.elements.phone.value)){
+        return;
+    }
     let call = {};
     call["name"] = name;
     call["phone"] = e.target.elements.phone.value;
     call["email"] = e.target.elements.email.value;
-    sendRequest("orderCall_api.php", call);
+    call["is_call"] = true;
+    sendRequest(call);
     e.target.elements.name.value = e.target.elements.phone.value = e.target.elements.email.value = "";
     $('#modal_call').css("display", "none");
 });
@@ -330,8 +380,12 @@ $('.order_form').on('submit', async (e) => {
     //  перевірка на першу форму (контактні дані)
     if(!checkElementUndefined(e.target.elements.name)){
         name = e.target.elements.name.value;
-        checkName(name);
-        checkPhone(e.target.elements.phone.value);
+        if(!checkName(name)){
+            return;
+        }
+        if(!checkPhone(e.target.elements.phone.value)){
+            return;
+        }
         nextSlide();
         order["name"] = name;
         order["phone"] = e.target.elements.phone.value;
@@ -342,18 +396,25 @@ $('.order_form').on('submit', async (e) => {
         let info_address = [];
         addresses = document.querySelectorAll('.address');
         $('.address_check').html("Перевірка...");
-        let correct_addresses = await checkAddressData(addresses);
-        $('.address_check').html("Далі");
-        if(!correct_addresses){
+        let {val, coords} = await checkAddressData(addresses);
+        if(!val){
             alert('Введіть коректні пункти!');
             return;
         }
-        addresses.forEach(el=>{
-            info_address.push(el.value);
-        })
-        order["addresses"] = info_address;
-        order["goBack"] = $('#duo2').prop('checked');
-        nextSlide();     
+        else{
+            $('.address_check').html("Далі");
+            addresses.forEach(el=>{
+                info_address.push(el.value);
+            }) 
+            let price = 0;
+            price = await getPrice(coords);
+            order["addresses"] = info_address;
+            order["goBack"] = $('#duo2').prop('checked');
+            nextSlide(); 
+            order["price"] = price;
+            console.log(price);
+            console.log(order["price"]);
+        }
     }
     //  перевірка на третю форму (дата і час)
     else if(!checkElementUndefined(e.target.elements.date)){
@@ -373,11 +434,13 @@ $('.order_form').on('submit', async (e) => {
     else if(!checkElementUndefined(e.target.elements.autopark)){
         let cars = $('.order_slider_car .order_car');
         let currentSlide = $('.order_slider_car').slick('slickCurrentSlide');
-        let car_name = $($(cars[currentSlide])[0].querySelector(' .order_car__title'))[0].textContent;
+        let car_name = $($(cars[currentSlide])[0].querySelector('.order_car__title'))[0].textContent;
         order["car"] = car_name;
-        sendRequest("order_api.php", order);
+        order["is_order"] = true;
+        sendRequest(order);
         $('.order_form').find("input[type=text], input[type=number], .order_email, textarea").val("");
         $('.order_slider_car').slick("slickGoTo", 0, true);
         $('#one1').prop('checked', true);
+        nextSlide();
     } 
 });

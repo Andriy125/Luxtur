@@ -6,8 +6,10 @@ $(document).ready(function(){
     document.querySelector('.close_icon').addEventListener('click', (e) => {
         CloseMenu();
     })
-    $('.side_menu__item').on('click', (e) => ShowContent(e, `id-${$('.side_menu__item').prop('id')}`));
-    $('#main').click();
+    document.querySelectorAll('.side_menu__item').forEach((el) => {
+        el.addEventListener('click', (e) => ShowContent(e, `id-${el.getAttribute('id')}`));
+    });
+    $('#orders').click();
 });
 
 // закриття меню
@@ -31,7 +33,7 @@ const ShowContent = (e, name) => {
     for (let i = 0; i < tablinks.length; i++) {
         $(tablinks[i]).toggleClass('active', false);
     }
-
+    
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(name).style.display = "block";
     $(e.currentTarget).toggleClass("active", true);
