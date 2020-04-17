@@ -114,11 +114,37 @@
 
             </table>
         </div>
-
     </div>
       
     <div id="id-edit_review" class="tabcontent">
-        <!-- <h3>Редагувати Відгуки</h3> -->
+    <div class="table">
+            <table>
+                <th class="column">Ім'я</th>
+                <th class="column">Email</th>
+                <th class="column">Відгук</th>
+                <th class="column">Відображення</th>
+                <th class="column">Дії</th>
+                <!-- TODO: filter, CRUD, done or not -->
+                <?php 
+                    foreach ($result_reviews as $review) {
+                        echo '<tr>
+                            <td>'.$review["name"].'</td>
+                            <td>'.$review["email"].'</td>
+                            <td class="wide_cell">'.$review["review"].'</td>
+                            <td>
+                                <form class="update_review">
+                                    <input type="hidden" name="id" value="'. $review["id"] .'" />';
+                        echo $review["show_review"] 
+                        ? '<input type="checkbox" class="update_review_showing" name="is_showing" checked>'
+                        : '<input type="checkbox" class="update_review_showing" name="is_showing">';
+                        echo '</form>
+                            </td>
+                            <td><a class="delete_review" onClick="deleteReview(this.closest(\' tr \'), '. $review["id"] .');">Видалити</a></td>  
+                        </tr>';
+                    }
+                ?>
+            </table>
+        </div>
     </div>
 
     <div id="id-edit_autopark" class="tabcontent">
@@ -127,6 +153,7 @@
 
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/sendRequest.js"></script>
     <script src="js/admin.js"></script>
 </body>
 </html>

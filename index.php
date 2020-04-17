@@ -600,14 +600,16 @@
 		<div class="review_slider">
 			<?php 
 				foreach ($result_reviews as $review) {
-					echo   '<div class="review">
-					<h2 class="review__title">
-						'. $review["name"] .'
-					</h2>
-					<p class="review__descr">
-						'. $review["review"] .'
-					</p>
-				</div>';
+					if($review["show_review"]){
+						echo   '<div class="review">
+						<h2 class="review__title">
+							'. $review["name"] .'
+						</h2>
+						<p class="review__descr">
+							'. $review["review"] .'
+						</p>
+					</div>';
+					}
 				}
 			?>
 		</div>
@@ -673,6 +675,7 @@
 
 	<script src="./js/jquery.min.js"></script>
 	<script src="./js/slick.min.js"></script>
+    <script src="js/sendRequest.js"></script>
 	<script src="./js/logic.js"></script>
 	<script src="./js/sliders.js"></script>
 	<script src="./js/jquery.mask.js"></script>

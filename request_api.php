@@ -60,6 +60,31 @@
         }
         mysqli_close($conn);
     }
+    function updateReview(){
+        $conn = mysqli_connect('localhost', 'root', '', 'luxtur');
+        if (!$conn) {
+            die('Ошибка соединения: ' . mysql_error());
+        }
+        $id = $_POST["id"];
+        $is_showing = $_POST["is_showing"];
+        $result = mysqli_query($conn, "Update review SET show_review = ". $is_showing ." WHERE ID = ". $id ."");
+        if (!$result) {
+            die('Неверный запрос: ' . $conn->sqlstate);
+        }
+        mysqli_close($conn);
+    }
+    function deleteReview(){
+        $conn = mysqli_connect('localhost', 'root', '', 'luxtur');
+        if (!$conn) {
+            die('Ошибка соединения: ' . mysql_error());
+        }
+        $id = $_POST["id"];
+        $result = mysqli_query($conn, "DELETE FROM review WHERE ID = ". $id ."");
+        if (!$result) {
+            die('Неверный запрос: ' . $conn->sqlstate);
+        }
+        mysqli_close($conn);
+    }
 
     if(isset($_POST["is_order"])){
         getOrder();
@@ -69,6 +94,12 @@
     }
     else if(isset($_POST["is_review"])){
         getReview();
+    }
+    else if(isset($_POST["is_showing"])){
+        updateReview();
+    }
+    else if(isset($_POST["delete_review"])){
+        deleteReview();
     }
     else{
         error("Something went wrong!");

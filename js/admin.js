@@ -1,3 +1,4 @@
+
 // додавання обробників івентів
 $(document).ready(function(){
     document.querySelector('.menu_icon').addEventListener('click', (e) => {
@@ -9,7 +10,7 @@ $(document).ready(function(){
     document.querySelectorAll('.side_menu__item').forEach((el) => {
         el.addEventListener('click', (e) => ShowContent(e, `id-${el.getAttribute('id')}`));
     });
-    $('#orders').click();
+    $('#edit_review').click();
 });
 
 // закриття меню
@@ -39,4 +40,26 @@ const ShowContent = (e, name) => {
     $(e.currentTarget).toggleClass("active", true);
     $('.admin_main_title').html($(e.currentTarget).text());
     CloseMenu();
+}
+
+document.querySelectorAll('.update_review_showing').forEach(el => {
+    el.addEventListener("click", (e) => {
+        updateReview(e.target.closest('.update_review'));
+    })
+});
+const updateReview = (e) => {
+    let data = {};
+    data["id"] = e.elements.id.value;
+    data["editing_review"] = true;
+    data["is_showing"] = $(e.is_showing).prop("checked");
+    sendRequest(data);
+    console.log(data);
+}
+
+const deleteReview = (el, id) => {
+    $(el).remove();
+    let data = {};
+    data["id"] = id;
+    data["delete_review"] = true;
+    sendRequest(data);
 }

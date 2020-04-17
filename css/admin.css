@@ -130,6 +130,17 @@ body{
     cursor: pointer;
     background-color:#e7c3c3;
 }
+
+
+
+
+/* side menu */
+
+/* Admin panel */
+
+
+/* content */
+
 .tabcontent{
     display: none;
     animation: fadeEffect 1s; /* Fading effect takes 1 second */
@@ -157,10 +168,24 @@ body{
 td{
     padding: 5px;
 }  
+.wide_cell{
+    padding: 10px;
+    text-align: justify;
+    width: 50%;
+}
 
-/* side menu */
+.delete_review{
+    background-color: #fff;
+    color:red;
+    padding: 5px 10px;
+}
+.delete_review:hover{
+    cursor: pointer;
+    background-color: #8ed2df;
+    color: #462626;
+}
 
-/* Admin panel */
+/* content */
 
   /* Go from zero to full opacity */
 @keyframes fadeEffect {
