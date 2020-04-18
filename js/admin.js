@@ -64,9 +64,18 @@ const deleteReview = (el, id) => {
     sendRequest(data);
 }
 
-document.querySelector('.filter_review').addEventListener("submit", (e)=>{
+document.querySelector('.filter_review').addEventListener("change", (e)=>{
     e.preventDefault();
-    let filter_by = e.target.elements.filter_review.value;
+    let filter_by = e.target.value;
     $(`tr.all`).css('display', 'none');
     $(`tr.${filter_by}`).css('display', 'table-row');
-})
+});
+
+document.querySelector('.sort_review').addEventListener("change", (e)=>{
+    let table = document.querySelector('.review_table');
+    let sort_by = e.target.selectedIndex;
+    let sortedRows = Array.from(table.rows)
+    .slice(1)
+    .sort((rowA, rowB) => rowA.cells[sort_by].innerHTML > rowB.cells[sort_by].innerHTML ? 1 : -1);  
+    table.tBodies[0].append(...sortedRows);
+});

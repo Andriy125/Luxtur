@@ -162,7 +162,7 @@ body{
     text-align: center;
 }
 .column{
-    width: 180px;
+    min-width: 180px;
     text-align: center;
     border: 1px solid #cfcfcf;
 }
@@ -186,7 +186,7 @@ td{
     color: #462626;
 }
 
-.filter{
+.filter, .sort{
     display: flex;
     justify-content: center;
     align-items: center;

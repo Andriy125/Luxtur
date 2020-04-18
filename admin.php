@@ -104,19 +104,39 @@
     <div id="id-edit_review" class="tabcontent">
         <div class="filter">
             <div>
-                <form class="filter_review">
-                    <select name="filter_review">
-                        <option value="all" checked>Всі</option>
-                        <option value="showed">Опубліковані</option>
-                        <option value="hidden">Приховані</option>
-                    </select>
-                    <button type="submit">Фільтрувати</button>
-                </form>
+                <label for="filter_review">Фільтрувати:</label>
+                <select id="filter_review" class="filter_review">
+                    <option value="all" selected>Всі</option>
+                    <option value="showed">Опубліковані</option>
+                    <option value="hidden">Приховані</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="sort">
+            <div>
+            <label for="sort_review">Сортування:</label>
+                <select id="sort_review" class="sort_review">
+                    <?php foreach ($result_reviews as $key => $value) {
+                            foreach ($value as $ky => $val) {
+                                if($ky == "id"){
+                                    continue;
+                                }
+                                if($ky !== "show_review"){
+                                    echo '<option value="'. $ky .'">'. $ky .'</option>';
+                                }
+                                else{
+                                    break;
+                                }
+                            }
+                        break;
+                    } ?>
+                </select>
             </div>
         </div>
         
         <div class="table">
-            <table>
+            <table class="review_table">
                 <tr>
                     <th class="column">Ім'я</th>
                     <th class="column">Email</th>
