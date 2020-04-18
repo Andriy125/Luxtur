@@ -42,6 +42,18 @@ const ShowContent = (e, name) => {
     CloseMenu();
 }
 
+const sortTable = (table, sort_by) => {
+    let sortedRows = Array.from(table.rows)
+    .slice(1)
+    .sort((rowA, rowB) => rowA.cells[sort_by].innerHTML > rowB.cells[sort_by].innerHTML ? 1 : -1);  
+    table.tBodies[0].append(...sortedRows);
+}
+
+const filterTrByClass = (filter_by, where) => {
+    $(`${where} tr.all`).css('display', 'none');
+    $(`${where} tr.${filter_by}`).css('display', 'table-row');
+}
+
 document.querySelectorAll('.update_review_showing').forEach(el => {
     el.addEventListener("click", (e) => {
         updateReview(e.target.closest('.update_review'));
@@ -67,15 +79,11 @@ const deleteReview = (el, id) => {
 document.querySelector('.filter_review').addEventListener("change", (e)=>{
     e.preventDefault();
     let filter_by = e.target.value;
-    $(`tr.all`).css('display', 'none');
-    $(`tr.${filter_by}`).css('display', 'table-row');
+    filterTrByClass(filter_by, '.review_table');
 });
 
 document.querySelector('.sort_review').addEventListener("change", (e)=>{
     let table = document.querySelector('.review_table');
     let sort_by = e.target.selectedIndex;
-    let sortedRows = Array.from(table.rows)
-    .slice(1)
-    .sort((rowA, rowB) => rowA.cells[sort_by].innerHTML > rowB.cells[sort_by].innerHTML ? 1 : -1);  
-    table.tBodies[0].append(...sortedRows);
+    sortTable(table, sort_by);
 });
