@@ -83,66 +83,56 @@
                 <th class="column">Машина</th>
                 <th class="column">Ціна</th>
                 <!-- TODO: filter, CRUD, done or not -->
-                <?php 
-                    foreach ($result_orders as $order) {
-                        echo $order["goBack"] == 1 
-                        ? '<tr>
-                            <td>'.$order["name"].'</td>
-                            <td>'.$order["phone"].'</td>
-                            <td>'.$order["email"].'</td>
-                            <td>'.$order["addresses"].'</td>
-                            <td>Taк</td>
-                            <td>'.$order["time"] . "  " . $order["date"] . '</td>
-                            <td>'.$order["passengers"].'</td>
-                            <td>'.$order["car"].'</td>
-                            <td>'.$order["price"].' грн</td>
-
-                        </tr>' 
-                        : '<tr>
-                            <td>'.$order["name"].'</td>
-                            <td>'.$order["phone"].'</td>
-                            <td>'.$order["email"].'</td>
-                            <td>'.$order["addresses"].'</td>
-                            <td>Ні</td>
-                            <td>'.$order["time"] . "  " . $order["date"] . '</td>
-                            <td>'.$order["passengers"].'</td>
-                            <td>'.$order["car"].'</td>
-                            <td>'.$order["price"].' грн</td>
-                        </tr>' ;
-                    }
-                ?>
+                <?php while($order = mysqli_fetch_array($result_orders)): ?>
+                        <tr>
+                            <td><?php echo $order["name"]?></td>
+                            <td><?php echo $order["phone"]?></td>
+                            <td><?php echo $order["email"]?></td>
+                            <td><?php echo $order["addresses"]?></td>
+                            <td><?php echo $order["goBack"] ? "Так" : "Ні"?></td>
+                            <td><?php echo $order["time"] . "  " . $order["date"]?></td>
+                            <td><?php echo $order["passengers"]?></td>
+                            <td><?php echo $order["car"]?></td>
+                            <td><?php echo $order["price"]?> грн</td>
+                        </tr>
+                <?php endwhile;?>
 
             </table>
         </div>
     </div>
       
     <div id="id-edit_review" class="tabcontent">
-    <div class="table">
+        <div>
+            
+        </div>
+        <div class="table">
             <table>
-                <th class="column">Ім'я</th>
-                <th class="column">Email</th>
-                <th class="column">Відгук</th>
-                <th class="column">Відображення</th>
-                <th class="column">Дії</th>
+                <tr>
+                    <th class="column">Ім'я</th>
+                    <th class="column">Email</th>
+                    <th class="column">Відгук</th>
+                    <th class="column">Відображення</th>
+                    <th class="column">Дії</th>
+                </tr>
+                
                 <!-- TODO: filter, CRUD, done or not -->
-                <?php 
-                    foreach ($result_reviews as $review) {
-                        echo '<tr>
-                            <td>'.$review["name"].'</td>
-                            <td>'.$review["email"].'</td>
-                            <td class="wide_cell">'.$review["review"].'</td>
-                            <td>
-                                <form class="update_review">
-                                    <input type="hidden" name="id" value="'. $review["id"] .'" />';
-                        echo $review["show_review"] 
-                        ? '<input type="checkbox" class="update_review_showing" name="is_showing" checked>'
-                        : '<input type="checkbox" class="update_review_showing" name="is_showing">';
-                        echo '</form>
-                            </td>
-                            <td><a class="delete_review" onClick="deleteReview(this.closest(\' tr \'), '. $review["id"] .');">Видалити</a></td>  
-                        </tr>';
-                    }
-                ?>
+                <?php while($row = mysqli_fetch_array($result_reviews)): ?>
+                    <tr>
+                        <td><?php echo $row["name"]?></td>
+                        <td><?php echo $row["email"]?></td>
+                        <td class="wide_cell">"<?php echo $row["review"]?>"</td>
+                        <td>
+                            <form class="update_review">
+                                <input type="hidden" name="id" value="<?php echo $row["id"]?>">
+                                <?php echo $row["show_review"] ?  '<input type="checkbox" class="update_review_showing" name="is_showing" checked>'    :  '<input type="checkbox" class="update_review_showing" name="is_showing">' ?>
+                            </form>
+                        </td>
+                        <td>
+                            <a class="delete_review" onClick="deleteReview(this.closest('tr'), <?php echo $row["id"]?>);">Видалити</a>
+                        </td>  
+                    </tr>
+                <?php endwhile;?>
+               
             </table>
         </div>
     </div>

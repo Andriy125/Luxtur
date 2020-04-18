@@ -606,7 +606,7 @@
 							'. $review["name"] .'
 						</h2>
 						<p class="review__descr">
-							'. $review["review"] .'
+							"'. $review["review"] .'"
 						</p>
 					</div>';
 					}
