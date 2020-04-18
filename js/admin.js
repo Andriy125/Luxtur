@@ -63,3 +63,10 @@ const deleteReview = (el, id) => {
     data["delete_review"] = true;
     sendRequest(data);
 }
+
+document.querySelector('.filter_review').addEventListener("submit", (e)=>{
+    e.preventDefault();
+    let filter_by = e.target.elements.filter_review.value;
+    $(`tr.all`).css('display', 'none');
+    $(`tr.${filter_by}`).css('display', 'table-row');
+})

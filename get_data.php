@@ -1,4 +1,4 @@
-<?php 
+<?php
     $con = mysqli_connect('localhost', 'root', '', 'luxtur');
     if (!$con) {
         die('Ошибка соединения: ' . mysql_error());

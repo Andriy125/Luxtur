@@ -186,6 +186,12 @@ td{
     color: #462626;
 }
 
+.filter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px 0;
+}
 /* content */
 
   /* Go from zero to full opacity */

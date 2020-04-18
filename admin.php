@@ -102,9 +102,19 @@
     </div>
       
     <div id="id-edit_review" class="tabcontent">
-        <div>
-            
+        <div class="filter">
+            <div>
+                <form class="filter_review">
+                    <select name="filter_review">
+                        <option value="all" checked>Всі</option>
+                        <option value="showed">Опубліковані</option>
+                        <option value="hidden">Приховані</option>
+                    </select>
+                    <button type="submit">Фільтрувати</button>
+                </form>
+            </div>
         </div>
+        
         <div class="table">
             <table>
                 <tr>
@@ -116,8 +126,8 @@
                 </tr>
                 
                 <!-- TODO: filter, CRUD, done or not -->
-                <?php while($row = mysqli_fetch_array($result_reviews)): ?>
-                    <tr>
+                <?php while($row = mysqli_fetch_array($result_reviews)):?>
+                    <?php echo $row["show_review"] ? '<tr class="all showed">' : '<tr class="all hidden">'; ?>
                         <td><?php echo $row["name"]?></td>
                         <td><?php echo $row["email"]?></td>
                         <td class="wide_cell">"<?php echo $row["review"]?>"</td>
