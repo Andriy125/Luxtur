@@ -6,7 +6,15 @@
     $result_phones = mysqli_query($con, "SELECT * FROM contact_phones");
     $result_emails = mysqli_query($con, "SELECT email FROM contact_emails");
     $result_reviews = mysqli_query($con, "SELECT * FROM review");
+    $sss = mysqli_query($con, "SELECT * FROM review");
     $result_orders = mysqli_query($con, "SELECT * FROM orders");
+    $sort_review_options = [];
+    foreach ($sss as $key => $val) {
+        foreach ($val as $k => $v) {
+            array_push($sort_review_options, $k);
+        }
+        break;
+    }
     if (!$result_phones) {
         die('Неверный запрос: ' . $con->sqlstate);
     }

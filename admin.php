@@ -112,25 +112,14 @@
                 </select>
             </div>
         </div>
-
         <div class="sort">
             <div>
             <label for="sort_review">Сортування:</label>
                 <select id="sort_review" class="sort_review">
-                    <?php foreach ($result_reviews as $key => $value) {
-                            foreach ($value as $ky => $val) {
-                                if($ky == "id"){
-                                    continue;
-                                }
-                                if($ky !== "show_review"){
-                                    echo '<option value="'. $ky .'">'. $ky .'</option>';
-                                }
-                                else{
-                                    break;
-                                }
-                            }
-                        break;
-                    } ?>
+                    <?php  foreach ($sort_review_options as $value) {
+                        if($value !== "show_review" && $value !== "id")
+                        echo '<option value="'. $value .'">'. $value .'</option>';
+                    }  ?>
                 </select>
             </div>
         </div>
@@ -141,6 +130,7 @@
                     <th class="column">Ім'я</th>
                     <th class="column">Email</th>
                     <th class="column">Відгук</th>
+                    <th class="column">Додано</th>
                     <th class="column">Відображення</th>
                     <th class="column">Дії</th>
                 </tr>
@@ -151,6 +141,7 @@
                         <td><?php echo $row["name"]?></td>
                         <td><?php echo $row["email"]?></td>
                         <td class="wide_cell">"<?php echo $row["review"]?>"</td>
+                        <td><?php echo $row["date_time"]?></td>
                         <td>
                             <form class="update_review">
                                 <input type="hidden" name="id" value="<?php echo $row["id"]?>">

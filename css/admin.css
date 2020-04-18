@@ -162,7 +162,7 @@ body{
     text-align: center;
 }
 .column{
-    min-width: 180px;
+    min-width: 30px;
     text-align: center;
     border: 1px solid #cfcfcf;
 }
