@@ -10,7 +10,7 @@ $(document).ready(function(){
     document.querySelectorAll('.side_menu__item').forEach((el) => {
         el.addEventListener('click', (e) => ShowContent(e, `id-${el.getAttribute('id')}`));
     });
-    $('#edit_contacts').click();
+    $('#orders').click();
 });
 
 // закриття меню
@@ -56,15 +56,23 @@ const filterTrByClass = (filter_by, where) => {
 
 document.querySelectorAll('.update_review_showing').forEach(el => {
     el.addEventListener("click", (e) => {
-        updateReview(e.target.closest('.update_review'));
+        let form = e.target.closest('.update_review');
+        let id = form.elements.id.value;
+        let column = "show_review";
+        let is_showing = $(form.is_showing).prop("checked");
+        updateRequest("review", id, column, is_showing);
     })
 });
-const updateReview = (e) => {
-    let id = e.elements.id.value;
-    let column = "show_review";
-    let is_showing = $(e.is_showing).prop("checked");
-    updateRequest("review", id, column, is_showing);
-}
+
+document.querySelectorAll('.update_order_done').forEach(el => {
+    el.addEventListener("click", (e) => {
+        let form = e.target.closest('.update_order');
+        let id = form.elements.id.value;
+        let column = "done";
+        let order_done = $(form.order_done).prop("checked");
+        updateRequest("orders", id, column, order_done);
+    })
+});
 
 const deleteReview = (el, id) => {
     $(el).remove();

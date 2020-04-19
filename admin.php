@@ -87,6 +87,7 @@
                 <th class="column">Кількість пасажирів</th>
                 <th class="column">Машина</th>
                 <th class="column">Ціна</th>
+                <th class="column">Виконання</th>
                 <!-- TODO: filter, CRUD, done or not -->
                 <?php while($order = mysqli_fetch_array($result_orders)): ?>
                         <tr>
@@ -99,6 +100,12 @@
                             <td><?php echo $order["passengers"]?></td>
                             <td><?php echo $order["car"]?></td>
                             <td><?php echo $order["price"]?> грн</td>
+                            <td>
+                                <form class="update_order">
+                                    <input type="hidden" name="id" value="<?php echo $order["id"]?>">
+                                    <?php echo $order["done"] ?  '<input type="checkbox" class="update_order_done" name="order_done" checked>'    :  '<input type="checkbox" class="update_order_done" name="order_done">' ?>
+                                </form>
+                            </td>
                         </tr>
                 <?php endwhile;?>
 

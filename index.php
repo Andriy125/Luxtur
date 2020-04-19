@@ -660,12 +660,9 @@
 					</ul>
 					<ul class="contacts_text__list">
 						Email:
-						<?php foreach ($result_emails as $value) {
-							foreach ($value as $email) {
-								echo '<li><a class="contacts_mail__link" href="mailto:'. $email .'">'. $email .'</a></li>';
-							}
-						}
-						?>
+						<?php while ($row = mysqli_fetch_array($result_emails)):?>
+							<li><a class="contacts_mail__link" href="mailto:<?php echo $row["email"] ?>"><?php echo $row["email"] ?></a></li>
+						<?php endwhile;?>
 					</ul>
 				</div>
 			</div>
