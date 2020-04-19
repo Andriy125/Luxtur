@@ -149,15 +149,15 @@ body{
     text-align: center;
 }
 
-.table{
+.content_container{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin: 30px 0;
-    width:100%;
+    margin: 30px auto;
+    width: 80%;
 }
-.table table, tr , td, th{
+.content_container table, tr , td, th{
     border: 1px solid #cfcfcf;
     text-align: center;
 }
@@ -165,6 +165,7 @@ body{
     min-width: 30px;
     text-align: center;
     border: 1px solid #cfcfcf;
+    padding: 10px;
 }
 td{
     padding: 5px;
@@ -191,6 +192,10 @@ td{
     justify-content: center;
     align-items: center;
     margin: 15px 0;
+}
+
+.table_container{
+    margin: 20px auto;
 }
 /* content */
 

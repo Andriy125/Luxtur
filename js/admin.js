@@ -10,7 +10,7 @@ $(document).ready(function(){
     document.querySelectorAll('.side_menu__item').forEach((el) => {
         el.addEventListener('click', (e) => ShowContent(e, `id-${el.getAttribute('id')}`));
     });
-    $('#edit_review').click();
+    $('#edit_contacts').click();
 });
 
 // закриття меню
@@ -60,21 +60,35 @@ document.querySelectorAll('.update_review_showing').forEach(el => {
     })
 });
 const updateReview = (e) => {
-    let data = {};
-    data["id"] = e.elements.id.value;
-    data["editing_review"] = true;
-    data["is_showing"] = $(e.is_showing).prop("checked");
-    sendRequest(data);
-    console.log(data);
+    let id = e.elements.id.value;
+    let column = "show_review";
+    let is_showing = $(e.is_showing).prop("checked");
+    updateRequest("review", id, column, is_showing);
 }
 
 const deleteReview = (el, id) => {
     $(el).remove();
+    deleteRequest(id, "review");
+}
+
+const deleteRequest = (id, table_name) => {
     let data = {};
     data["id"] = id;
-    data["delete_review"] = true;
+    data["table"] = table_name;
+    data["delete"] = true;
     sendRequest(data);
 }
+
+const updateRequest = (table_name, id, column, value) => {
+    let data = {};
+    data["id"] = id;
+    data["update"] = true;
+    data["table"] = table_name;
+    data["value"] = value;
+    data["column"] = column;
+    sendRequest(data);
+}
+
 
 document.querySelector('.filter_review').addEventListener("change", (e)=>{
     e.preventDefault();

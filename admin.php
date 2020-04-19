@@ -58,6 +58,11 @@
                     Редагувати автопарк
                 </h3> 
             </div>
+            <div id="edit_contacts" class="side_menu__item">
+                <h3>
+                    Редагувати контакти
+                </h3> 
+            </div>
         </div>
     </div>
 
@@ -71,7 +76,7 @@
     </div>
       
     <div id="id-orders" class="tabcontent">
-        <div class="table">
+        <div class="content_container">
             <table>
                 <th class="column">Ім'я</th>
                 <th class="column">Телефон</th>
@@ -112,19 +117,22 @@
                 </select>
             </div>
         </div>
+
         <div class="sort">
             <div>
             <label for="sort_review">Сортування:</label>
                 <select id="sort_review" class="sort_review">
-                    <?php  foreach ($sort_review_options as $value) {
-                        if($value !== "show_review" && $value !== "id")
-                        echo '<option value="'. $value .'">'. $value .'</option>';
-                    }  ?>
+                    <?php 
+                        while($row = mysqli_fetch_array($sort_review_options)){
+                            if($row['Field'] !== "show_review" && $row['Field'] !== "id")
+                            echo '<option value="'. $row['Field'] .'">'. $row['Field'] .'</option>';
+                        }
+                    ?>
                 </select>
             </div>
         </div>
         
-        <div class="table">
+        <div class="content_container">
             <table class="review_table">
                 <tr>
                     <th class="column">Ім'я</th>
@@ -162,6 +170,64 @@
         <!-- <h3>Редагувати Автопарк</h3> -->
     </div>
 
+    <div id="id-edit_contacts" class="tabcontent">
+        <div class="content_container">
+            <div class="table_container">
+                <table class="email_table">
+                    <tr>
+                       <th class="column">Email</th>
+                       <th class="column">Додано</th>
+                       <th class="column">Дії</th>
+                    </tr>
+                    <?php while($row = mysqli_fetch_array($result_emails)):?>
+                    <tr>
+                        <td><?php echo $row["email"]?></td>
+                        <td><?php echo $row["date_time"]?></td>
+                        <td>
+                            <a class="delete_review" onClick="deleteReview(this.closest('tr'), <?php echo $row["id"]?>);">Видалити</a>
+                        </td>  
+                    </tr>
+                    <?php endwhile;?>
+                </table>
+            </div>
+
+            <div class="table_container">
+                <table class="phone_table">
+                    <tr>
+                       <th class="column">Номер телефону</th>
+                       <th class="column">Оператор</th>
+                       <th class="column">Соціальні мережі</th>
+                       <th class="column">Додано</th>
+                       <th class="column">Дії</th>
+                    </tr>
+                    <?php while($row = mysqli_fetch_array($result_phones)):?>
+                    <?php 
+                        $classList = "all ";
+                    if(strtolower($row["social_media"]) == "viber"){
+                        $classList .= "viber ";
+                    }  
+                    if(strtolower($row["operator"]) == "kyivstar"){
+                        $classList .= "kyivstar ";
+                    }
+                    else if(strtolower($row["operator"]) == "vodaphone"){
+                        $classList .= "vodaphone ";
+                    }
+                        echo '<tr class="'. $classList .'">'; 
+                    ?>
+                        <td><?php echo $row["phone"]?></td>
+                        <td><?php echo $row["operator"]?></td>
+                        <td><?php echo strtoupper($row["social_media"])?></td>
+                        <td><?php echo $row["date_time"]?></td>
+                        <td>
+                            <a class="delete_review" onClick="deleteReview(this.closest('tr'), <?php echo $row["id"]?>);">Видалити</a>
+                        </td>  
+                    </tr>
+                <?php endwhile;?>
+                </table>
+            </div>
+
+        </div>
+    </div>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="js/sendRequest.js"></script>
