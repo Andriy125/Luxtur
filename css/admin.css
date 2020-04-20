@@ -181,12 +181,12 @@ td{
     width: 50%;
 }
 
-.delete_review{
+.delete_button{
     background-color: #fff;
     color:red;
     padding: 5px 10px;
 }
-.delete_review:hover{
+.delete_button:hover{
     cursor: pointer;
     background-color: #8ed2df;
     color: #462626;

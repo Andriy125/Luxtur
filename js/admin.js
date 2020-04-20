@@ -101,9 +101,9 @@ document.querySelectorAll('.update_order_done').forEach(el => {
     })
 });
 
-const deleteReview = (el, id) => {
+const deleteData = (el, id, table_name) => {
     $(el).remove();
-    deleteRequest(id, "review");
+    deleteRequest(id, table_name);
 }
 
 const deleteRequest = (id, table_name) => {

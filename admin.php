@@ -73,6 +73,7 @@
                 <th class="column">Машина</th>
                 <th class="column">Ціна</th>
                 <th class="column">Виконано</th>
+                <th class="column">Дії</th>
                 <!-- TODO: filter, CRUD, done or not -->
                 <?php while($order = mysqli_fetch_array($result_orders)): ?>
                         <tr>
@@ -91,6 +92,9 @@
                                     <?php echo $order["done"] ?  '<input type="checkbox" class="update_order_done" name="order_done" checked>'    :  '<input type="checkbox" class="update_order_done" name="order_done">' ?>
                                 </form>
                             </td>
+                            <td>
+                            <a class="delete_button" onClick="deleteData(this.closest('tr'), <?php echo $order["id"]?>, 'orders');">Видалити</a>
+                            </td>  
                         </tr>
                 <?php endwhile;?>
 
@@ -149,7 +153,7 @@
                             </form>
                         </td>
                         <td>
-                            <a class="delete_review" onClick="deleteReview(this.closest('tr'), <?php echo $row["id"]?>);">Видалити</a>
+                            <a class="delete_button" onClick="deleteData(this.closest('tr'), <?php echo $row["id"]?>, 'review');">Видалити</a>
                         </td>  
                     </tr>
                 <?php endwhile;?>
@@ -176,7 +180,7 @@
                         <td><?php echo $row["email"]?></td>
                         <td><?php echo $row["date_time"]?></td>
                         <td>
-                            <a class="delete_review" onClick="deleteReview(this.closest('tr'), <?php echo $row["id"]?>);">Видалити</a>
+                            <a class="delete_button" onClick="deleteData(this.closest('tr'), <?php echo $row["id"]?>, 'contact_emails');">Видалити</a>
                         </td>  
                     </tr>
                     <?php endwhile;?>
@@ -211,7 +215,7 @@
                         <td><?php echo strtoupper($row["social_media"])?></td>
                         <td><?php echo $row["date_time"]?></td>
                         <td>
-                            <a class="delete_review" onClick="deleteReview(this.closest('tr'), <?php echo $row["id"]?>);">Видалити</a>
+                            <a class="delete_button" onClick="deleteData(this.closest('tr'), <?php echo $row["id"]?>, 'contact_phones');">Видалити</a>
                         </td>  
                     </tr>
                 <?php endwhile;?>
