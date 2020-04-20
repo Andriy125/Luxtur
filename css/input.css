@@ -1,0 +1,8 @@
+input, select, textarea, .input{
+    background: #FFFFFF;
+    border-radius: 2px;
+    border: navajowhite;
+    margin-bottom: 30px;
+    width: 100%;
+    padding: 15px 40px 15px 15px;
+}

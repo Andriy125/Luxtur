@@ -10,6 +10,10 @@ body{
     background-color: #E6E6E6;
     position: relative;
 }
+a{
+    text-decoration: none;
+    outline: none;
+}
 
 /* Admin panel */
 
@@ -22,6 +26,7 @@ body{
     padding: 3% 5%;
     background-color: #fff;
     box-shadow: 0px 5px 0px 0px rgba(0, 0, 0, .1);
+    width: 100%;
 }
 
 .admin_button{
@@ -197,6 +202,115 @@ td{
 .table_container{
     margin: 20px auto;
 }
+
+.add_order_block{
+    margin-bottom: 20px;
+}
+.add_order_link{
+    padding: 5px 10px;
+    background-color: #fff;
+    color: #000;
+    transition: .3s ease-in-out;
+}
+.add_order_link:hover{
+    background-color: #000;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* add form styles  */
+
+.form_container{
+    width: 30%;
+    margin: 1% auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: left;
+    padding-bottom: 50px;
+}
+
+.date-time_block{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
+.date-time_block__inputs{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    margin: 10px auto 0px;
+}
+.input_date{
+    margin: 0;
+    width: 200px;
+}
+.input_time{
+    margin: 0;
+    margin-left: 20px;
+    width: 150px;
+}
+.order_addresses{
+    resize: vertical;
+    max-height: 300px;
+}
+.direction_block{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.direction_block select{
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+    width: 30%;
+}
+
+.done_block{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px auto;
+    margin-bottom: 25px;
+}
+.done_block input{
+    width: auto;
+    margin-bottom: 0;
+    margin-left: 30px;
+}
+.done_block input:hover, .done_block label:hover{
+    cursor: pointer;
+}
+
+.add_order_button{
+    margin: 0 auto;
+    background-color: #fff;
+    color: #000;
+    transition: all .3s;
+    padding: 10px 45px;
+    border: 3px dashed burlywood;
+    font-size: 18px;
+}
+.add_order_button:hover{
+    cursor: pointer;
+    background-color: #7bbe54;
+    color: #fff;
+}
+.submit_block{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px 0;
+}
+/* add form styles  */
+
+
 /* content */
 
   /* Go from zero to full opacity */

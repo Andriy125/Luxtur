@@ -397,8 +397,6 @@ $('.order_form').on('submit', async (e) => {
             order["goBack"] = $('#duo2').prop('checked');
             nextSlide(); 
             order["price"] = price;
-            console.log(price);
-            console.log(order["price"]);
         }
     }
     //  перевірка на третю форму (дата і час)
@@ -421,7 +419,7 @@ $('.order_form').on('submit', async (e) => {
         let currentSlide = $('.order_slider_car').slick('slickCurrentSlide');
         let car_name = $($(cars[currentSlide])[0].querySelector('.order_car__title'))[0].textContent;
         order["car"] = car_name;
-        order["is_order"] = true;
+        order["add_order"] = true;
         sendRequest(order);
         $('.order_form').find("input[type=text], input[type=number], .order_email, textarea").val("");
         $('.order_slider_car').slick("slickGoTo", 0, true);

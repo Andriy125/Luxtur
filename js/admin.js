@@ -10,8 +10,35 @@ $(document).ready(function(){
     document.querySelectorAll('.side_menu__item').forEach((el) => {
         el.addEventListener('click', (e) => ShowContent(e, `id-${el.getAttribute('id')}`));
     });
-    $('#orders').click();
+
+    document.querySelectorAll('.another').forEach((el) => {
+        el.addEventListener('click', (e) => ShowContent(e, `id-${el.getAttribute('id')}`));
+    });
+
+    $('#main').click();
+    $('.phone').mask('+38 (000) 000 00 00', {placeholder: "Номер телефону"});
 });
+
+const setLocalDate = () => {
+    let local = new Date();
+    let local_date = local.getFullYear() + '-';
+    if(local.getMonth() < 10){
+        local_date += '0' + (local.getMonth() + 1) + '-';
+    }
+    else{
+        local_date += (local.getMonth() + 1) + '-';
+    }
+    if(local.getDate() < 10){
+        local_date += '0' + local.getDate();
+    }
+    else{
+        local_date += local.getDate();
+    }
+    $('.input_date')[0].value = local_date;
+    $('.input_date')[0].min = local_date;
+    $('.input_time')[0].value = `${local.getHours() + 3}:${local.getMinutes() < 10 ? `0${local.getMinutes()}`: local.getMinutes()}`;    
+}
+setLocalDate();
 
 // закриття меню
 const CloseMenu = () => {
@@ -97,6 +124,16 @@ const updateRequest = (table_name, id, column, value) => {
     sendRequest(data);
 }
 
+const getAddressesTextarea = (str) => {    
+    var split = str.split('\n');
+    var lines = [];
+    for (var i = 0; i < split.length; i++){
+        if (split[i]){
+            lines.push(split[i]);
+        } 
+    }
+    return lines;
+}
 
 document.querySelector('.filter_review').addEventListener("change", (e)=>{
     e.preventDefault();
@@ -109,3 +146,41 @@ document.querySelector('.sort_review').addEventListener("change", (e)=>{
     let sort_by = e.target.selectedIndex;
     sortTable(table, sort_by);
 });
+
+document.querySelector('.add_order_form').addEventListener("submit", (e) => {
+    const hasNumber = /\d/;     //  функція перевірки рядка на наявність цифр
+    if(!hasNumber.test(form.name.value)){
+        alert("Невірні дані!");
+        return;
+    }
+    let data = {};
+    let form = e.target.elements;
+    let name = form.name.value;
+    let phone = form.phone.value;
+    let email = form.email.value;
+    let date = form.date.value;
+    let time = form.time.value;
+    let goBack = form.goBack.value;
+    let passengers = form.passengers.value;
+    let car = form.car.value;
+    let price = form.price.value
+    let done = form.done.value;
+    let addresses = getAddressesTextarea(form.addresses.value);
+    data["name"] = name;
+    data["phone"] = phone;
+    data["email"] = email;
+    data["date"] = date;
+    data["time"] = time;
+    data["addresses"] = addresses;
+    data["goBack"] = goBack;
+    data["passenger_count"] = passengers;
+    data["car"] = car;
+    data["price"] = price;
+    data["done"] = done;
+    data["add_order"] = true;
+    $(e.target).find("input, textarea").val("");
+    e.target.goBack.value = "one";
+    e.target.done.value = false;
+    sendRequest(data);
+});
+

@@ -1,70 +1,8 @@
 <?php 
     include 'get_data.php';
 ?>
-<!DOCTYPE html>
-<html lang="ua">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>LUX TUR</title>
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto&display=swap" rel="stylesheet">
-	<script defer src="./js/all.js"></script>
-	<link rel="stylesheet" href="css/admin.css">
-
-</head>
-<body>
-    <header class="admin_header">
-        <div class="menu_icon">
-            <i class="fas fa-bars"></i>
-        </div>
-        <h2 class="admin_main_title"></h2>
-        <div class="admin_button">
-            <h2>
-                Logout
-            </h2>
-        </div>
-    </header>
-
-    <div class="side_menu">
-        <div class="side_menu_header">
-            <h2>Menu</h2>
-            <div class="close_icon">
-                <h3>
-                    <i class="far fa-times-circle"></i>
-                </h3> 
-            </div>
-        </div>
-        <div class="side_menu__content">
-            <div id="main" class="side_menu__item">
-                <h3>Головна</h3>
-            </div>
-            <div id="edit_price" class="side_menu__item">
-                <h3>
-                    Редагувати ціни
-                </h3> 
-            </div>
-            <div id="orders" class="side_menu__item">
-                <h3>
-                    Замовлення
-                </h3> 
-            </div>
-            <div id="edit_review" class="side_menu__item">
-                <h3>
-                    Редагувати відгуки
-                </h3> 
-            </div>
-            <div id="edit_autopark" class="side_menu__item">
-                <h3>
-                    Редагувати автопарк
-                </h3> 
-            </div>
-            <div id="edit_contacts" class="side_menu__item">
-                <h3>
-                    Редагувати контакти
-                </h3> 
-            </div>
-        </div>
-    </div>
+    <?php include "header.php";?>
+    <?php include "side_menu.php";?>
 
 
     <div id="id-main" class="tabcontent">
@@ -74,9 +12,56 @@
     <div id="id-edit_price" class="tabcontent">
         <!-- <h3>Редагувати Ціни</h3> -->
     </div>
+
+    <div id="id-add_order" class="tabcontent">
+        <div class="form_container">
+            <form class="add_order_form">
+                <input placeholder="Введіть ім'я..." type="text" name="name" required>
+                <input type="tel" class="phone" name="phone" required>
+                <input placeholder="Введіть email..." type="email" name="email" required>
+                <div>
+                    <textarea required class="order_addresses" placeholder="Введіть адреси..." name="addresses" cols="30" rows="10"></textarea>
+                </div>
+                <div class="direction_block">
+                    <label for="direction">Зворотній шлях</label>
+                    <select id="direction" name="goBack" required>
+                        <option value="one">Ні</option>
+                        <option value="duo">Так</option>
+                    </select>
+                </div>
+                <div class="date-time_block">
+                    <div>
+                        <p>Дата і час</p>
+                    </div>
+                    <div class="date-time_block__inputs">
+                        <input class="input_date" type="date" name="date" required>
+                        <input class="input_time" type="time" name="time" required>
+                    </div>
+                </div>
+
+                <input placeholder="Введіть кількість пасажирів..." type="number" min="1" name="passengers" required>
+                <input placeholder="Введіть назву автобуса..." type="text" name="car" required>
+                <input placeholder="Введіть ціну..." type="number" min="0" name="price" required>
+                <div class="done_block">
+                    <label for="is_done">Виконано</label>
+                    <input id="is_done" type="checkbox" name="done">
+                 </div>
+                <div class="submit_block">
+                    <button type="submit" class="add_order_button">Додати</button>
+                </div>
+            </form>
+        </div>
+    </div>
       
     <div id="id-orders" class="tabcontent">
         <div class="content_container">
+            <div class="add_order_block">
+                <div id="add_order" class="another">
+                    <h3>
+                        <a class="add_order_link">Додати замовлення</a> 
+                    </h3> 
+                </div>
+            </div>
             <table>
                 <th class="column">Ім'я</th>
                 <th class="column">Телефон</th>
@@ -87,7 +72,7 @@
                 <th class="column">Кількість пасажирів</th>
                 <th class="column">Машина</th>
                 <th class="column">Ціна</th>
-                <th class="column">Виконання</th>
+                <th class="column">Виконано</th>
                 <!-- TODO: filter, CRUD, done or not -->
                 <?php while($order = mysqli_fetch_array($result_orders)): ?>
                         <tr>
@@ -236,8 +221,4 @@
         </div>
     </div>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="js/sendRequest.js"></script>
-    <script src="js/admin.js"></script>
-</body>
-</html>
+<?php include "footer.php";?>

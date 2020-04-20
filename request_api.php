@@ -3,7 +3,7 @@
     function error($msg){
         echo $msg;
     }
-    function getOrder(){
+    function insertOrder(){
         $conn = mysqli_connect('localhost', 'root', '', 'luxtur');
         if (!$conn) {
             die('Ошибка соединения: ' . mysql_error());
@@ -21,7 +21,17 @@
         $formatted_addresses = implode(' -> ', $addresses);
         $arr = array($name, $phone, $email, $formatted_addresses, $date, $time, $car);
         $data = implode('\', \'', $arr);
-        $result = mysqli_query($conn, "Insert INTO orders (name, phone, email, addresses, date, time, car, goBack, passengers, price) VALUES ('". $data ."', ". $goBack .", ". $passenger_count .", ". $price .")");
+
+        $sql = "";
+        if(isset($_POST["done"])){
+            $done = $_POST["done"] == true ? 1 : 0;
+            $sql = "Insert INTO orders (name, phone, email, addresses, date, time, car, goBack, passengers, price, done) VALUES ('". $data ."', ". $goBack .", ". $passenger_count .", ". $price .", ". $done .")";
+        }
+        else{
+            $sql = "Insert INTO orders (name, phone, email, addresses, date, time, car, goBack, passengers, price, done) VALUES ('". $data ."', ". $goBack .", ". $passenger_count .", ". $price .", 0)";
+        }
+
+        $result = mysqli_query($conn, $sql);
         if (!$result) {
             die('Неверный запрос: ' . $conn->sqlstate);
         }
@@ -89,8 +99,8 @@
         mysqli_close($conn);
     }
 
-    if(isset($_POST["is_order"])){
-        getOrder();
+    if(isset($_POST["add_order"])){
+        insertOrder();
     }   
     else if(isset($_POST["is_call"])){
         getCall();
