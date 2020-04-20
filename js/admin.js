@@ -87,7 +87,7 @@ document.querySelectorAll('.update_review_showing').forEach(el => {
         let id = form.elements.id.value;
         let column = "show_review";
         let is_showing = $(form.is_showing).prop("checked");
-        updateRequest("review", id, column, is_showing);
+        updateRequest("r", id, column, is_showing);
     })
 });
 
@@ -97,14 +97,37 @@ document.querySelectorAll('.update_order_done').forEach(el => {
         let id = form.elements.id.value;
         let column = "done";
         let order_done = $(form.order_done).prop("checked");
-        updateRequest("orders", id, column, order_done);
+        updateRequest("o", id, column, order_done);
     })
 });
 
-const deleteData = (el, id, table_name) => {
-    $(el).remove();
-    deleteRequest(id, table_name);
-}
+document.querySelector('.del_phone').addEventListener("click", (e)=>{
+    e.preventDefault();
+    let id = $('.delete_form_p')[0].elements.id.value;
+    $(e.target.closest('tr')).remove();
+    deleteRequest(id, "c_p");
+});
+
+document.querySelector('.del_email').addEventListener("click", (e)=>{
+    e.preventDefault();
+    let id = $('.delete_form_e')[0].elements.id.value;
+    $(e.target.closest('tr')).remove();
+    deleteRequest(id, "c_e");
+});
+
+document.querySelector('.del_order').addEventListener("click", (e)=>{
+    e.preventDefault();
+    let id = $('.delete_form_o')[0].elements.id.value;
+    $(e.target.closest('tr')).remove();
+    deleteRequest(id, "o");
+});
+
+document.querySelector('.del_review').addEventListener("click", (e)=>{
+    e.preventDefault();
+    let id = $('.delete_form_r')[0].elements.id.value;
+    $(e.target.closest('tr')).remove();
+    deleteRequest(id, "r");
+});
 
 const deleteRequest = (id, table_name) => {
     let data = {};

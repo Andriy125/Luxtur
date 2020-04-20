@@ -1,5 +1,29 @@
 <?php 
-
+    function getTableName($str){
+        $table_name = "";
+        switch ($str) {
+            case 'o':
+                $table_name = "orders";
+                break;
+            case 'c_p':
+                $table_name = "contact_phones";
+                break;
+            case 'c_e':
+                $table_name = "contact_emails";
+                break;
+            case 'r':
+                $table_name = "review";
+                break;
+            case 'c':
+                $table_name = "calls";
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+        return $table_name;
+    }    
     function error($msg){
         echo $msg;
     }
@@ -8,6 +32,7 @@
         if (!$conn) {
             die('Ошибка соединения: ' . mysql_error());
         }
+        $table = getTableName($_POST["table"]);
         $name = $_POST["name"];
         $phone = $_POST["phone"];
         $email = $_POST["email"];
@@ -25,10 +50,10 @@
         $sql = "";
         if(isset($_POST["done"])){
             $done = $_POST["done"] == true ? 1 : 0;
-            $sql = "Insert INTO orders (name, phone, email, addresses, date, time, car, goBack, passengers, price, done) VALUES ('". $data ."', ". $goBack .", ". $passenger_count .", ". $price .", ". $done .")";
+            $sql = "Insert INTO ". $table ." (name, phone, email, addresses, date, time, car, goBack, passengers, price, done) VALUES ('". $data ."', ". $goBack .", ". $passenger_count .", ". $price .", ". $done .")";
         }
         else{
-            $sql = "Insert INTO orders (name, phone, email, addresses, date, time, car, goBack, passengers, price, done) VALUES ('". $data ."', ". $goBack .", ". $passenger_count .", ". $price .", 0)";
+            $sql = "Insert INTO ". $table ." (name, phone, email, addresses, date, time, car, goBack, passengers, price, done) VALUES ('". $data ."', ". $goBack .", ". $passenger_count .", ". $price .", 0)";
         }
 
         $result = mysqli_query($conn, $sql);
@@ -78,7 +103,7 @@
         $id = $_POST["id"];
         $value = $_POST["value"];
         $column = $_POST["column"];
-        $table = $_POST["table"];
+        $table = getTableName($_POST["table"]);
         $result = mysqli_query($conn, "Update ". $table ." SET ". $column ." = ". $value ." WHERE ID = ". $id ."");
         if (!$result) {
             die('Неверный запрос: ' . $conn->sqlstate);
@@ -91,7 +116,7 @@
             die('Ошибка соединения: ' . mysql_error());
         }
         $id = $_POST["id"];
-        $table = $_POST["table"];
+        $table = getTableName($_POST["table"]);
         $result = mysqli_query($conn, "DELETE FROM ". $table ." WHERE ID = ". $id ."");
         if (!$result) {
             die('Неверный запрос: ' . $conn->sqlstate);

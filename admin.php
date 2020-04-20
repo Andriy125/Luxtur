@@ -93,11 +93,13 @@
                                 </form>
                             </td>
                             <td>
-                            <a class="delete_button" onClick="deleteData(this.closest('tr'), <?php echo $order["id"]?>, 'orders');">Видалити</a>
+                                <form class="delete_form_o">
+                                    <input type="hidden" name="id" value="<?php echo $order["id"]?>">
+                                </form>
+                                <a class="delete_button del_order">Видалити</a>
                             </td>  
                         </tr>
                 <?php endwhile;?>
-
             </table>
         </div>
     </div>
@@ -153,7 +155,10 @@
                             </form>
                         </td>
                         <td>
-                            <a class="delete_button" onClick="deleteData(this.closest('tr'), <?php echo $row["id"]?>, 'review');">Видалити</a>
+                            <form class="delete_form_r">
+                                <input type="hidden" name="id" value="<?php echo $row["id"]?>">
+                            </form>
+                            <a class="delete_button del_review">Видалити</a>
                         </td>  
                     </tr>
                 <?php endwhile;?>
@@ -180,7 +185,10 @@
                         <td><?php echo $row["email"]?></td>
                         <td><?php echo $row["date_time"]?></td>
                         <td>
-                            <a class="delete_button" onClick="deleteData(this.closest('tr'), <?php echo $row["id"]?>, 'contact_emails');">Видалити</a>
+                            <form class="delete_form_e">
+                                <input type="hidden" name="id" value="<?php echo $row["id"]?>">
+                            </form>
+                            <a class="delete_button del_email">Видалити</a>
                         </td>  
                     </tr>
                     <?php endwhile;?>
@@ -215,7 +223,10 @@
                         <td><?php echo strtoupper($row["social_media"])?></td>
                         <td><?php echo $row["date_time"]?></td>
                         <td>
-                            <a class="delete_button" onClick="deleteData(this.closest('tr'), <?php echo $row["id"]?>, 'contact_phones');">Видалити</a>
+                            <form class="delete_form_p">
+                                <input type="hidden" name="id" value="<?php echo $row["id"]?>">
+                            </form>
+                            <a class="delete_button del_phone">Видалити</a>
                         </td>  
                     </tr>
                 <?php endwhile;?>
