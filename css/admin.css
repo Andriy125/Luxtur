@@ -199,6 +199,11 @@ td{
     margin: 15px 0;
 }
 
+.filter_review, .sort_review{
+    padding: 5px;
+    width: 70%;
+}
+
 .table_container{
     margin: 20px auto;
 }
