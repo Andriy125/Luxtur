@@ -14,7 +14,7 @@ $(document).ready(function(){
         el.addEventListener('click', (e) => ShowContent(e, `id-${el.getAttribute('id')}`));
     });
 
-    $('#add_our_service').click();
+    $('#add_popular_directions').click();
     $('.phone').mask('+38 (000) 000 00 00', {placeholder: "Номер телефону"});
 });
 

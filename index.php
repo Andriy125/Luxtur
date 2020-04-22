@@ -94,48 +94,23 @@
 			Популярні напрямки
 		</h2>
 		<div class="directions">
-			<div class="directions_container directions_container_section1">
-				<div class="direction">
-					<img class="direction__img" src="img/boryspil.png" alt="Бориспіль">
-					<div class="direction__textblock">
-						<h2 class="direction__city">Бориспіль</h2>
+		<?php 
+		$len = $result_popular_directions->num_rows;
+		for($i = 0; $i < $len / 3; $i++){?>
+			<div class="directions_container">
+				<?php for($j = 0; $j < 3; $j++){?>
+					<?php $popular_directions = mysqli_fetch_object($result_popular_directions);?>
+					<div class="direction">
+						<img class="direction__img" 
+							src="./<?php echo $popular_directions->image ?>" 
+							alt="<?php echo $popular_directions->text ?>">
+						<div class="direction__textblock">
+							<h2 class="direction__city"><?php echo $popular_directions->text ?></h2>
+						</div>
 					</div>
-				</div>
-				<div class="direction">
-					<img class="direction__img" src="img/bykovel.png" alt="Буковель">
-					<div class="direction__textblock">
-						<h2 class="direction__city">Буковель</h2>
-					</div>
-				</div>
-				<div class="direction">
-					<img class="direction__img" src="img/lviv.png" alt="Львів">
-					<div class="direction__textblock">
-						<h2 class="direction__city">Львів</h2>
-					</div>
-				</div>
+				<?php }?>
 			</div>
-
-			<div class="directions_container directions_container_section2">
-				<div class="direction">
-					<img class="direction__img" src="img/kyiv.png" alt="Київ">
-					<div class="direction__textblock">
-						<h2 class="direction__city">Київ</h2>
-					</div>
-				</div>
-				<div class="direction">
-					<img class="direction__img" src="img/poland.png" alt="Польща">
-					<div class="direction__textblock">
-						<h2 class="direction__city">Польща</h2>
-					</div>
-				</div>
-				<div class="direction">
-					<img class="direction__img" src="img/germany.png" alt="Германія">
-					<div class="direction__textblock">
-						<h2 class="direction__city">Германія</h2>
-					</div>
-				</div>
-			</div>
-			
+		<?php } ?>			
 		</div>
 	</div>
 
