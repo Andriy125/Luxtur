@@ -31,6 +31,21 @@
                 Редагувати автопарк
             </h3> 
         </div>
+        <div id="edit_calls" class="side_menu__item">
+            <h3>
+                Редагувати замовлення дзвінків
+            </h3> 
+        </div>
+        <div id="edit_our_service" class="side_menu__item">
+            <h3>
+                Редагувати "Наші послуги"
+            </h3> 
+        </div>
+        <div id="edit_popular_directions" class="side_menu__item">
+            <h3>
+                Редагувати "Популярні напрямки"
+            </h3> 
+        </div>
         <div id="edit_contacts" class="side_menu__item">
             <h3>
                 Редагувати контакти

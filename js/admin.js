@@ -1,4 +1,3 @@
-
 // додавання обробників івентів
 $(document).ready(function(){
     document.querySelector('.menu_icon').addEventListener('click', (e) => {
@@ -15,7 +14,7 @@ $(document).ready(function(){
         el.addEventListener('click', (e) => ShowContent(e, `id-${el.getAttribute('id')}`));
     });
 
-    $('#main').click();
+    $('#add_our_service').click();
     $('.phone').mask('+38 (000) 000 00 00', {placeholder: "Номер телефону"});
 });
 
@@ -129,6 +128,13 @@ document.querySelector('.del_review').addEventListener("click", (e)=>{
     deleteRequest(id, "r");
 });
 
+document.querySelector('.del_call').addEventListener("click", (e)=>{
+    e.preventDefault();
+    let id = $('.delete_form_c')[0].elements.id.value;
+    $(e.target.closest('tr')).remove();
+    deleteRequest(id, "c");
+});
+
 const deleteRequest = (id, table_name) => {
     let data = {};
     data["id"] = id;
@@ -172,12 +178,12 @@ document.querySelector('.sort_review').addEventListener("change", (e)=>{
 
 document.querySelector('.add_order_form').addEventListener("submit", (e) => {
     const hasNumber = /\d/;     //  функція перевірки рядка на наявність цифр
-    if(!hasNumber.test(form.name.value)){
+    let form = e.target.elements;
+    if(hasNumber.test(form.name.value)){
         alert("Невірні дані!");
         return;
     }
     let data = {};
-    let form = e.target.elements;
     let name = form.name.value;
     let phone = form.phone.value;
     let email = form.email.value;
@@ -206,4 +212,3 @@ document.querySelector('.add_order_form').addEventListener("submit", (e) => {
     e.target.done.value = false;
     sendRequest(data);
 });
-

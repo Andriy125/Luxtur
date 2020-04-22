@@ -208,16 +208,16 @@ td{
     margin: 20px auto;
 }
 
-.add_order_block{
+.add_block{
     margin-bottom: 20px;
 }
-.add_order_link{
+.add_link{
     padding: 5px 10px;
     background-color: #fff;
     color: #000;
     transition: .3s ease-in-out;
 }
-.add_order_link:hover{
+.add_link:hover{
     background-color: #000;
     color: #fff;
     cursor: pointer;
@@ -263,6 +263,7 @@ td{
 .order_addresses{
     resize: vertical;
     max-height: 300px;
+    min-height: 200px;
 }
 .direction_block{
     display: flex;
@@ -293,7 +294,7 @@ td{
     cursor: pointer;
 }
 
-.add_order_button{
+.add_button{
     margin: 0 auto;
     background-color: #fff;
     color: #000;
@@ -302,7 +303,7 @@ td{
     border: 3px dashed burlywood;
     font-size: 18px;
 }
-.add_order_button:hover{
+.add_button:hover{
     cursor: pointer;
     background-color: #7bbe54;
     color: #fff;

@@ -59,60 +59,32 @@
 			Наші послуги
 		</h2>
 		<div class="services">
-
-			 <div class="service">
+		<?php 
+			$i = 1;
+			while($o_s = mysqli_fetch_array($result_our_services)):
+				
+				if($i % 2 != 0){?>
+			<div class="service">
 				<div class="service__img margin_right">
-					<img src="./img/поїхати на відпочинок.png" alt="">
+					<img src="./<?php echo $o_s["image"] ?>" alt="<?php echo $o_s["title"] ?>">
 				</div>
 				<div class="service_text">
-					<h3 class="service__title">Підвеземо на відпочинок</h3>
-					<p class="service__descr">
-						Набридли сірі робочі будні і потрібен відпочинок? Зібралися відпочити з сім’єю чи компанією на морі, покататись на лижах або просто необхідно потрапити з одного міста до іншого швидко та з комфортом?
-						<br><br>
-						Ми допоможемо зробити Вашу поїздку комфортною та безпечною та відвеземо у потрібний для Вас час!
-					</p>
+					<h3 class="service__title"><?php echo $o_s["title"] ?></h3>
+					<p class="service__descr"><?php echo nl2br($o_s["text"]) ?></p>
 				</div>
-			 </div>
-			 <div class="service service_reverse_direction">
-				<div class="service_text margin_right">
-					<h3 class="service__title">Зустрінемо в аеропорту</h3>
-					<p class="service__descr">
-						Повертаєтесь з друзями або з сім’єю з відпустки, або потрібно зустріти гостей?
-						<br><br>
-						Ми зустрінемо Вас та Ваших друзів біля терміналу в аеропорту Бориспіль, Жуляни або на автовокзалі та з комфортом підвеземо за потрібною адресою.
-					</p>
-				</div>
-				<div class="service__img ">
-					<img src="./img/Зустріч в аєропорту.png" alt="">
-				</div>
-			 </div>
-			 <div class="service " >
-				<div class="service__img margin_right">
-					<img src="./img/Ділова поїздка.png" alt="">
-				</div>
-				<div class="service_text">
-					<h3 class="service__title">Бізнес поїздка</h3>
-					<p class="service__descr">
-						У Вас запланована ділова зустріч з партнерами, конференція чи потрібно за один день відвідати кілька об’єктів?
-						<br><br>
-						Ми завжди готові з комфортом та у зазначений час організувати поїздку на найвищому рівні!
-					</p>
-				</div>
-			 </div>
-			 <div class="service service_reverse_direction">
-				<div class="service_text margin_right">
-					<h3 class="service__title">Поїздки на замовлення</h3>
-					<p class="service__descr">
-						Ми доставимо Вас та Вашу сім’ю, друзів чи колег у всі країни Європи, до Росії та Білорусії. 
-						<br><br>
-						Також здійснюємо пасажирські автоперевезення по всій Україні.						
-					</p>
-				</div>
-				<div class="service__img">
-					<img src="./img/відпочинок.png" alt="">
-				</div>
-			 </div>
-
+			</div>
+			<?php } else{?>
+				<div class="service service_reverse_direction">
+					<div class="service_text margin_right">
+						<h3 class="service__title"><?php echo $o_s["title"] ?></h3>
+						<p class="service__descr"><?php echo nl2br($o_s["text"]) ?></p>
+					</div>
+					<div class="service__img ">
+						<img src="./<?php echo $o_s["image"] ?>" alt="<?php echo $o_s["title"] ?>">
+					</div>
+			 	</div>
+				<?php } ?>
+			<?php $i += 1; endwhile; ?>
 		</div>
 	</div>
 

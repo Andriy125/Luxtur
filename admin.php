@@ -4,13 +4,155 @@
     <?php include "header.php";?>
     <?php include "side_menu.php";?>
 
+<?php
+  // Create database connection
+  $db = mysqli_connect("localhost", "root", "", "luxtur");
 
+  // Initialize message variable
+  $msg = "";
+
+  // If upload button is clicked ...
+  if (isset($_POST['p_d'])) {
+
+	$target = "img/" . $_FILES["image"]["name"];
+  	// Get image name
+  	$image = $target;
+  	// Get text
+  	$image_text = mysqli_real_escape_string($db, $_POST['text']);
+
+
+  	$sql = "INSERT INTO popular_directions (image, text) VALUES ('$image', '$image_text')";
+  	// execute query
+  	mysqli_query($db, $sql);
+
+  	if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
+  		$msg = "Image uploaded successfully";
+  	}else{
+  		$msg = "Failed to upload image";
+  	}
+  }
+?>
+<?php
+  // Create database connection
+  $db = mysqli_connect("localhost", "root", "", "luxtur");
+
+  // Initialize message variable
+  $msg = "";
+
+  // If upload button is clicked ...
+  if (isset($_POST['o_s'])) {
+
+	$target = "img/" . $_FILES["image"]["name"];
+  	// Get image name
+  	$image = $target;
+  	// Get text
+  	$text = mysqli_real_escape_string($db, $_POST['text']);
+  	$title = mysqli_real_escape_string($db, $_POST['title']);
+
+  	$sql = "INSERT INTO our_service (image, title, text) VALUES ('$image', '$title', '$text')";
+  	// execute query
+  	mysqli_query($db, $sql);
+
+  	if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
+  		$msg = "Image uploaded successfully";
+  	}else{
+  		$msg = "Failed to upload image";
+  	}
+  }
+?>
     <div id="id-main" class="tabcontent">
         <!-- <h3>Головна</h3> -->
     </div>
 
     <div id="id-edit_price" class="tabcontent">
         <!-- <h3>Редагувати Ціни</h3> -->
+    </div>
+
+    <div id="id-edit_calls" class="tabcontent">
+        <div class="content_container">
+            <div class="table_container">
+                <table class="email_table">
+                    <tr>
+                       <th class="column">Ім'я</th>
+                       <th class="column">Телефон</th>
+                       <th class="column">Email</th>
+                       <th class="column">Додано</th>
+                       <th class="column">Дії</th>
+                    </tr>
+                    <?php while($row = mysqli_fetch_array($result_calls)):?>
+                    <tr>
+                        <td><?php echo $row["name"]?></td>
+                        <td><?php echo $row["phone"]?></td>
+                        <td><?php echo $row["email"]?></td>
+                        <td><?php echo $row["date_time"]?></td>
+                        <td>
+                            <form class="delete_form_c">
+                                <input type="hidden" name="id" value="<?php echo $row["id"]?>">
+                            </form>
+                            <a class="delete_button del_call">Видалити</a>
+                        </td>  
+                    </tr>
+                    <?php endwhile;?>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="id-add_popular_directions" class="tabcontent">
+        <div class="form_container">
+            <form class="add_popular_directions_form" method="POST" action="admin.php" enctype="multipart/form-data">
+                <input type="hidden" name="p_d">                
+                <input placeholder="Введіть назву місця..." type="text" name="text" required>                
+                <input type="file" name="image" accept=".png, .jpg, .jpeg">                
+                <div class="submit_block">
+                    <button type="submit" class="add_button">Додати</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="id-edit_popular_directions" class="tabcontent">
+        <div class="content_container">
+            <div class="add_block">
+                <div id="add_popular_directions" class="another">
+                    <h3>
+                        <a class="add_link">Додати новий блок в "Популярні напрямки"</a> 
+                    </h3> 
+                </div>
+            </div>  
+            <table>
+            </table>     
+        </div>
+    </div>
+
+    <div id="id-add_our_service" class="tabcontent">
+        <div class="form_container">
+            <form class="add_popular_directions_form" method="POST" action="admin.php" enctype="multipart/form-data">
+                <input type="hidden" name="o_s">                
+                <input placeholder="Введіть заголовок..." type="text" name="title" required>                
+                <textarea placeholder="Введіть текст..." class="order_addresses" name="text" required></textarea>               
+                <input type="file" name="image" accept=".png, .jpg, .jpeg">                
+                <div class="submit_block">
+                    <button type="submit" class="add_button">Додати</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="id-edit_our_service" class="tabcontent">
+
+        <div class="content_container">
+            <div class="add_block">
+                <div id="add_our_service" class="another">
+                    <h3>
+                        <a class="add_link">Додати новий блок в "Наші послуги"</a> 
+                    </h3> 
+                </div>
+            </div>
+        </div>
+
+        <table>
+        </table>
     </div>
 
     <div id="id-add_order" class="tabcontent">
@@ -47,7 +189,7 @@
                     <input id="is_done" type="checkbox" name="done">
                  </div>
                 <div class="submit_block">
-                    <button type="submit" class="add_order_button">Додати</button>
+                    <button type="submit" class="add_button">Додати</button>
                 </div>
             </form>
         </div>
@@ -55,10 +197,10 @@
       
     <div id="id-orders" class="tabcontent">
         <div class="content_container">
-            <div class="add_order_block">
+            <div class="add_block">
                 <div id="add_order" class="another">
                     <h3>
-                        <a class="add_order_link">Додати замовлення</a> 
+                        <a class="add_link">Додати замовлення</a> 
                     </h3> 
                 </div>
             </div>

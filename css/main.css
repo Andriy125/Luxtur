@@ -199,6 +199,7 @@ a{
     font-size: 18px;
     /* text-align: left; */
     min-width: 350px;
+    text-align: justify;
 }
 .directions{
     display: flex;
