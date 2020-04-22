@@ -228,10 +228,10 @@ a{
 .directions_container_section2 {
     flex-direction: column;
 } */
-/* .direction__img {
-    height: 100%;
-    width: 100%;
-} */
+ .direction__img {
+    height: 293px;
+    width: 295px;
+} 
 .direction__city{
     font-family: 'Roboto';
     font-weight: bold;
