@@ -96,10 +96,16 @@
 		<div class="directions">
 		<?php 
 		$len = $result_popular_directions->num_rows;
+		$count_of_rows = $len;
 		for($i = 0; $i < $len / 3; $i++){?>
 			<div class="directions_container">
-				<?php for($j = 0; $j < 3; $j++){?>
-					<?php $popular_directions = mysqli_fetch_object($result_popular_directions);?>
+				<?php 
+					$line_count = $count_of_rows >= 3 ? 3 : $count_of_rows;
+				?>
+				<?php for($j = 0; $j < $line_count; $j++){?>
+					<?php 
+						$popular_directions = mysqli_fetch_object($result_popular_directions);
+					?>
 					<div class="direction">
 						<img class="direction__img" 
 							src="./<?php echo $popular_directions->image ?>" 
@@ -108,7 +114,9 @@
 							<h2 class="direction__city"><?php echo $popular_directions->text ?></h2>
 						</div>
 					</div>
-				<?php }?>
+				<?php }
+					$count_of_rows-= 3;
+				?>
 			</div>
 		<?php } ?>			
 		</div>
