@@ -59,6 +59,7 @@ $('.auto_slider').slick({
     dots: false,
     slidesToScroll: 1,
     infinite: false,
+    swipe:false,
     speed: 300,
     prevArrow: '.auto-button-prev',
     nextArrow: '.auto-button-next',

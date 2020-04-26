@@ -420,6 +420,7 @@ $('.order_form').on('submit', async (e) => {
         let car_name = $($(cars[currentSlide])[0].querySelector('.order_car__title'))[0].textContent;
         order["car"] = car_name;
         order["add_order"] = true;
+        order["table"] = "o";
         sendRequest(order);
         $('.order_form').find("input[type=text], input[type=number], .order_email, textarea").val("");
         $('.order_slider_car').slick("slickGoTo", 0, true);

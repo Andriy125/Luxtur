@@ -41,7 +41,7 @@ function insertOrder(){
     $phone = $_POST["phone"];
     $email = $_POST["email"];
     $addresses = $_POST["addresses"];
-    $goBack = $_POST["goBack"] == true ? 1 : 0;
+    $goBack = $_POST["goBack"];
     $date = $_POST["date"];
     $time = $_POST["time"];
     $passenger_count = $_POST["passenger_count"];
@@ -53,13 +53,12 @@ function insertOrder(){
 
     $sql = "";
     if(isset($_POST["done"])){
-        $done = $_POST["done"] == true ? 1 : 0;
+        $done = $_POST["done"];
         $sql = "Insert INTO ". $table ." (name, phone, email, addresses, date, time, car, goBack, passengers, price, done) VALUES ('". $data ."', ". $goBack .", ". $passenger_count .", ". $price .", ". $done .")";
     }
     else{
-        $sql = "Insert INTO ". $table ." (name, phone, email, addresses, date, time, car, goBack, passengers, price, done) VALUES ('". $data ."', ". $goBack .", ". $passenger_count .", ". $price .", 0)";
+        $sql = "Insert INTO ". $table ." (name, phone, email, addresses, date, time, car, goBack, passengers, price) VALUES ('". $data ."', ". $goBack .", ". $passenger_count .", ". $price .")";
     }
-
     $result = mysqli_query($conn, $sql);
     if (!$result) {
         die('Неверный запрос: ' . $conn->sqlstate);
@@ -108,7 +107,14 @@ function updateQuery(){
     $value = $_POST["value"];
     $column = $_POST["column"];
     $table = getTableName($_POST["table"]);
-    $result = mysqli_query($conn, "Update ". $table ." SET ". $column ." = ". $value ." WHERE ID = ". $id ."");
+    if(!is_array($value)){
+        $result = mysqli_query($conn, "Update ". $table ." SET ". $column ." = ". $value ." WHERE ID = ". $id ."");
+    }
+    else{
+        $sql = "Update ". $table ." SET ". $column ." = ". $value ." WHERE ID = ". $id ."";
+        $result = mysqli_query($conn, $sql);
+
+    }    
     if (!$result) {
         die('Неверный запрос: ' . $conn->sqlstate);
     }

@@ -155,6 +155,46 @@
         </table>
     </div>
 
+    <div id="id-edit_order" class="tabcontent">
+        <div class="form_container">
+            <form class="edit_order_form">
+                <input placeholder="Введіть ім'я..." type="text" name="name" required>
+                <input type="tel" class="phone" name="phone" required>
+                <input placeholder="Введіть email..." type="email" name="email" required>
+                <div>
+                    <textarea required class="order_addresses" placeholder="Введіть адреси..." name="addresses" cols="30" rows="10"></textarea>
+                </div>
+                <div class="direction_block">
+                    <label for="direction">Зворотній шлях</label>
+                    <select id="direction" name="goBack" required>
+                        <option value="one">Ні</option>
+                        <option value="duo">Так</option>
+                    </select>
+                </div>
+                <div class="date-time_block">
+                    <div>
+                        <p>Дата і час</p>
+                    </div>
+                    <div class="date-time_block__inputs">
+                        <input class="input_date" type="date" name="date" required>
+                        <input class="input_time" type="time" name="time" required>
+                    </div>
+                </div>
+
+                <input placeholder="Введіть кількість пасажирів..." type="number" min="1" name="passengers" required>
+                <input placeholder="Введіть назву автобуса..." type="text" name="car" required>
+                <input placeholder="Введіть ціну..." type="number" min="0" name="price" required>
+                <div class="done_block">
+                    <label for="is_done">Виконано</label>
+                    <input id="is_done" type="checkbox" name="done">
+                 </div>
+                <div class="submit_block">
+                    <button type="submit" class="add_button">Додати</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="id-add_order" class="tabcontent">
         <div class="form_container">
             <form class="add_order_form">
@@ -166,8 +206,8 @@
                 </div>
                 <div class="direction_block">
                     <label for="direction">Зворотній шлях</label>
-                    <select id="direction" name="goBack" required>
-                        <option value="one">Ні</option>
+                    <select id="direction" name="goBack">
+                        <option value="one" selected>Ні</option>
                         <option value="duo">Так</option>
                     </select>
                 </div>
@@ -235,6 +275,7 @@
                                 </form>
                             </td>
                             <td>
+                                <a class="edit_button edit_order">Редагувати</a>
                                 <form class="delete_form_o">
                                     <input type="hidden" name="id" value="<?php echo $order["id"]?>">
                                 </form>

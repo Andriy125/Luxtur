@@ -14,7 +14,7 @@ $(document).ready(function(){
         el.addEventListener('click', (e) => ShowContent(e, `id-${el.getAttribute('id')}`));
     });
 
-    $('#add_popular_directions').click();
+    $('#orders').click();
     $('.phone').mask('+38 (000) 000 00 00', {placeholder: "Номер телефону"});
 });
 
@@ -135,6 +135,13 @@ document.querySelector('.del_call').addEventListener("click", (e)=>{
     deleteRequest(id, "c");
 });
 
+// document.querySelector('.edit_order').addEventListener("click", (e)=>{
+//     e.preventDefault();
+//     let row = e.target.closest('tr');
+
+
+// });
+
 const deleteRequest = (id, table_name) => {
     let data = {};
     data["id"] = id;
@@ -177,6 +184,7 @@ document.querySelector('.sort_review').addEventListener("change", (e)=>{
 });
 
 document.querySelector('.add_order_form').addEventListener("submit", (e) => {
+    e.preventDefault();
     const hasNumber = /\d/;     //  функція перевірки рядка на наявність цифр
     let form = e.target.elements;
     if(hasNumber.test(form.name.value)){
@@ -189,12 +197,13 @@ document.querySelector('.add_order_form').addEventListener("submit", (e) => {
     let email = form.email.value;
     let date = form.date.value;
     let time = form.time.value;
-    let goBack = form.goBack.value;
-    let passengers = form.passengers.value;
+    let goBack = form.goBack.value == "duo" ? 1 : 0;
+    let passengers =  Number(form.passengers.value);
     let car = form.car.value;
-    let price = form.price.value
-    let done = form.done.value;
+    let price = Number(form.price.value);
+    let done = $(form.done).prop("checked") == true ? 1 : 0;
     let addresses = getAddressesTextarea(form.addresses.value);
+    console.log(data);
     data["name"] = name;
     data["phone"] = phone;
     data["email"] = email;
@@ -207,6 +216,7 @@ document.querySelector('.add_order_form').addEventListener("submit", (e) => {
     data["price"] = price;
     data["done"] = done;
     data["add_order"] = true;
+    data["table"] = "o";
     $(e.target).find("input, textarea").val("");
     e.target.goBack.value = "one";
     e.target.done.value = false;

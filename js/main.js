@@ -4,6 +4,7 @@ let modal_call = document.getElementById("modal_call");                         
 let modal_calc = document.getElementById("modal_calculate");                                //  модальне вікно для відображення результатів розрахунків
 let modal_review = document.getElementById("modal_review");                                 //  модальне вікно для додавання відгуку
 let modal_autopark = document.getElementById("modal_autopark");                             //  модальне вікно автопарку 
+let card_slider = document.querySelector(".auto_img_slider");                             //  слайдер в карточці 
 // Get the button that opens the modal
 let btn = document.getElementById("call");                                                  //  кнопка замовлення дзвінку
 let btn_review = document.getElementById("review_button");                                  //  кнопка додавання відгуку
@@ -69,7 +70,7 @@ window.onclick = function(event) {
     else if(event.target == modal_review){
         hideModal(modal_review);
     }
-    else if(event.target == modal_autopark){
+    else if(event.target == modal_autopark && event.target != card_slider){
         hideModal(modal_autopark);
     }
 }

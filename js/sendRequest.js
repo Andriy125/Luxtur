@@ -6,7 +6,7 @@ const sendRequest = (data) => {
         data: JSON.parse(JSON.stringify(data)),    
         success: function (response) {
             alert("Все пройшло вдало!");
-            console.log($response);
+            console.log(response);
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log(textStatus, errorThrown);
