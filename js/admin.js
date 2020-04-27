@@ -17,28 +17,6 @@ $(document).ready(function(){
     $('#orders').click();
     $('.phone').mask('+38 (000) 000 00 00', {placeholder: "Номер телефону"});
 });
-
-const setLocalDate = () => {
-    let local = new Date();
-    let local_date = local.getFullYear() + '-';
-    if(local.getMonth() < 10){
-        local_date += '0' + (local.getMonth() + 1) + '-';
-    }
-    else{
-        local_date += (local.getMonth() + 1) + '-';
-    }
-    if(local.getDate() < 10){
-        local_date += '0' + local.getDate();
-    }
-    else{
-        local_date += local.getDate();
-    }
-    $('.input_date')[0].value = local_date;
-    $('.input_date')[0].min = local_date;
-    $('.input_time')[0].value = `${local.getHours() + 3}:${local.getMinutes() < 10 ? `0${local.getMinutes()}`: local.getMinutes()}`;    
-}
-setLocalDate();
-
 // закриття меню
 const CloseMenu = () => {
     $('.side_menu').toggleClass('active', false);
@@ -135,12 +113,48 @@ document.querySelector('.del_call').addEventListener("click", (e)=>{
     deleteRequest(id, "c");
 });
 
+$('.edit_order').on("click", (e)=>{
+    let data = $(e.target).closest('tr').find(' td ');
+    let id = $(e.target).nextAll(".delete_form_o:first")[0].id.value;
+    let name = data[0].textContent;
+    let phone = data[1].textContent;
+    let email = data[2].textContent;
+    let addresses = data[3].textContent;
+    let goBack = data[4].textContent == "Так" ? "duo" : "one";
+    let time = data[5].textContent.substring(0,5);
+    let date = data[5].textContent.substring(7,17);
+    let passengers = data[6].textContent;
+    let car = data[7].textContent;
+    let price = parseInt(data[8].textContent);
+    let done = $(data[9].childNodes[1].order_done).prop("checked");
+    let form = document.querySelector('.edit_order_form').elements;
+    form.name.value = name;
+    form.phone.value = phone;
+    form.email.value = email;
+    form.price.value = price;
+    form.car.value = car;
+    form.passengers.value = passengers;
+    form.time.value = time;
+    form.date.value = date;
+    form.goBack.value = goBack;
+    form.addresses.value = addresses;
+    form.id.value = id;
+    $(form.done).prop("checked", done);
+});
+
 // document.querySelector('.edit_order').addEventListener("click", (e)=>{
-//     e.preventDefault();
-//     let row = e.target.closest('tr');
-
-
+//     let id = e.target.value;
+//     getRequest(id, "o");
 // });
+
+// const getRequest = (id, table_name) => {
+//     let data = {};
+//     data["id"] = id;
+//     data["get_data"] = true;
+//     data["table"] = table_name;
+//     let res = sendRequest(data);
+//     console.log(res);
+// }
 
 const deleteRequest = (id, table_name) => {
     let data = {};
@@ -203,7 +217,6 @@ document.querySelector('.add_order_form').addEventListener("submit", (e) => {
     let price = Number(form.price.value);
     let done = $(form.done).prop("checked") == true ? 1 : 0;
     let addresses = getAddressesTextarea(form.addresses.value);
-    console.log(data);
     data["name"] = name;
     data["phone"] = phone;
     data["email"] = email;
@@ -216,6 +229,40 @@ document.querySelector('.add_order_form').addEventListener("submit", (e) => {
     data["price"] = price;
     data["done"] = done;
     data["add_order"] = true;
+    data["table"] = "o";
+    $(e.target).find("input, textarea").val("");
+    e.target.goBack.value = "one";
+    e.target.done.value = false;
+    sendRequest(data);
+});
+
+document.querySelector('.edit_order_form').addEventListener("submit", (e) => {
+    e.preventDefault();
+    const hasNumber = /\d/;     //  функція перевірки рядка на наявність цифр
+    let form = e.target.elements;
+    if(hasNumber.test(form.name.value)){
+        alert("Невірні дані!");
+        return;
+    }
+    let data = {};
+    let id = form.id.value;
+    let name = {type:"string", value: form.name.value};
+    let phone = {type:"string", value: form.phone.value};
+    let email = {type:"string", value: form.email.value};
+    let date = {type:"string", value: form.date.value};
+    let time = {type:"string", value: form.time.value};
+    let goBack = {type:"number", value: form.goBack.value == "duo" ? 1 : 0};
+    let passengers = {type:"number", value: form.passengers.value};
+    let car = {type:"string", value: form.car.value};
+    let price = {type:"number", value: Number(form.price.value)};
+    let done = {type:"number", value: $(form.done).prop("checked") == true ? 1 : 0};
+    let addresses = {type:"array", value: getAddressesTextarea(form.addresses.value)};
+    let values = [name, phone, email, date, time, goBack, passengers, car, price, done, addresses];
+    let columns = ["name", "phone", "email", "date", "time", "goBack", "passengers", "car", "price", "done", "addresses"];
+    data["id"] = id;
+    data["value"] = values;
+    data["column"] = columns;
+    data["update"] = true;
     data["table"] = "o";
     $(e.target).find("input, textarea").val("");
     e.target.goBack.value = "one";

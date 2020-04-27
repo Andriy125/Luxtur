@@ -7,6 +7,7 @@ const sendRequest = (data) => {
         success: function (response) {
             alert("Все пройшло вдало!");
             console.log(response);
+            location.reload(true);
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log(textStatus, errorThrown);

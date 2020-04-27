@@ -16,9 +16,9 @@
     else if(isset($_POST["delete"])){
         deleteQuery();
     }
-    else if (isset($_POST["p_d"])) {
-        addPopularDirection();
-    }
+    // else if (isset($_POST["get_data"])) {
+    //     getData();
+    // }
     else{
         error("Something went wrong!");
     }

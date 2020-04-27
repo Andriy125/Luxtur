@@ -188,8 +188,8 @@ td{
 }
 .delete_button:hover{
     cursor: pointer;
-    background-color: #8ed2df;
-    color: #462626;
+    background-color: red;
+    color: #fff;
 }
 
 .filter, .sort{
@@ -313,6 +313,19 @@ td{
     justify-content: center;
     align-items: center;
     margin: 15px 0;
+}
+
+.edit_order{
+    display: block;
+    margin-bottom: 15px;
+    background-color: #fff;
+    color:#223eb9;
+    padding: 5px 10px;
+}
+.edit_order:hover{
+    cursor: pointer;
+    background-color: #223eb9;
+    color: #fff;
 }
 /* add form styles  */
 

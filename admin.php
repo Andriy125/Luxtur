@@ -158,6 +158,7 @@
     <div id="id-edit_order" class="tabcontent">
         <div class="form_container">
             <form class="edit_order_form">
+                <input type="hidden" name="id">
                 <input placeholder="Введіть ім'я..." type="text" name="name" required>
                 <input type="tel" class="phone" name="phone" required>
                 <input placeholder="Введіть email..." type="email" name="email" required>
@@ -189,7 +190,7 @@
                     <input id="is_done" type="checkbox" name="done">
                  </div>
                 <div class="submit_block">
-                    <button type="submit" class="add_button">Додати</button>
+                    <button id="orders" type="submit" class="add_button another">Відредагувати</button>
                 </div>
             </form>
         </div>
@@ -252,7 +253,7 @@
                 <th class="column">Зворотній шлях</th>
                 <th class="column">Дата і час</th>
                 <th class="column">Кількість пасажирів</th>
-                <th class="column">Машина</th>
+                <th class="column">Автобус</th>
                 <th class="column">Ціна</th>
                 <th class="column">Виконано</th>
                 <th class="column">Дії</th>
@@ -275,7 +276,7 @@
                                 </form>
                             </td>
                             <td>
-                                <a class="edit_button edit_order">Редагувати</a>
+                                <a id="edit_order" class="edit_button edit_order another">Редагувати</a>
                                 <form class="delete_form_o">
                                     <input type="hidden" name="id" value="<?php echo $order["id"]?>">
                                 </form>

@@ -107,14 +107,30 @@ function updateQuery(){
     $value = $_POST["value"];
     $column = $_POST["column"];
     $table = getTableName($_POST["table"]);
-    if(!is_array($value)){
-        $result = mysqli_query($conn, "Update ". $table ." SET ". $column ." = ". $value ." WHERE ID = ". $id ."");
+    $sql = "";
+    if(is_array($value)){
+        $update_query = "";
+        for($i = 0; $i < count($column); $i++){
+            if($value[$i]["type"] == "string"){
+                $update_query .= $column[$i] . " = '" . $value[$i]["value"] . "'";
+            }
+            else if($value[$i]["type"] == "array"){
+                $formatted_addresses = implode(' -> ', $value[$i]["value"]);
+                $update_query .= $column[$i] . " = '" . $formatted_addresses . "'";
+            }
+            else {
+                $update_query .= $column[$i] . " = " . $value[$i]["value"] . "";
+            }
+            if($i !== count($column) - 1){
+                $update_query .= ", ";
+            }         
+        }
+        $sql = "Update ". $table ." SET ". $update_query ." WHERE ID = ". $id ."";
     }
     else{
         $sql = "Update ". $table ." SET ". $column ." = ". $value ." WHERE ID = ". $id ."";
-        $result = mysqli_query($conn, $sql);
-
-    }    
+    } 
+    $result = mysqli_query($conn, $sql);
     if (!$result) {
         die('Неверный запрос: ' . $conn->sqlstate);
     }
@@ -133,5 +149,18 @@ function deleteQuery(){
     }
     mysqli_close($conn);
 }
+// function getData(){
+//     $conn = mysqli_connect('localhost', 'root', '', 'luxtur');
+//     if (!$conn) {
+//         die('Ошибка соединения: ' . mysql_error());
+//     }
+//     $id = $_POST["id"];
+//     $table = getTableName($_POST["table"]);
+//     $get_data_obj = mysqli_query($conn, "SELECT * FROM ". $table ." WHERE ID = ". $id ."");
+//     if (!$get_data_obj) {
+//         die('Неверный запрос: ' . $conn->sqlstate);
+//     }
+//     mysqli_close($conn);
+// }
 
 ?>
