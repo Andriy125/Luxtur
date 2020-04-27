@@ -7,6 +7,7 @@
     $result_emails = mysqli_query($con, "SELECT * FROM contact_emails");
     $result_reviews = mysqli_query($con, "SELECT * FROM review");
     $sort_review_options = mysqli_query($con, "SHOW COLUMNS FROM review");
+    $sort_order_options = mysqli_query($con, "SHOW COLUMNS FROM orders");
     $result_orders = mysqli_query($con, "SELECT * FROM orders");
     $result_calls = mysqli_query($con, "SELECT * FROM calls");
     $result_popular_directions = mysqli_query($con, "SELECT * FROM popular_directions");

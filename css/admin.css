@@ -167,7 +167,7 @@ a{
     text-align: center;
 }
 .column{
-    min-width: 30px;
+    min-width: 130px;
     text-align: center;
     border: 1px solid #cfcfcf;
     padding: 10px;
@@ -182,6 +182,8 @@ td{
 }
 
 .delete_button{
+    display: block;
+    width: 120px;
     background-color: #fff;
     color:red;
     padding: 5px 10px;
@@ -196,10 +198,10 @@ td{
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 15px 0;
+    margin: 10px 0;
 }
 
-.filter_review, .sort_review{
+.sort select, .filter select{
     padding: 5px;
     width: 70%;
 }
@@ -221,6 +223,20 @@ td{
     background-color: #000;
     color: #fff;
     cursor: pointer;
+}
+
+.edit_button{
+    width: 120px;
+    display: block;
+    margin-bottom: 15px;
+    background-color: #fff;
+    color:#223eb9;
+    padding: 5px 10px;
+}
+.edit_button:hover{
+    cursor: pointer;
+    background-color: #223eb9;
+    color: #fff;
 }
 
 /* add form styles  */
@@ -313,19 +329,6 @@ td{
     justify-content: center;
     align-items: center;
     margin: 15px 0;
-}
-
-.edit_order{
-    display: block;
-    margin-bottom: 15px;
-    background-color: #fff;
-    color:#223eb9;
-    padding: 5px 10px;
-}
-.edit_order:hover{
-    cursor: pointer;
-    background-color: #223eb9;
-    color: #fff;
 }
 /* add form styles  */
 

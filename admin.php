@@ -245,7 +245,31 @@
                     </h3> 
                 </div>
             </div>
-            <table>
+            <div class="filter">
+                <div>
+                    <label for="filter_order">Фільтрувати:</label>
+                    <select id="filter_order" class="filter_order">
+                        <option value="all" selected>Всі</option>
+                        <option value="done">Виконані</option>
+                        <option value="not_completed">Не виконані</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="sort">
+                <div>
+                <label for="sort_order">Сортування:</label>
+                    <select id="sort_order" class="sort_order">
+                        <?php 
+                            while($row = mysqli_fetch_array($sort_order_options)){
+                                if($row['Field'] !== "done" && $row['Field'] !== "id")
+                                echo '<option value="'. $row['Field'] .'">'. $row['Field'] .'</option>';
+                            }
+                        ?>
+                    </select>
+                </div>
+            </div>
+            <table class="order_table">
                 <th class="column">Ім'я</th>
                 <th class="column">Телефон</th>
                 <th class="column">Email</th>
@@ -255,11 +279,13 @@
                 <th class="column">Кількість пасажирів</th>
                 <th class="column">Автобус</th>
                 <th class="column">Ціна</th>
+                <th class="column">Додано</th>
                 <th class="column">Виконано</th>
                 <th class="column">Дії</th>
                 <!-- TODO: filter, CRUD, done or not -->
-                <?php while($order = mysqli_fetch_array($result_orders)): ?>
-                        <tr>
+                <?php while($order = mysqli_fetch_array($result_orders)): 
+                        echo $order["done"] ? '<tr class="all done">' : '<tr class="all not_completed">';
+                ?>
                             <td><?php echo $order["name"]?></td>
                             <td><?php echo $order["phone"]?></td>
                             <td><?php echo $order["email"]?></td>
@@ -269,6 +295,7 @@
                             <td><?php echo $order["passengers"]?></td>
                             <td><?php echo $order["car"]?></td>
                             <td><?php echo $order["price"]?> грн</td>
+                            <td><?php echo $order["date_time"]?></td>
                             <td>
                                 <form class="update_order">
                                     <input type="hidden" name="id" value="<?php echo $order["id"]?>">

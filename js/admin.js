@@ -197,6 +197,18 @@ document.querySelector('.sort_review').addEventListener("change", (e)=>{
     sortTable(table, sort_by);
 });
 
+document.querySelector('.filter_order').addEventListener("change", (e)=>{
+    e.preventDefault();
+    let filter_by = e.target.value;
+    filterTrByClass(filter_by, '.order_table');
+});
+
+document.querySelector('.sort_order').addEventListener("change", (e)=>{
+    let table = document.querySelector('.order_table');
+    let sort_by = e.target.selectedIndex;
+    sortTable(table, sort_by);
+});
+
 document.querySelector('.add_order_form').addEventListener("submit", (e) => {
     e.preventDefault();
     const hasNumber = /\d/;     //  функція перевірки рядка на наявність цифр
