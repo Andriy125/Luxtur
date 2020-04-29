@@ -167,7 +167,7 @@ a{
     text-align: center;
 }
 .column{
-    min-width: 130px;
+    min-width: 100px;
     text-align: center;
     border: 1px solid #cfcfcf;
     padding: 10px;
@@ -183,6 +183,7 @@ td{
 
 .delete_button{
     display: block;
+    margin: 10px auto;
     width: 120px;
     background-color: #fff;
     color:red;
@@ -204,6 +205,7 @@ td{
 .sort select, .filter select{
     padding: 5px;
     width: 70%;
+    margin-bottom: 10px;
 }
 
 .table_container{
@@ -238,7 +240,15 @@ td{
     background-color: #223eb9;
     color: #fff;
 }
+.o_s_image{
+    width: 200px;
+    height: 200px;
+}
 
+.actions_col{
+    text-align: center;
+    margin: 0 auto;
+}
 /* add form styles  */
 
 .form_container{
@@ -330,6 +340,25 @@ td{
     align-items: center;
     margin: 15px 0;
 }
+/* input[type=checkbox]{
+    display: none;
+}
+.checkbox{
+    width: 30px;
+    height: 30px;
+    display: block;
+    background-color: #fff;
+}
+.checkbox::after{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    display: block;
+    background-color: #fff;
+    content:'';
+    left: 0;
+    bottom: 0;
+} */
 /* add form styles  */
 
 

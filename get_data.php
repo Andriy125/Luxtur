@@ -12,6 +12,8 @@
     $result_calls = mysqli_query($con, "SELECT * FROM calls");
     $result_popular_directions = mysqli_query($con, "SELECT * FROM popular_directions");
     $result_our_services = mysqli_query($con, "SELECT * FROM our_service");
+    $result_car = mysqli_query($con, "SELECT * FROM car");
+    $result_car_location = mysqli_query($con, "SELECT location FROM car_location");
 
     if (!$result_phones) {
         die('Неверный запрос: ' . $con->sqlstate);

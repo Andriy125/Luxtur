@@ -14,7 +14,7 @@ $(document).ready(function(){
         el.addEventListener('click', (e) => ShowContent(e, `id-${el.getAttribute('id')}`));
     });
 
-    $('#orders').click();
+    $('#edit_autopark').click();
     $('.phone').mask('+38 (000) 000 00 00', {placeholder: "Номер телефону"});
 });
 // закриття меню
@@ -111,6 +111,13 @@ document.querySelector('.del_call').addEventListener("click", (e)=>{
     let id = $('.delete_form_c')[0].elements.id.value;
     $(e.target.closest('tr')).remove();
     deleteRequest(id, "c");
+});
+
+document.querySelector('.del_our_service').addEventListener("click", (e)=>{
+    e.preventDefault();
+    let id = $('.delete_form_o_s')[0].elements.id.value;
+    $(e.target.closest('tr')).remove();
+    deleteRequest(id, "o_s");
 });
 
 $('.edit_order').on("click", (e)=>{
