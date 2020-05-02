@@ -1,96 +1,12 @@
 <?php 
     include 'get_data.php';
+    include "index_request_api.php";
+
 ?>
     <?php include "header.php";?>
     <?php include "side_menu.php";?>
 
-<?php
-    // Create database connection
-    $db = mysqli_connect("localhost", "root", "", "luxtur");
 
-    // Initialize message variable
-    $msg = "";
-    $target = "img/" . $_FILES["image"]["name"];
-    // Get image name
-    $image = $target;
-    $sql = "";
-
-    if (isset($_POST['p_d'])) {
-        // Get text
-        $image_text = mysqli_real_escape_string($db, $_POST['text']);
-        $sql = "INSERT INTO popular_directions (image, text) VALUES ('$image', '$image_text')";
-        // execute query
-        mysqli_query($db, $sql);
-
-        if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
-            $msg = "Image uploaded successfully";
-        }else{
-            $msg = "Failed to upload image";
-        }
-    }
-    else if (isset($_POST['o_s'])) {
-        // Get text
-        $text = mysqli_real_escape_string($db, $_POST['text']);
-        $title = mysqli_real_escape_string($db, $_POST['title']);
-        $sql = "INSERT INTO our_service (image, title, text) VALUES ('$image', '$title', '$text')";
-        // execute query
-        mysqli_query($db, $sql);
-
-        if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
-            $msg = "Image uploaded successfully";
-        }else{
-            $msg = "Failed to upload image";
-        }
-    }
-    else if (isset($_POST['car'])) {
-        // Get text
-        $name = mysqli_real_escape_string($db, $_POST['name']);
-        $location ="";
-        $passengers = $_POST['passengers'];
-        $show_car = $_POST['show'] == "show" ? 1 : 0;
-        $total = count($_FILES['images']['name']);
-        $total_locs = count($_POST['location']);
-        $main_image = "img/" .  $_FILES["main_image"]["name"];
-        $advantages = $_POST['advantages'];
-        $target = "img/" . $_FILES["main_image"]["name"];
-        $images = "";
-
-        for($i = 0; $i<$total_locs; $i++){
-            $location .= $_POST['location'][$i] . " ";
-        }
-        // Loop through each file
-        for( $i=0 ; $i < $total ; $i++ ) {
-            $images .=  "img/" .  $_FILES['images']['name'][$i] . ' ';
-            //Get the temp file path
-            $tmpFilePath = $_FILES['images']['tmp_name'][$i];
-
-            //Make sure we have a file path
-            if ($tmpFilePath != ""){
-                //Setup our new file path
-                $newFilePath = "./img/" . $_FILES['images']['name'][$i];
-
-                //Upload the file into the temp dir
-                if(move_uploaded_file($tmpFilePath, $newFilePath)) {
-                    $msg = "Image uploaded successfully";
-                }
-                else{
-                    $msg = "Failed to upload image";
-                    return;
-                }
-            }
-        }
-        $sql = "INSERT INTO car (name, location, passengers, main_image, images, advantages, show_car) VALUES ('$name', '$location', $passengers, '$main_image', '$images', '$advantages', $show_car)";
-        // execute query
-        mysqli_query($db, $sql);
-        if (move_uploaded_file($_FILES['main_image']['tmp_name'], $target)) {
-            $msg = "Image uploaded successfully";
-        }else{
-            $msg = "Failed to upload image";
-        }
-    }
-
-    mysqli_close($db);
-?>
 
     <div id="id-main" class="tabcontent">
         <!-- <h3>Головна</h3> -->
@@ -165,10 +81,10 @@
                         <td><?php echo $row["text"]?></td>
                         <td><?php echo $row["date_time"]?></td>
                         <td>
-                            <form class="delete_form_c">
+                            <form class="delete_form_p_d">
                                 <input type="hidden" name="id" value="<?php echo $row["id"]?>">
                             </form>
-                            <a class="delete_button del_call">Видалити</a>
+                            <a class="delete_button del_p_d">Видалити</a>
                         </td>  
                     </tr>
                 <?php endwhile;?>
@@ -264,6 +180,7 @@
                     <button id="orders" type="submit" class="add_button another">Відредагувати</button>
                 </div>
             </form>
+            <button id="orders" class="add_button another">Назад</button>
         </div>
     </div>
 
@@ -449,6 +366,41 @@
         </div>
     </div>
 
+    <div id="id-edit_car" class="tabcontent">
+        <div class="form_container">
+            <form class="edit_car_form" method="POST" action="admin.php" enctype="multipart/form-data">
+                <input type="hidden" name="id">                
+                <input type="hidden" name="edit_car">                
+                <input placeholder="Введіть назву автобус..." type="text" name="name" >                
+                <input placeholder="Введіть кількість пасажирів..." type="number" min="1" name="passengers">   
+                <div class="center_image">
+                    <img class="edit_car_main_image" src="" alt="">
+                    <input type="file" name="main_image" accept=".png, .jpg, .jpeg" >  
+                </div>             
+                <div class="center_image edit_car_imgs">
+                </div>
+                <input type="file" name="images[]" accept=".png, .jpg, .jpeg" multiple>  
+                <textarea class="order_addresses" name="advantages" placeholder="Введіть переваги..." cols="30" rows="10"></textarea> 
+
+                <select id="locs" name="location[]" multiple>
+                    <?php for($i = 0; $i < count($all_locations); $i++):?>
+                        <option value="<?php echo $all_locations[$i]["location"]; ?>"><?php echo $all_locations[$i]["location"]; ?></option>
+                    <?php endfor;?>
+                </select>   
+
+                <div class="done_block">
+                    <label for="is_show">Відображати</label>
+                    <input id="is_show" type="checkbox" name="show" value="show">
+                 </div>
+
+                <div class="submit_block">
+                    <button type="submit" class="add_button">Відредагувати</button>
+                </div>
+            </form>
+            <button id="edit_autopark" class="add_button another">Назад</button>
+        </div>
+    </div>
+
     <div id="id-add_car" class="tabcontent">
         <div class="form_container">
             <form class="add_car_form" method="POST" action="admin.php" enctype="multipart/form-data">
@@ -459,9 +411,9 @@
                 <input type="file" name="images[]" accept=".png, .jpg, .jpeg" multiple >  
                 <textarea class="order_addresses" name="advantages" placeholder="Введіть переваги..." cols="30" rows="10"></textarea>  
                 <select name="location[]" multiple>
-                    <?php while($row = mysqli_fetch_array($result_car_location)): ?>
-                        <option value="<?php echo $row["location"]; ?>"><?php echo $row["location"]; ?></option>
-                    <?php endwhile;?>
+                    <?php for($i = 0; $i < count($all_locations); $i++): ?>
+                        <option value="<?php echo $all_locations[$i]["location"]; ?>"><?php echo $all_locations[$i]["location"]; ?></option>
+                    <?php endfor;?>
                 </select>            
                 <div class="done_block">
                     <label for="is_show">Відображати</label>
@@ -496,50 +448,50 @@
                        <th class="column">Відображати</th>
                        <th class="column">Дії</th>
                     </tr>
-                    <?php while($row = mysqli_fetch_array($result_car)):?>
+                    <?php for($i = 0; $i < count($all_car); $i++):?>
                     <tr>
-                        <td><?php echo $row["name"]?></td>
-                        <td>
+                        <td class="medium_column"><?php echo $all_car[$i]["name"]?></td>
+                        <td class="medium_column">
                             <ul>
                             <?php 
-                                $locs = explode(" ", $row["location"]);
-                                for($i = 0; $i < count($locs) - 1; $i++):   
+                                $locs = explode(" ", $all_car[$i]["location"]);
+                                for($j = 0; $j < count($locs) - 1; $j++):   
                             ?>
-                                <li><?php echo $locs[$i]; ?></li>
+                                <li><?php echo $locs[$j]; ?></li>
                             <?php endfor;?>  
                             </ul>
                         </td>
-                        <td><?php echo $row["passengers"]?></td>
-                        <td><img style="width:85%; height:85%" src="<?php echo $row["main_image"]?>" alt ="<?php echo $row["name"]?>"></td>
+                        <td class="small_column"><?php echo $all_car[$i]["passengers"]?></td>
+                        <td><img style="width:200px; height:130px" src="<?php echo $all_car[$i]["main_image"]?>" alt ="<?php echo $all_car[$i]["name"]?>"></td>
                         <td>
                             <?php 
-                                $imgs = explode(" ", $row["images"]);
-                                for($i = 0; $i < count($imgs) - 1; $i++):   
+                                $imgs = explode(" ", $all_car[$i]["images"]);
+                                for($j = 0; $j < count($imgs) - 1; $j++):   
                             ?>
-                                <img style="width: 150px; height:150px; margin-right:5px" src="<?php echo $imgs[$i]; ?>">
+                                <a target="_blank" class="img_auto_link" href="<?php echo $imgs[$j]; ?>"><?php echo str_replace ("img/", "", $imgs[$j]); ?></a>
                             <?php endfor;?>                                                      
                         </td>
-                        <td style="text-align:left;"><?php echo nl2br($row["advantages"])?></td>
-                        <td><?php echo $row["date_time"]?></td>
-                        <td>
+                        <td class="advantages_column"><?php echo nl2br($all_car[$i]["advantages"])?></td>
+                        <td class="medium_column"><?php echo $all_car[$i]["date_time"]?></td>
+                        <td class="small_column">
                             <form class="update_car">
-                                <input type="hidden" name="id" value="<?php echo $row["id"]?>">
+                                <input type="hidden" name="id" value="<?php echo $all_car[$i]["id"]?>">
                                 <?php 
                                     $checkbox = '<input type="checkbox" class="update_car_showing" name="is_showing" ';
-                                    $checkbox .= $row["show_car"] == 1 ? 'checked>' : '>'; 
+                                    $checkbox .= $all_car[$i]["show_car"] == 1 ? 'checked>' : '>'; 
                                     echo $checkbox;
                                 ?>
                             </form>
                         </td>
                         <td>
-                            <a id="edit_order" class="edit_button edit_car another">Редагувати</a>
+                            <a id="edit_car" class="edit_button edit_car another">Редагувати</a>
                             <form class="delete_form_a">
-                                <input type="hidden" name="id" value="<?php echo $row["id"]?>">
+                                <input type="hidden" name="id" value="<?php echo $all_car[$i]["id"]?>">
                             </form>
                             <a class="delete_button del_car">Видалити</a>
                         </td>  
                     </tr>
-                    <?php endwhile;?>
+                    <?php endfor;?>
                 </table>
             </div>
         </div>

@@ -1,3 +1,5 @@
+let auto_slider = document.querySelector('.auto_slider');   // слайдер автопарку
+
 //  слайдер відгуків
 $('.review_slider').slick({
     dots: false,
@@ -79,18 +81,6 @@ $('.auto_slider').slick({
     ]
 });
 
-// слайдер зображень авто в коожній карточці
-$('.auto_img_slider').slick({
-    dots: true,
-    infinite: true,
-    speed: 300,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    dotsClass: 'my-dots', 
-    prevArrow: '.auto_prev',
-    nextArrow: '.auto_next'
-});
-
 // обробник натиснення на кнопку "назад" в слайдері форми замовлення
 $('.order_form__button.prev').on('click', (e) => {
     e.preventDefault();
@@ -105,31 +95,21 @@ $('.auto_filter__btn').on('click', (e) => {
 
 // обробник натистення на клавішу фільтрування авто "всі"
 $('.auto_filter__btn.all').on('click', () => {
-    document.querySelectorAll('.auto_item').forEach(el => $(el).css('display','block'));
+    $(auto_slider).slick('slickUnfilter');
 });
 
 // обробник натистення на клавішу фільтрування авто "україна"
 $('.auto_filter__btn.ukr').on('click', () => {
-    document.querySelectorAll('.auto_item').forEach(el => {
-        if(el.classList.contains('ukr')){
-            $(el).css('display','block');
-        }
-        else
-        {
-            $(el).css('display','none');
-        }
+    $(auto_slider).slick('slickUnfilter');
+    $(auto_slider).slick('slickFilter', function() {
+      return this.classList.contains('ukr');
     });
 });
 
 // обробник натистення на клавішу фільтрування авто "европа"
-$('.auto_filter__btn.eu').on('click', () => {
-    document.querySelectorAll('.auto_item').forEach(el => {
-        if(el.classList.contains('eu')){
-            $(el).css('display','block');
-        }
-        else
-        {
-            $(el).css('display','none');
-        }
+$('.auto_filter__btn.eu').on('click', (ev) => {
+    $(auto_slider).slick('slickUnfilter');
+    $(auto_slider).slick('slickFilter', function() {
+      return this.classList.contains('eu');
     });
 });

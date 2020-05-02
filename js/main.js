@@ -48,9 +48,9 @@ btn_review.onclick = function() {
     showModal(modal_review);
 }
 
-btn_auto_card.forEach(el => el.onclick = function(){
-    showModal(modal_autopark);
-})
+// btn_auto_card.forEach(el => el.onclick = function(){
+//     showModal(modal_autopark);
+// })
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {

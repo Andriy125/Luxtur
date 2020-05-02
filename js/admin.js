@@ -63,7 +63,7 @@ document.querySelectorAll('.update_review_showing').forEach(el => {
         let form = e.target.closest('.update_review');
         let id = form.elements.id.value;
         let column = "show_review";
-        let is_showing = $(form.is_showing).prop("checked");
+        let is_showing = $(e.target).prop("checked");
         updateRequest("r", id, column, is_showing);
     })
 });
@@ -73,51 +73,91 @@ document.querySelectorAll('.update_order_done').forEach(el => {
         let form = e.target.closest('.update_order');
         let id = form.elements.id.value;
         let column = "done";
-        let order_done = $(form.order_done).prop("checked");
+        let order_done = $(e.target).prop("checked");
         updateRequest("o", id, column, order_done);
     })
 });
 
-document.querySelector('.del_phone').addEventListener("click", (e)=>{
-    e.preventDefault();
-    let id = $('.delete_form_p')[0].elements.id.value;
-    $(e.target.closest('tr')).remove();
-    deleteRequest(id, "c_p");
+document.querySelectorAll('.update_car_showing').forEach(el => {
+    el.addEventListener("click", (e) => {
+        let form = e.target.closest('.update_car');
+        let id = form.elements.id.value;
+        let column = "show_car";
+        let show_car = $(e.target).prop("checked");
+        updateRequest("ca", id, column, show_car);
+    })
 });
 
-document.querySelector('.del_email').addEventListener("click", (e)=>{
-    e.preventDefault();
-    let id = $('.delete_form_e')[0].elements.id.value;
-    $(e.target.closest('tr')).remove();
-    deleteRequest(id, "c_e");
+document.querySelectorAll('.del_phone').forEach(el => {
+    el.addEventListener("click", (e)=>{
+        e.preventDefault();
+        let id = $('.delete_form_p')[0].elements.id.value;
+        $(e.target.closest('tr')).remove();
+        deleteRequest(id, "c_p");
+    });
 });
 
-document.querySelector('.del_order').addEventListener("click", (e)=>{
-    e.preventDefault();
-    let id = $('.delete_form_o')[0].elements.id.value;
-    $(e.target.closest('tr')).remove();
-    deleteRequest(id, "o");
+document.querySelectorAll('.del_email').forEach(el => {
+    el.addEventListener("click", (e)=>{
+        e.preventDefault();
+        let id = $('.delete_form_e')[0].elements.id.value;
+        $(e.target.closest('tr')).remove();
+        deleteRequest(id, "c_e");
+    });
 });
 
-document.querySelector('.del_review').addEventListener("click", (e)=>{
-    e.preventDefault();
-    let id = $('.delete_form_r')[0].elements.id.value;
-    $(e.target.closest('tr')).remove();
-    deleteRequest(id, "r");
+document.querySelectorAll('.del_order').forEach(el => {
+    el.addEventListener("click", (e)=>{
+        e.preventDefault();
+        let id = $('.delete_form_o')[0].elements.id.value;
+        $(e.target.closest('tr')).remove();
+        deleteRequest(id, "o");
+    });
 });
 
-document.querySelector('.del_call').addEventListener("click", (e)=>{
-    e.preventDefault();
-    let id = $('.delete_form_c')[0].elements.id.value;
-    $(e.target.closest('tr')).remove();
-    deleteRequest(id, "c");
+document.querySelectorAll('.del_review').forEach(el => {
+    el.addEventListener("click", (e)=>{
+        e.preventDefault();
+        let id = $('.delete_form_r')[0].elements.id.value;
+        $(e.target.closest('tr')).remove();
+        deleteRequest(id, "r");
+    });
 });
 
-document.querySelector('.del_our_service').addEventListener("click", (e)=>{
-    e.preventDefault();
-    let id = $('.delete_form_o_s')[0].elements.id.value;
-    $(e.target.closest('tr')).remove();
-    deleteRequest(id, "o_s");
+document.querySelectorAll('.del_call').forEach(el => {
+    el.addEventListener("click", (e)=>{
+        e.preventDefault();
+        let id = $('.delete_form_c')[0].elements.id.value;
+        $(e.target.closest('tr')).remove();
+        deleteRequest(id, "c");
+    });
+});
+
+document.querySelectorAll('.del_our_service').forEach(el => {
+    el.addEventListener("click", (e)=>{
+        e.preventDefault();
+        let id = $('.delete_form_o_s')[0].elements.id.value;
+        $(e.target.closest('tr')).remove();
+        deleteRequest(id, "o_s");
+    });
+});
+
+document.querySelectorAll('.del_p_d').forEach(el => {
+    el.addEventListener("click", (e)=>{
+        e.preventDefault();
+        let id = $('.delete_form_p_d')[0].elements.id.value;
+        $(e.target.closest('tr')).remove();
+        deleteRequest(id, "p_d");
+    });
+});
+
+document.querySelectorAll('.del_car').forEach(el => {
+    el.addEventListener("click", (e)=>{
+        e.preventDefault();
+        let id = $('.delete_form_a')[0].elements.id.value;
+        $(e.target.closest('tr')).remove();
+        deleteRequest(id, "ca");
+    });
 });
 
 $('.edit_order').on("click", (e)=>{
@@ -147,6 +187,35 @@ $('.edit_order').on("click", (e)=>{
     form.addresses.value = addresses;
     form.id.value = id;
     $(form.done).prop("checked", done);
+});
+
+$('.edit_car').on("click", (e)=>{
+    let imgs_containter = $('.edit_car_imgs');
+    let form = document.querySelector('.edit_car_form').elements;
+    let data = $(e.target).closest('tr').find(' td ');
+    let id = $(e.target).nextAll(".delete_form_a:first")[0].id.value;
+    let name = data[0].textContent;
+    let locations = data[1].textContent.replace(/\s+/g, " ").trim().split(' ');
+    let passengers = data[2].textContent;
+    let main_image = data[3].firstChild.src;
+    let images = data[4].textContent.replace(/\s+/g, " ").trim().split(' ');
+    let imgs_element = '';
+    for(let i = 0; i < images.length; i++){
+        imgs_element += `<img class="car_image" src="./img/${images[i]}" alt="">`;
+    }
+    for(let i = 0; i < locations.length; i++){
+        $(`#locs option[value='${locations[i]}']`).prop('selected', true);
+    }
+    $(imgs_element).appendTo(imgs_containter);
+    let advantages = data[5].textContent;
+    let is_show = $(data[7].childNodes[1].is_showing).prop("checked");
+    form.name.value = name;
+    form.passengers.value = passengers;
+    form.advantages.value = advantages;
+    $('.edit_car_main_image').attr("src", main_image);
+    form.id.value = id;
+    $(form.show).prop("checked", is_show);
+
 });
 
 // document.querySelector('.edit_order').addEventListener("click", (e)=>{
@@ -182,9 +251,9 @@ const updateRequest = (table_name, id, column, value) => {
 }
 
 const getAddressesTextarea = (str) => {    
-    var split = str.split('\n');
-    var lines = [];
-    for (var i = 0; i < split.length; i++){
+    let split = str.split('\n');
+    let lines = [];
+    for (let i = 0; i < split.length; i++){
         if (split[i]){
             lines.push(split[i]);
         } 

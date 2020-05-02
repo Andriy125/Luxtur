@@ -21,6 +21,9 @@ function getTableName($str){
         case 'p_d':
             $table_name = "popular_directions";
             break;
+        case 'ca':
+            $table_name = "cars";
+            break;
             
         default:
             # code...

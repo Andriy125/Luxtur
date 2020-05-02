@@ -414,7 +414,7 @@ a{
     border: 1px solid #000;
     color: #fff;
     padding: 40px 15px;
-    top: 220px;
+    top: 50%;
 }
 .autopark_button:first-child{
     left: 0;
@@ -454,6 +454,8 @@ a{
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.13);
     border-radius: 6px;
     max-width: 450px;
+    min-height: 700px;
+    max-height: 700px;
     padding: 25px 25px 40px;
     margin-right: 65px;
     outline: none;
@@ -469,6 +471,10 @@ a{
 .auto_model{
     text-align: center;
     margin-bottom: 20px;
+}
+.auto_advantages{
+    max-height: 300px;
+    overflow-y: auto;
 }
 .auto__ul{
     margin-left: 60px;
@@ -1191,7 +1197,29 @@ input[type="radio"], input[type="checkbox"]  {
 
 
 
-
+.fotorama__nav-wrap, .fotorama__nav{
+    height: 50px;
+}
+.fotorama__dot, .fotorama__active .fotorama__dot{
+    width: 30px !important;
+    height: 30px !important;
+    margin-right: 30px;
+    border: 3px solid #FFD362;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.fotorama__dot:hover{
+    background-color: #FFD362;
+    cursor: pointer;
+}
+.fotorama__active .fotorama__dot{
+    background-color: #FFD362;
+}
+.fotorama__nav__frame{
+    margin-right: 30px;
+}
 
 
 

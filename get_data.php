@@ -12,7 +12,7 @@
     $result_calls = mysqli_query($con, "SELECT * FROM calls");
     $result_popular_directions = mysqli_query($con, "SELECT * FROM popular_directions");
     $result_our_services = mysqli_query($con, "SELECT * FROM our_service");
-    $result_car = mysqli_query($con, "SELECT * FROM car");
+    $result_cars = mysqli_query($con, "SELECT * FROM cars");
     $result_car_location = mysqli_query($con, "SELECT location FROM car_location");
 
     if (!$result_phones) {
@@ -39,5 +39,28 @@
     else if (!$result_our_services) {
         die('Неверный запрос: ' . $con->sqlstate);
     }
+    else if (!$result_cars) {
+        die('Неверный запрос: ' . $con->sqlstate);
+    }
+    else if (!$result_car_location) {
+        die('Неверный запрос: ' . $con->sqlstate);
+    }
     mysqli_close($con);
+    
+    $eu_car = [];
+    $ukr_car = [];
+    $all_car = [];
+    $all_locations = [];
+    while($row = mysqli_fetch_array($result_cars)){
+        if(strpos($row["location"], 'Україна') !== false){
+            $ukr_car[] = $row;
+        }
+        if (strpos($row["location"], 'Європа') !== false){
+            $eu_car[] = $row;
+        }
+        $all_car[] = $row;
+    }
+    while($row = mysqli_fetch_array($result_car_location)){
+        $all_locations[] = $row;
+    }
 ?>

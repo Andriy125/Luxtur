@@ -7,9 +7,11 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>LUX TUR</title>
+	<link  href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto&display=swap" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 	<script defer src="./js/all.js"></script>
+
 	<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
@@ -254,7 +256,43 @@
 					</div>
 				</div>
 				<div class="auto_slider">
-					<div class="auto_item ukr" id="auto_card">
+
+				<?php for($i = 0; $i < count($all_car); $i++): 
+					if($all_car[$i]["show_car"] == 0){
+						continue;
+					}
+				?>
+					<div class="auto_item 
+						<?php echo strpos($all_car[$i]["location"], "Європа") !== false ? "eu " : "";
+						echo strpos($all_car[$i]["location"], "Україна") !== false ? "ukr " : "";
+						?>" id="auto_card">
+						<div class="wrap_img_slider">
+							<div class="fotorama" data-width="500" data-maxwidth="100%" data-maxheight="230">
+							<img class="auto_item__img" src="<?php echo $all_car[$i]["main_image"];  ?>" alt="auto">
+							<?php 
+							$length_of_imgs = explode(" ", $all_car[$i]["images"]);
+							for($j = 0; $j < count($length_of_imgs) - 1; $j++): ?>
+								<img class="auto_item__img" src="<?php echo $length_of_imgs[$j]; ?>" alt="auto">
+							<?php endfor; ?>
+							</div>
+						</div>
+						<div class="auto_text">
+							<b class="auto_model"><?php echo $all_car[$i]["name"] ?></b>
+							<div class="auto_advantages">
+								<ul class="auto__ul">
+								<?php 
+								$length_of_adv = explode("\n", $all_car[$i]["advantages"]);
+								for($j = 0; $j < count($length_of_adv); $j++): ?>
+									<li class="auto__li"><?php echo $length_of_adv[$j]; ?></li>
+								<?php endfor; ?>
+								</ul>
+							</div>							
+						</div>
+					</div>
+				<?php endfor; ?>
+
+
+					<!-- <div class="auto_item eu" id="auto_card">
 						<div class="wrap_img_slider">
 							<div class="auto_img_slider">
 								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
@@ -274,95 +312,8 @@
 								<li class="auto__li">Зручні сидіння</li>
 							</ul>
 						</div>
-					</div>
+					</div> -->
 
-					<div class="auto_item ukr" id="auto_card">
-						<div class="wrap_img_slider">
-							<div class="auto_img_slider">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-							</div>
-						</div>
-
-						<div class="auto_text ">
-							<b class="auto_model">Mercedes-bens 519</b>
-							<ul class="auto__ul">
-								<li class="auto__li">Кількість місць: 20</li>
-								<li class="auto__li">Кондиціотер</li>
-								<li class="auto__li">ТV</li>
-								<li class="auto__li">Багажник</li>
-								<li class="auto__li">Зручні сидіння</li>
-							</ul>
-						</div>
-					</div>
-
-					<div class="auto_item eu" id="auto_card">
-						<div class="wrap_img_slider">
-							<div class="auto_img_slider">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-							</div>
-						</div>
-
-						<div class="auto_text">
-							<b class="auto_model">Mercedes-bens 519</b>
-							<ul class="auto__ul">
-								<li class="auto__li">Кількість місць: 20</li>
-								<li class="auto__li">Кондиціотер</li>
-								<li class="auto__li">ТV</li>
-								<li class="auto__li">Багажник</li>
-								<li class="auto__li">Зручні сидіння</li>
-							</ul>
-						</div>
-					</div>
-
-					<div class="auto_item eu" id="auto_card">
-						<div class="wrap_img_slider">
-							<div class="auto_img_slider">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-							</div>
-						</div>
-
-						<div class="auto_text">
-							<b class="auto_model">Mercedes-bens 519</b>
-							<ul class="auto__ul">
-								<li class="auto__li">Кількість місць: 20</li>
-								<li class="auto__li">Кондиціотер</li>
-								<li class="auto__li">ТV</li>
-								<li class="auto__li">Багажник</li>
-								<li class="auto__li">Зручні сидіння</li>
-							</ul>
-						</div>
-					</div>
-
-					<div class="auto_item eu" id="auto_card">
-						<div class="wrap_img_slider">
-							<div class="auto_img_slider">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-							</div>
-						</div>
-
-						<div class="auto_text">
-							<b class="auto_model">Mercedes-bens 519</b>
-							<ul class="auto__ul">
-								<li class="auto__li">Кількість місць: 20</li>
-								<li class="auto__li">Кондиціотер</li>
-								<li class="auto__li">ТV</li>
-								<li class="auto__li">Багажник</li>
-								<li class="auto__li">Зручні сидіння</li>
-							</ul>
-						</div>
-					</div>
 				</div>
 			</div>			
 		</div>
@@ -626,15 +577,17 @@
 	</div>
 
 	<script src="./js/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
 	<script src="./js/slick.min.js"></script>
     <script src="js/sendRequest.js"></script>
 	<script src="./js/logic.js"></script>
 	<script src="./js/sliders.js"></script>
 	<script src="./js/jquery.mask.js"></script>
 	<script src="./js/main.js"></script>
-	<!-- <script>
-		let count_passengers = Number($('.passenger_calc')[0].value);
-    	let uah_tariff = count_passengers <= 8 ? 7 : ;
-	</script> -->
+	<script>
+		let all_car_array = <?php echo json_encode($all_car); ?>;
+		let eu_car_array = <?php echo json_encode($eu_car); ?>;
+		let ukr_car_array = <?php echo json_encode($ukr_car); ?>;
+	</script>
 </body>
 </html>

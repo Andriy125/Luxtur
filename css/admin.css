@@ -10,6 +10,9 @@ body{
     background-color: #E6E6E6;
     position: relative;
 }
+ul{
+    list-style: none;
+}
 a{
     text-decoration: none;
     outline: none;
@@ -249,6 +252,24 @@ td{
     text-align: center;
     margin: 0 auto;
 }
+.img_auto_link{
+    color:black;
+    display: block;
+}
+.img_auto_link:hover{
+    color: #7bbe54;
+}
+.small_column{
+    width:50px;
+}
+.medium_column{
+    width:130px;
+}
+.advantages_column{
+    padding-left: 20px;
+    text-align: left;
+    min-width: 150px;
+}
 /* add form styles  */
 
 .form_container{
@@ -339,6 +360,20 @@ td{
     justify-content: center;
     align-items: center;
     margin: 15px 0;
+}
+
+.center_image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.edit_car_main_image{
+    width: 500px;
+}
+.car_image{
+    margin-bottom: 10px;
+    width: 500px;
 }
 /* input[type=checkbox]{
     display: none;
