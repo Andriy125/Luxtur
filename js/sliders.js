@@ -23,14 +23,14 @@ $('.modal_autopark_slider_lower').slick({
 });
 
 // слайдер автопарку в модальному вікні
-$('.modal_autopark_slider').slick({
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    fade: false,
-    asNavFor: '.modal_autopark_slider_lower',
-    nextArrow: '.modal_autopark__button-next',
-    prevArrow: '.modal_autopark__button-prev'
-});
+// $('.modal_autopark_slider').slick({
+//     slidesToShow: 1,
+//     slidesToScroll: 1,
+//     fade: false,
+//     asNavFor: '.modal_autopark_slider_lower',
+//     nextArrow: '.modal_autopark__button-next',
+//     prevArrow: '.modal_autopark__button-prev'
+// });
 
 // слайдер замовлення
 $('.slider_container').slick({

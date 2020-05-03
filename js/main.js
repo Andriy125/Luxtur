@@ -8,8 +8,8 @@ let card_slider = document.querySelector(".auto_img_slider");                   
 // Get the button that opens the modal
 let btn = document.getElementById("call");                                                  //  кнопка замовлення дзвінку
 let btn_review = document.getElementById("review_button");                                  //  кнопка додавання відгуку
-let btn_auto_card = document.querySelectorAll("#auto_card");                                //  карточки автопарку
-
+let btn_auto_card = document.querySelectorAll(".auto_item");                                //  карточки автопарку
+let fotorama = null;
 // Get the <span> element that closes the modal
 let span = document.getElementsByClassName("close")[0];                                     //  кнопка закриття форми замовлення дзвінка
 $('.all_info__input')[0].checked = false;                                                   //  встановлення кнопки "всі дані" в модальному вікні "розрахунки" по замовчування на офф
@@ -48,9 +48,28 @@ btn_review.onclick = function() {
     showModal(modal_review);
 }
 
-// btn_auto_card.forEach(el => el.onclick = function(){
-//     showModal(modal_autopark);
-// })
+btn_auto_card.forEach(el => el.onclick = function(){
+    if(fotorama){
+        fotorama.data('fotorama').destroy();
+        fotorama = null;
+    }
+    $('.modal_auto_img').remove();
+    let name = $(el).find('.auto_model')[0].textContent;
+    let index = $(el).find('input.index')[0].value;
+    let elements = '';
+    for(let i = 0; i < array_of_auto_imgs[index].length; i++){
+        elements += array_of_auto_imgs[index][i];
+    }
+    $('.modal_autopark__container h2').text(name);
+    $(elements).appendTo('.modal_autopark_slider');
+    fotorama = $('.modal_autopark_slider').fotorama({
+        width: 500,
+        maxwidth: '100%',
+        thumbmargin: 30,
+        nav: 'thumbs'
+    });
+    showModal(modal_autopark);    
+})
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {

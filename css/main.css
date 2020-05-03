@@ -929,11 +929,11 @@ a{
 
 .modal_autopark_wrapper{
     width: 620px;
-    margin: 15% auto;
+    margin: 7% auto;
 }
 .modal_autopark__container{
     background-color: #fff;
-    padding: 10px 50px 40px; 
+    padding: 10px 50px 20px; 
     text-align: center;
 }
 .modal_autopark_slider_wrap{
@@ -1196,7 +1196,9 @@ input[type="radio"], input[type="checkbox"]  {
 
 
 
-
+.modal_autopark_slider .fotorama__nav-wrap, .modal_autopark_slider .fotorama__nav{
+    height: 130px;
+}
 .fotorama__nav-wrap, .fotorama__nav{
     height: 50px;
 }
@@ -1217,7 +1219,7 @@ input[type="radio"], input[type="checkbox"]  {
 .fotorama__active .fotorama__dot{
     background-color: #FFD362;
 }
-.fotorama__nav__frame{
+.auto_item .fotorama__nav__frame{
     margin-right: 30px;
 }
 

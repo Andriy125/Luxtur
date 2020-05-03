@@ -193,38 +193,15 @@
 				<h2>Mercedes-bens 519</h2>
 				<div class="modal_autopark_slider_wrap">
 					<div class="modal_autopark_slider">
-						<img src="./img/auto_1.png" alt="auto">
-						<img src="./img/auto_1.png" alt="auto">
-						<img src="./img/auto_1.png" alt="auto">
-						<img src="./img/auto_1.png" alt="auto">
 					</div>
-					<div class="modal_autopark_buttons">
+					<!-- <div class="modal_autopark_buttons">
 						<div class="modal_autopark__button left btn yellow_button modal_autopark__button-prev">
 							<i class="fas fa-angle-left"></i>
 						</div>
 						<div class="modal_autopark__button slider_button__right right btn yellow_button modal_autopark__button-next">
 							<i class="fas fa-angle-left"></i>
 						</div>
-					</div>
-				</div>
-				<div class="modal_autopark_slider_lower">
-					
-					<div class="modal_autopark_slider_lower__item">
-						<img src="./img/auto_1.png" alt="auto">
-					</div>
-
-					<div class="modal_autopark_slider_lower__item">
-						<img src="./img/auto_1.png" alt="auto">
-					</div>
-
-					<div class="modal_autopark_slider_lower__item">
-						<img src="./img/auto_1.png" alt="auto">
-					</div>
-
-					<div class="modal_autopark_slider_lower__item">
-						<img src="./img/auto_1.png" alt="auto">
-					</div>
-
+					</div> -->
 				</div>
 			</div>
 		</div>
@@ -257,27 +234,41 @@
 				</div>
 				<div class="auto_slider">
 
-				<?php for($i = 0; $i < count($all_car); $i++): 
+				<?php 
+				$array_of_auto_imgs = [];
+				$k = -1;
+				for($i = 0; $i < count($all_car); $i++): 
+					$imgs_array = [];
+					$imgs_array[] = "<img class='auto_item__img modal_auto_img' src='".$all_car[$i]["main_image"] ."' alt='auto'>";
 					if($all_car[$i]["show_car"] == 0){
 						continue;
+					}
+					else{
+						$k++;
 					}
 				?>
 					<div class="auto_item 
 						<?php echo strpos($all_car[$i]["location"], "Європа") !== false ? "eu " : "";
 						echo strpos($all_car[$i]["location"], "Україна") !== false ? "ukr " : "";
 						?>" id="auto_card">
+						<input type="hidden" class="index" value="<?php echo $k; ?>">
 						<div class="wrap_img_slider">
-							<div class="fotorama" data-width="500" data-maxwidth="100%" data-maxheight="230">
+							<div class="fotorama" data-width="500" data-maxwidth="100%" data-loop="true" data-maxheight="230">
 							<img class="auto_item__img" src="<?php echo $all_car[$i]["main_image"];  ?>" alt="auto">
 							<?php 
 							$length_of_imgs = explode(" ", $all_car[$i]["images"]);
+							
 							for($j = 0; $j < count($length_of_imgs) - 1; $j++): ?>
 								<img class="auto_item__img" src="<?php echo $length_of_imgs[$j]; ?>" alt="auto">
-							<?php endfor; ?>
+							<?php 
+								$imgs_array[] = "<img class='auto_item__img modal_auto_img' src='". $length_of_imgs[$j] ."' alt='auto'>";							
+								endfor; 
+								$array_of_auto_imgs[] = $imgs_array;
+								?>
 							</div>
 						</div>
 						<div class="auto_text">
-							<b class="auto_model"><?php echo $all_car[$i]["name"] ?></b>
+							<b class="auto_model"><?php echo $all_car[$i]["name"]; ?></b>
 							<div class="auto_advantages">
 								<ul class="auto__ul">
 								<?php 
@@ -290,30 +281,6 @@
 						</div>
 					</div>
 				<?php endfor; ?>
-
-
-					<!-- <div class="auto_item eu" id="auto_card">
-						<div class="wrap_img_slider">
-							<div class="auto_img_slider">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-								<img class="auto_item__img" src="img/auto_1.png" alt="auto">
-							</div>
-						</div>
-
-						<div class="auto_text">
-							<b class="auto_model">Mercedes-bens 519</b>
-							<ul class="auto__ul">
-								<li class="auto__li">Кількість місць: 20</li>
-								<li class="auto__li">Кондиціотер</li>
-								<li class="auto__li">ТV</li>
-								<li class="auto__li">Багажник</li>
-								<li class="auto__li">Зручні сидіння</li>
-							</ul>
-						</div>
-					</div> -->
-
 				</div>
 			</div>			
 		</div>
@@ -588,6 +555,7 @@
 		let all_car_array = <?php echo json_encode($all_car); ?>;
 		let eu_car_array = <?php echo json_encode($eu_car); ?>;
 		let ukr_car_array = <?php echo json_encode($ukr_car); ?>;
+		let array_of_auto_imgs = <?php echo json_encode($array_of_auto_imgs); ?>;
 	</script>
 </body>
 </html>
