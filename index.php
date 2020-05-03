@@ -239,7 +239,7 @@
 				$k = -1;
 				for($i = 0; $i < count($all_car); $i++): 
 					$imgs_array = [];
-					$imgs_array[] = "<img class='auto_item__img modal_auto_img' src='".$all_car[$i]["main_image"] ."' alt='auto'>";
+					$imgs_array[] = "<img class='auto_item__img modal_autopark_img' src='".$all_car[$i]["main_image"] ."' alt='auto'>";
 					if($all_car[$i]["show_car"] == 0){
 						continue;
 					}
@@ -253,15 +253,15 @@
 						?>" id="auto_card">
 						<input type="hidden" class="index" value="<?php echo $k; ?>">
 						<div class="wrap_img_slider">
-							<div class="fotorama" data-width="500" data-maxwidth="100%" data-loop="true" data-maxheight="230">
+							<div class="fotorama" data-width="500" data-maxwidth="100%" data-loop="true" data-maxheight="230" >
 							<img class="auto_item__img" src="<?php echo $all_car[$i]["main_image"];  ?>" alt="auto">
 							<?php 
 							$length_of_imgs = explode(" ", $all_car[$i]["images"]);
 							
 							for($j = 0; $j < count($length_of_imgs) - 1; $j++): ?>
-								<img class="auto_item__img" src="<?php echo $length_of_imgs[$j]; ?>" alt="auto">
+								<img class="auto_item__img" src="<?php echo $length_of_imgs[$j]; ?>" alt="auto" >
 							<?php 
-								$imgs_array[] = "<img class='auto_item__img modal_auto_img' src='". $length_of_imgs[$j] ."' alt='auto'>";							
+								$imgs_array[] = "<img class='auto_item__img modal_autopark_img' src='". $length_of_imgs[$j] ."' alt='auto'>";							
 								endfor; 
 								$array_of_auto_imgs[] = $imgs_array;
 								?>
