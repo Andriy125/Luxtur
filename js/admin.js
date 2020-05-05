@@ -14,7 +14,7 @@ $(document).ready(function(){
         el.addEventListener('click', (e) => ShowContent(e, `id-${el.getAttribute('id')}`));
     });
 
-    $(localStorage.getItem('currentTab')).click();
+    $(localStorage.getItem('currentTab') || '#main').click();
     $('.phone').mask('+38 (000) 000 00 00', {placeholder: "Номер телефону"});
 });
 // закриття меню
@@ -54,6 +54,7 @@ const ShowContent = (e, name) => {
     
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(name).style.display = "block";
+    localStorage.setItem("currentTab", `#${e.target.closest('div').getAttribute('id')}`);
     $(e.currentTarget).toggleClass("active", true);
     $('.admin_main_title').html($(e.currentTarget).data("text"));
     CloseMenu();
@@ -436,6 +437,18 @@ document.querySelectorAll('.edit_phone').forEach(el => {
 });
 
 document.querySelectorAll('.edit_email').forEach(el => {
+    el.addEventListener("click", (e) => {
+        e.preventDefault();
+        let data = $(e.target.closest('tr')).find('td');
+        let id = $(data[2]).find('.delete_form_e')[0].elements.id.value;
+        let email = data[0].textContent;
+        let form = document.querySelector('.edit_email_form').elements;
+        form.id.value = id;
+        form.email.value = email;
+    })
+});
+
+document.querySelectorAll('.edit_review').forEach(el => {
     el.addEventListener("click", (e) => {
         e.preventDefault();
         let data = $(e.target.closest('tr')).find('td');

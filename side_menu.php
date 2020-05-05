@@ -21,7 +21,7 @@
                 Замовлення
             </h3> 
         </div>
-        <div id="edit_review" class="side_menu__item" data-text="Редагувати відгуки">
+        <div id="reviews" class="side_menu__item" data-text="Редагувати відгуки">
             <h3>
                 Редагувати відгуки
             </h3> 

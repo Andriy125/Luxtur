@@ -302,34 +302,59 @@
             </table>
         </div>
     </div>
-      
-    <div id="id-edit_review" class="tabcontent">
-        <div class="filter">
-            <div>
-                <label for="filter_review">Фільтрувати:</label>
-                <select id="filter_review" class="filter_review">
-                    <option value="all" selected>Всі</option>
-                    <option value="showed">Опубліковані</option>
-                    <option value="hidden">Приховані</option>
-                </select>
-            </div>
-        </div>
 
-        <div class="sort">
-            <div>
-            <label for="sort_review">Сортування:</label>
-                <select id="sort_review" class="sort_review">
-                    <?php 
-                        while($row = mysqli_fetch_array($sort_review_options)){
-                            if($row['Field'] !== "show_review" && $row['Field'] !== "id")
-                            echo '<option value="'. $row['Field'] .'">'. $row['Field'] .'</option>';
-                        }
-                    ?>
-                </select>
-            </div>
+    <div id="id-edit_car" class="tabcontent">
+        <div class="form_container">
+            <form class="edit_review_form" >
+                <input type="hidden" name="id">                            
+                <input placeholder="Введіть ім'я..." type="text" name="name" >                
+                <input placeholder="Введіть email..." type="email" name="email">           
+                <textarea class="order_addresses" name="review" placeholder="Введіть переваги..." cols="30" rows="10"></textarea>  
+
+                <div class="done_block">
+                    <label for="is_show">Відображати</label>
+                    <input id="is_show" type="checkbox" name="show_review">
+                 </div>
+
+                <div class="submit_block">
+                    <button type="submit" class="add_button">Відредагувати</button>
+                    <a id="reviews" class="add_button another" data-text="Редагувати відгуки">Назад</a>
+                </div>
+            </form>
         </div>
-        
+    </div>
+
+    <div id="id-reviews" class="tabcontent">        
         <div class="content_container">
+            <div class="add_block">
+                <div id="add_review" class="another">
+                    <h3>
+                        <a class="add_link">Додати Відгук</a> 
+                    </h3> 
+                </div>
+            </div>
+            <div class="filter">
+                <div>
+                    <label for="filter_review">Фільтрувати:</label>
+                    <select id="filter_review" class="filter_review">
+                        <option value="all" selected>Всі</option>
+                        <option value="showed">Опубліковані</option>
+                        <option value="hidden">Приховані</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="sort">
+                <div>
+                <label for="sort_review">Сортування:</label>
+                    <select id="sort_review" class="sort_review">
+                        <?php while($row = mysqli_fetch_array($sort_review_options)){
+                                if($row['Field'] !== "show_review" && $row['Field'] !== "id")
+                                echo '<option value="'. $row['Field'] .'">'. $row['Field'] .'</option>';
+                            }?>
+                    </select>
+                </div>
+            </div>
             <table class="review_table">
                 <tr>
                     <th class="column">Ім'я</th>
@@ -354,6 +379,7 @@
                             </form>
                         </td>
                         <td>
+                            <a id="edit_review" class="edit_button edit_review another" data-text="Редагувати автопарк">Редагувати</a>
                             <form class="delete_form_r">
                                 <input type="hidden" name="id" value="<?php echo $row["id"]?>">
                             </form>
