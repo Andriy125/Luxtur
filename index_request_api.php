@@ -23,6 +23,20 @@
         }
 
     }
+    else  if (isset($_POST['e_p_d'])) {
+        $id = $_POST["id"];
+        // Get text
+        $image_text = mysqli_real_escape_string($db, $_POST['text']);
+        $sql = "Update popular_directions SET image = '$image', text = '$image_text' WHERE id = ". $id ."";
+        // execute query
+        mysqli_query($db, $sql);
+
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
+            $msg = "Image uploaded successfully";
+        }else{
+            $msg = "Failed to upload image";
+        }
+    }
     else if (isset($_POST['o_s'])) {
         // Get text
         $text = mysqli_real_escape_string($db, $_POST['text']);
@@ -36,7 +50,21 @@
         }else{
             $msg = "Failed to upload image";
         }
+    }
+    else if (isset($_POST['e_o_s'])) {
+        $id = $_POST["id"];
+        // Get text
+        $text = mysqli_real_escape_string($db, $_POST['text']);
+        $title = mysqli_real_escape_string($db, $_POST['title']);
+        $sql = "UPDATE our_service SET image = '$image', title = '$title', text = '$text' WHERE id = ". $id ."";
+        // execute query
+        mysqli_query($db, $sql);
 
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
+            $msg = "Image uploaded successfully";
+        }else{
+            $msg = "Failed to upload image";
+        }
     }
     else if (isset($_POST['car'])) {
         // Get text

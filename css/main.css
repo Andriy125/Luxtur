@@ -676,7 +676,7 @@ a{
 }
 .review{
     background-color: rgba(0, 0, 0, 0.5);
-    padding: 20px 2% 30px;
+    padding: 20px 1% 30px;
 }
 .review__title{
     font-family: 'Open Sans';

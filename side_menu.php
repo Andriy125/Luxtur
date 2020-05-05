@@ -36,14 +36,14 @@
                 Редагувати замовлення дзвінків
             </h3> 
         </div>
-        <div id="edit_our_service" class="side_menu__item" data-text='Редагувати "Наші послуги"'>
+        <div id="our_service" class="side_menu__item" data-text="Наші послуги">
             <h3>
-                Редагувати "Наші послуги"
+                Наші послуги
             </h3> 
         </div>
-        <div id="edit_popular_directions" class="side_menu__item" data-text='Редагувати "Популярні напрямки"'>
+        <div id="popular_directions" class="side_menu__item" data-text="Популярні напрямки">
             <h3>
-                Редагувати "Популярні напрямки"
+                Популярні напрямки
             </h3> 
         </div>
         <div id="edit_contacts" class="side_menu__item" data-text="Редагувати контакти">

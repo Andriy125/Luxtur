@@ -31,6 +31,9 @@
                         <td><?php echo $row["email"]?></td>
                         <td><?php echo $row["date_time"]?></td>
                         <td>
+                            <!-- <div id="edit_call" data-text="Редагувати Замовлення дзвінків" class="another">
+                                <a class="edit_button">Редагувати</a>
+                            </div> -->
                             <form class="delete_form_c">
                                 <input type="hidden" name="id" value="<?php echo $row["id"]?>">
                             </form>
@@ -43,6 +46,26 @@
         </div>
     </div>
 
+    <div id="id-edit_popular_directions" class="tabcontent">
+        <div class="form_container">
+            <form class="edit_popular_directions_form" method="POST" action="admin.php" enctype="multipart/form-data">
+                <input type="hidden" name="e_p_d">                
+                <input type="hidden" name="id">                
+                <input placeholder="Введіть назву місця..." type="text" name="text" required>
+                <div class="center_image">
+                    <img class="edit_p_d_img" src="" alt="">
+                    <input type="file" name="image" accept=".png, .jpg, .jpeg">                
+                </div>                
+                <div class="submit_block">
+                    <button type="submit" class="add_button">Відредагувати</button>
+                    <div id="popular_directions" class="another" data-text="Популярні напрямки">
+                        <a class="add_button">Назад</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="id-add_popular_directions" class="tabcontent">
         <div class="form_container">
             <form class="add_popular_directions_form" method="POST" action="admin.php" enctype="multipart/form-data">
@@ -51,16 +74,18 @@
                 <input type="file" name="image" accept=".png, .jpg, .jpeg">                
                 <div class="submit_block">
                     <button type="submit" class="add_button">Додати</button>
-                    <a id="edit_popular_directions" class="add_button another" data-text='Редагувати "Популярні напрямки"'>Назад</a>
+                    <div id="popular_directions" class="another" data-text="Популярні напрямки">
+                        <a class="add_button ">Назад</a>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
 
-    <div id="id-edit_popular_directions" class="tabcontent">
+    <div id="id-popular_directions" class="tabcontent">
         <div class="content_container">
             <div class="add_block">
-                <div id="add_popular_directions" class="another">
+                <div id="add_popular_directions" data-text='Додати новий блок в "Популярні напрямки"' class="another">
                     <h3>
                         <a class="add_link">Додати новий блок в "Популярні напрямки"</a> 
                     </h3> 
@@ -79,6 +104,9 @@
                         <td><?php echo $row["text"]?></td>
                         <td><?php echo $row["date_time"]?></td>
                         <td>
+                            <div id="edit_popular_directions" data-text='Редагувати блок "Популярні напрямки"' class="another">
+                                <a class="edit_button edit_p_d">Редагувати</a>
+                            </div>
                             <form class="delete_form_p_d">
                                 <input type="hidden" name="id" value="<?php echo $row["id"]?>">
                             </form>
@@ -90,28 +118,50 @@
         </div>
     </div>
 
+    <div id="id-edit_our_service" class="tabcontent">
+        <div class="form_container">
+            <form class="edit_our_service_form" method="POST" action="admin.php" enctype="multipart/form-data">
+                <input type="hidden" name="e_o_s">                
+                <input type="hidden" name="id">                
+                <input placeholder="Введіть заголовок..." type="text" name="title" required>  
+                <div class="center_image">
+                    <img class="e_o_s_img" src="" alt="">
+                    <input type="file" name="image" accept=".png, .jpg, .jpeg">                    
+                </div>                
+                <textarea placeholder="Введіть текст..." class="order_addresses" name="text" required></textarea>            
+                <div class="submit_block">
+                    <button type="submit" class="add_button">Відредагувати</button>
+                    <div id="our_service" class="another"  data-text="Наші послуги">
+                        <a class="add_button">Назад</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="id-add_our_service" class="tabcontent">
         <div class="form_container">
             <form class="add_popular_directions_form" method="POST" action="admin.php" enctype="multipart/form-data">
                 <input type="hidden" name="o_s">                
                 <input placeholder="Введіть заголовок..." type="text" name="title" required>                
                 <textarea placeholder="Введіть текст..." class="order_addresses" name="text" required></textarea>               
-                <input type="file" name="image" accept=".png, .jpg, .jpeg">                
+                <input type="file" name="image" accept=".png, .jpg, .jpeg" required>                
                 <div class="submit_block">
                     <button type="submit" class="add_button">Додати</button>
-                    <a id="edit_our_service" class="add_button another" data-text='Редагувати "Наші послуги"'>Назад</a>
+                    <div id="our_service" class="another" data-text="Наші послуги">
+                        <a class="add_button">Назад</a>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
-
-    <div id="id-edit_our_service" class="tabcontent">
-
+    
+    <div id="id-our_service" class="tabcontent">
         <div class="content_container">
             <div class="add_block">
-                <div id="add_our_service" class="another">
+                <div id="add_our_service" data-text="Додати новий блок в Наші послуги" class="another">
                     <h3>
-                        <a class="add_link">Додати новий блок в "Наші послуги"</a> 
+                        <a class="add_link">Додати новий блок в Наші послуги</a> 
                     </h3> 
                 </div>
             </div>
@@ -130,6 +180,9 @@
                     <td class="wide_cell"><?php echo $row["text"]?></td>
                     <td><?php echo $row["date_time"]?></td>
                     <td class="actions_col">
+                        <div id="edit_our_service" data-text="Редагувати Наші послуги" class="another">
+                            <a class="edit_button edit_o_s">Редагувати</a>
+                        </div>
                         <form class="delete_form_o_s">
                             <input type="hidden" name="id" value="<?php echo $row["id"]?>">
                         </form>
@@ -291,7 +344,9 @@
                                 </form>
                             </td>
                             <td>
-                                <a id="edit_order" class="edit_button edit_order another">Редагувати</a>
+                                <div id="edit_order" data-text="Редагувати Замовлення" class="another">
+                                    <a class="edit_button edit_order ">Редагувати</a>
+                                </div>
                                 <form class="delete_form_o">
                                     <input type="hidden" name="id" value="<?php echo $order["id"]?>">
                                 </form>
@@ -303,13 +358,31 @@
         </div>
     </div>
 
-    <div id="id-edit_car" class="tabcontent">
+    <div id="id-add_review" class="tabcontent">
+        <div class="form_container">
+            <form class="add_review_form" >                           
+                <input placeholder="Введіть ім'я..." type="text" name="name" required>                
+                <input placeholder="Введіть email..." type="email" name="email" required>           
+                <textarea class="order_addresses" name="review" placeholder="Введіть відгук..." cols="30" rows="10" required></textarea>
+                <div class="done_block">
+                    <label for="is_show">Відображати</label>
+                    <input id="is_show" type="checkbox" name="show_review">
+                 </div>
+                <div class="submit_block">
+                    <button type="submit" class="add_button">Додати</button>
+                    <a id="reviews" class="add_button another" data-text="Редагувати відгуки">Назад</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="id-edit_review" class="tabcontent">
         <div class="form_container">
             <form class="edit_review_form" >
                 <input type="hidden" name="id">                            
-                <input placeholder="Введіть ім'я..." type="text" name="name" >                
-                <input placeholder="Введіть email..." type="email" name="email">           
-                <textarea class="order_addresses" name="review" placeholder="Введіть переваги..." cols="30" rows="10"></textarea>  
+                <input placeholder="Введіть ім'я..." type="text" name="name" required>                
+                <input placeholder="Введіть email..." type="email" name="email" required>           
+                <textarea class="order_addresses" name="review" placeholder="Введіть відгук..." cols="30" rows="10" required></textarea>  
 
                 <div class="done_block">
                     <label for="is_show">Відображати</label>
@@ -324,10 +397,10 @@
         </div>
     </div>
 
-    <div id="id-reviews" class="tabcontent">        
+    <div id="id-reviews" class="tabcontent">
         <div class="content_container">
             <div class="add_block">
-                <div id="add_review" class="another">
+                <div id="add_review" data-text="Додати Відгук" class="another">
                     <h3>
                         <a class="add_link">Додати Відгук</a> 
                     </h3> 
@@ -365,7 +438,6 @@
                     <th class="column">Дії</th>
                 </tr>
                 
-                <!-- TODO: filter, CRUD, done or not -->
                 <?php while($row = mysqli_fetch_array($result_reviews)):?>
                     <?php echo $row["show_review"] ? '<tr class="all showed">' : '<tr class="all hidden">'; ?>
                         <td><?php echo $row["name"]?></td>
@@ -375,11 +447,17 @@
                         <td>
                             <form class="update_review">
                                 <input type="hidden" name="id" value="<?php echo $row["id"]?>">
-                                <?php echo $row["show_review"] ?  '<input type="checkbox" class="update_review_showing" name="is_showing" checked>'    :  '<input type="checkbox" class="update_review_showing" name="is_showing">' ?>
+                                <?php $checkbox = '<input type="checkbox" class="update_review_showing" name="is_showing" ';
+                                   $checkbox .= $row["show_review"] ?  'checked>': '>';
+                                    echo $checkbox;
+                                ?>
                             </form>
                         </td>
                         <td>
-                            <a id="edit_review" class="edit_button edit_review another" data-text="Редагувати автопарк">Редагувати</a>
+                            <div id="edit_review" data-text="Редагувати відгуки" class="another">
+                                <a class="edit_button edit_review" >Редагувати</a>
+                            </div>
+                            
                             <form class="delete_form_r">
                                 <input type="hidden" name="id" value="<?php echo $row["id"]?>">
                             </form>
@@ -632,7 +710,9 @@
                         <td><?php echo $row["email"]?></td>
                         <td><?php echo $row["date_time"]?></td>
                         <td>
-                            <a id="edit_email" class="edit_button edit_email another">Редагувати</a>
+                        <div id="edit_email" data-text="Редагувати Email" class="another">
+                            <a class="edit_button edit_email">Редагувати</a>
+                        </div>
                             <form class="delete_form_e">
                                 <input type="hidden" name="id" value="<?php echo $row["id"]?>">
                             </form>
@@ -678,7 +758,9 @@
                         <td><?php echo ucfirst($row["social_media"])?></td>
                         <td><?php echo $row["date_time"]?></td>
                         <td>
-                            <a id="edit_phone" class="edit_button edit_phone another">Редагувати</a>
+                        <div id="edit_phone" data-text="Редагувати Телефон" class="another">
+                            <a class="edit_button edit_phone">Редагувати</a>
+                        </div>
                             <form class="delete_form_p">
                                 <input type="hidden" name="id" value="<?php echo $row["id"]?>">
                             </form>

@@ -22,6 +22,9 @@
     else if(isset($_POST["insert_c_p"])){
         insertPhoneQuery();
     }
+    else if(isset($_POST["insert"])){
+        insertQuery();
+    }
     // else if (isset($_POST["get_data"])) {
     //     getData();
     // }

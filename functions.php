@@ -31,9 +31,6 @@ function getTableName($str){
     }
     return $table_name;
 }    
-function error($msg){
-    echo $msg;
-}
 function insertOrder(){
     $conn = mysqli_connect('localhost', 'root', '', 'luxtur');
     if (!$conn) {
@@ -41,15 +38,15 @@ function insertOrder(){
     }
     $table = getTableName($_POST["table"]);
 
-    // $result_columns = mysqli_query($conn, "SHOW COLUMNS FROM ". $table ."");
-    // $columns = "";
-    // while($row = mysqli_fetch_array($result_columns)){
-    //     if($row["Field"] !== "id" && $row["Field"] !== "date_time"){
-    //         $columns .= $row["Field"] . " ";
-    //     }
-    // }
-    // $columns = trim($columns, " ");
-    // $columns = str_replace (" ", ", ", $columns);
+    $result_columns = mysqli_query($conn, "SHOW COLUMNS FROM ". $table ."");
+    $columns = "";
+    while($row = mysqli_fetch_array($result_columns)){
+        if($row["Field"] !== "id" && $row["Field"] !== "date_time"){
+            $columns .= $row["Field"] . " ";
+        }
+    }
+    $columns = trim($columns, " ");
+    $columns = str_replace (" ", ", ", $columns);
 
     $name = $_POST["name"];
     $phone = $_POST["phone"];
@@ -74,6 +71,44 @@ function insertOrder(){
         $sql = "Insert INTO ". $table ." (name, phone, email, addresses, date, time, car, goBack, passengers, price) VALUES ('". $data ."', ". $goBack .", ". $passenger_count .", ". $price .")";
     }
     $result = mysqli_query($conn, $sql);
+    if (!$result) {
+        die('Неверный запрос: ' . $conn->sqlstate);
+    }
+    mysqli_close($conn);       
+}
+function insertQuery(){
+    $conn = mysqli_connect('localhost', 'root', '', 'luxtur');
+    if (!$conn) {
+        die('Ошибка соединения: ' . mysql_error());
+    }
+    $table = getTableName($_POST["table"]);
+
+    $result_columns = mysqli_query($conn, "SHOW COLUMNS FROM ". $table ."");
+    $columns = "";
+    while($row = mysqli_fetch_array($result_columns)){
+        if($row["Field"] !== "id" && $row["Field"] !== "date_time"){
+            $columns .= $row["Field"] . " ";
+        }
+    }
+    $columns = trim($columns, " ");
+    $columns = str_replace (" ", ", ", $columns);
+    $value = $_POST["value"];
+    $sql = "";
+    $query = "";
+    for($i = 0; $i < count($value); $i++){
+        if($value[$i]["type"] == "string"){
+            $query .= "'" . $value[$i]["value"] . "'";
+        }
+        else if($value[$i]["type"] == "number"){
+            $query .= $value[$i]["value"];
+        }
+        if($i !== count($value) - 1){
+            $query .= ", ";
+        }         
+    }
+    $sql = "Insert INTO ". $table ." (". $columns .") VALUES (". $query .")";
+    echo $sql;
+    //$result = mysqli_query($conn, $sql);
     if (!$result) {
         die('Неверный запрос: ' . $conn->sqlstate);
     }
@@ -199,18 +234,4 @@ function insertPhoneQuery(){
     $result = mysqli_query($conn, "Insert INTO ". $table ." ( phone, operator, social_media ) VALUES ('$phone', '$operator', '$social_media')");
     mysqli_close($conn);
 }
-// function getData(){
-//     $conn = mysqli_connect('localhost', 'root', '', 'luxtur');
-//     if (!$conn) {
-//         die('Ошибка соединения: ' . mysql_error());
-//     }
-//     $id = $_POST["id"];
-//     $table = getTableName($_POST["table"]);
-//     $get_data_obj = mysqli_query($conn, "SELECT * FROM ". $table ." WHERE ID = ". $id ."");
-//     if (!$get_data_obj) {
-//         die('Неверный запрос: ' . $conn->sqlstate);
-//     }
-//     mysqli_close($conn);
-// }
-
 ?>
