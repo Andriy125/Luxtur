@@ -14,7 +14,7 @@ $(document).ready(function(){
         el.addEventListener('click', (e) => ShowContent(e, `id-${el.getAttribute('id')}`));
     });
 
-    $('#add_phone').click();
+    $(localStorage.getItem('currentTab')).click();
     $('.phone').mask('+38 (000) 000 00 00', {placeholder: "Номер телефону"});
 });
 // закриття меню
@@ -23,8 +23,8 @@ const CloseMenu = () => {
 }
 
 const redirect = (selector) => {
-    sendRequest({"reload": true});
-    $(selector).click();       
+    $(selector).click(); 
+    localStorage.setItem('currentTab', selector);      
 }
 
 //  очищення полів форми
@@ -231,20 +231,6 @@ $('.edit_car').on("click", (e)=>{
 
 });
 
-// document.querySelector('.edit_order').addEventListener("click", (e)=>{
-//     let id = e.target.value;
-//     getRequest(id, "o");
-// });
-
-// const getRequest = (id, table_name) => {
-//     let data = {};
-//     data["id"] = id;
-//     data["get_data"] = true;
-//     data["table"] = table_name;
-//     let res = sendRequest(data);
-//     console.log(res);
-// }
-
 const deleteRequest = (id, table_name) => {
     let data = {};
     data["id"] = id;
@@ -253,14 +239,14 @@ const deleteRequest = (id, table_name) => {
     sendRequest(data);
 }
 
-const updateRequest = (table_name, id, column, value) => {
+const updateRequest = (table_name, id, column, value, currTab="") => {
     let data = {};
     data["id"] = id;
     data["update"] = true;
     data["table"] = table_name;
     data["value"] = value;
     data["column"] = column;
-    sendRequest(data);
+    sendRequest(data, currTab);
 }
 
 const getAddressesTextarea = (str) => {    
@@ -334,7 +320,7 @@ document.querySelector('.add_order_form').addEventListener("submit", (e) => {
     $(e.target).find("input, textarea").val("");
     e.target.goBack.value = "one";
     e.target.done.value = false;
-    sendRequest(data);
+    sendRequest(data, '#orders');
 });
 
 document.querySelector('.edit_order_form').addEventListener("submit", (e) => {
@@ -368,7 +354,7 @@ document.querySelector('.edit_order_form').addEventListener("submit", (e) => {
     $(e.target).find("input, textarea").val("");
     e.target.goBack.value = "one";
     e.target.done.value = false;
-    sendRequest(data);
+    sendRequest(data, '#orders');
 });
 
 document.querySelector('.add_email_form').addEventListener("submit", (e) => {
@@ -377,7 +363,7 @@ document.querySelector('.add_email_form').addEventListener("submit", (e) => {
     data["insert_email"] = true;
     data["table"] = "c_e";
     data["email"] = e.target.elements.email.value;
-    sendRequest(data);
+    sendRequest(data, '#edit_contacts');
     clearFormInputs(e.target);
 }); 
 
@@ -399,7 +385,7 @@ document.querySelector('.add_phone_form').addEventListener("submit", (e) => {
     data["phone"] = phone;
     data["social_media"] = social_media;
     data["table"] = "c_p";
-    sendRequest(data);
+    sendRequest(data, '#edit_contacts');
     clearFormInputs(e.target);
 }); 
 
@@ -407,8 +393,8 @@ document.querySelector('.edit_email_form').addEventListener("submit", (e) => {
     //  послідовно задавати масив значень відповідно до таблиці
     e.preventDefault();
     let id = e.target.elements.id.value;
-    updateRequest("c_e", id, "email", e.target.elements.email.value);
-    redirect('#edit_contacts');
+    //redirect('#edit_contacts');
+    updateRequest("c_e", id, "email", e.target.elements.email.value, '#edit_contacts');
     clearFormInputs(e.target);
 }); 
 
@@ -429,8 +415,7 @@ document.querySelector('.edit_phone_form').addEventListener("submit", (e) => {
     data["id"] = e.target.elements.id.value;
     data["value"] = [{type: "string", value: phone}, {type: "string", value: operator}, {type: "string", value: social_media}]
     data["table"] = "c_p";
-    redirect('#edit_contacts');
-    sendRequest(data);
+    sendRequest(data, '#edit_contacts');
     clearFormInputs(e.target);
 }); 
 
