@@ -11,7 +11,6 @@
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto&display=swap" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 	<script defer src="./js/all.js"></script>
-
 	<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
@@ -521,10 +520,10 @@
 				<div class="contacts_text">	
 					<ul class="contacts_text__list">
 					<?php foreach ($result_phones as $value) {
-							if($value["operator"] == "Kyivstar"){
+							if($value["operator"] == "kyivstar"){
 								echo strtolower($value["social_media"]) == "viber" ?'<li><a href="tel:'. $value["phone"] .'" class="contacts_mail__link">'. $value["phone"] .'</a><img src="img/Kyivstar-white-1-1 1.png" alt="kyivstar"><img src="img/viber_PNG15 1.png" alt="viber"></li>' : '<li><a href="tel:'. $value["phone"] .'" class="contacts_mail__link">'. $value["phone"] .'</a><img src="img/Kyivstar-white-1-1 1.png" alt="kyivstar"></li>';
 							}
-							else if($value["operator"] == "Vodaphone"){
+							else if($value["operator"] == "vodafone"){
 								echo strtolower($value["social_media"]) == "viber" 
 								?'<li><a href="tel:'. $value["phone"] .'" class="contacts_mail__link">'. $value["phone"] .' </a><img src="img/vodapfhone.png" alt="vodaphone"><img src="img/viber_PNG15 1.png" alt="viber"></li>' 
 								: '<li><a href="tel:'. $value["phone"] .'" class="contacts_mail__link">'. $value["phone"] .' </a><img src="img/vodapfhone.png" alt="vodaphone"></li>';

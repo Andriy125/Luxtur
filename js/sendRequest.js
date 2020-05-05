@@ -5,7 +5,7 @@ const sendRequest = (data) => {
         type: "POST",
         data: JSON.parse(JSON.stringify(data)),    
         success: function (response) {
-            alert("Все пройшло вдало!");
+            //alert("Все пройшло вдало!");
             console.log(response);
             location.reload(true);
         },

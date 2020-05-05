@@ -8,45 +8,45 @@
         </div>
     </div>
     <div class="side_menu__content">
-        <div id="main" class="side_menu__item">
+        <div id="main" class="side_menu__item" data-text="Головна">
             <h3>Головна</h3>
         </div>
-        <div id="edit_price" class="side_menu__item">
+        <div id="edit_price" class="side_menu__item" data-text="Редагувати ціни">
             <h3>
                 Редагувати ціни
             </h3> 
         </div>
-        <div id="orders" class="side_menu__item">
+        <div id="orders" class="side_menu__item" data-text="Замовлення">
             <h3>
                 Замовлення
             </h3> 
         </div>
-        <div id="edit_review" class="side_menu__item">
+        <div id="edit_review" class="side_menu__item" data-text="Редагувати відгуки">
             <h3>
                 Редагувати відгуки
             </h3> 
         </div>
-        <div id="edit_autopark" class="side_menu__item">
+        <div id="edit_autopark" class="side_menu__item" data-text="Редагувати автопарк">
             <h3>
                 Редагувати автопарк
             </h3> 
         </div>
-        <div id="edit_calls" class="side_menu__item">
+        <div id="edit_calls" class="side_menu__item" data-text="Редагувати замовлення дзвінків">
             <h3>
                 Редагувати замовлення дзвінків
             </h3> 
         </div>
-        <div id="edit_our_service" class="side_menu__item">
+        <div id="edit_our_service" class="side_menu__item" data-text='Редагувати "Наші послуги"'>
             <h3>
                 Редагувати "Наші послуги"
             </h3> 
         </div>
-        <div id="edit_popular_directions" class="side_menu__item">
+        <div id="edit_popular_directions" class="side_menu__item" data-text='Редагувати "Популярні напрямки"'>
             <h3>
                 Редагувати "Популярні напрямки"
             </h3> 
         </div>
-        <div id="edit_contacts" class="side_menu__item">
+        <div id="edit_contacts" class="side_menu__item" data-text="Редагувати контакти">
             <h3>
                 Редагувати контакти
             </h3> 

@@ -14,12 +14,25 @@ $(document).ready(function(){
         el.addEventListener('click', (e) => ShowContent(e, `id-${el.getAttribute('id')}`));
     });
 
-    $('#edit_autopark').click();
+    $('#add_phone').click();
     $('.phone').mask('+38 (000) 000 00 00', {placeholder: "Номер телефону"});
 });
 // закриття меню
 const CloseMenu = () => {
     $('.side_menu').toggleClass('active', false);
+}
+
+const redirect = (selector) => {
+    sendRequest({"reload": true});
+    $(selector).click();       
+}
+
+//  очищення полів форми
+const clearFormInputs = (form) => {
+    $(form).find('input, textarea').val("");
+    $(form).find('select').forEach(el => 
+        $(el).find('option:first').prop('selected', true)
+    );
 }
 
 // відображення контенту після натискання на пункт меню 
@@ -42,7 +55,7 @@ const ShowContent = (e, name) => {
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(name).style.display = "block";
     $(e.currentTarget).toggleClass("active", true);
-    $('.admin_main_title').html($(e.currentTarget).text());
+    $('.admin_main_title').html($(e.currentTarget).data("text"));
     CloseMenu();
 }
 
@@ -91,7 +104,7 @@ document.querySelectorAll('.update_car_showing').forEach(el => {
 document.querySelectorAll('.del_phone').forEach(el => {
     el.addEventListener("click", (e)=>{
         e.preventDefault();
-        let id = $('.delete_form_p')[0].elements.id.value;
+        let id = $(e.target.closest('td')).find('.delete_form_p')[0].elements.id.value;
         $(e.target.closest('tr')).remove();
         deleteRequest(id, "c_p");
     });
@@ -100,7 +113,7 @@ document.querySelectorAll('.del_phone').forEach(el => {
 document.querySelectorAll('.del_email').forEach(el => {
     el.addEventListener("click", (e)=>{
         e.preventDefault();
-        let id = $('.delete_form_e')[0].elements.id.value;
+        let id = $(e.target.closest("td")).find('.delete_form_e')[0].elements.id.value;
         $(e.target.closest('tr')).remove();
         deleteRequest(id, "c_e");
     });
@@ -109,7 +122,7 @@ document.querySelectorAll('.del_email').forEach(el => {
 document.querySelectorAll('.del_order').forEach(el => {
     el.addEventListener("click", (e)=>{
         e.preventDefault();
-        let id = $('.delete_form_o')[0].elements.id.value;
+        let id = $(e.target.closest('td')).find('.delete_form_o')[0].elements.id.value;
         $(e.target.closest('tr')).remove();
         deleteRequest(id, "o");
     });
@@ -118,7 +131,7 @@ document.querySelectorAll('.del_order').forEach(el => {
 document.querySelectorAll('.del_review').forEach(el => {
     el.addEventListener("click", (e)=>{
         e.preventDefault();
-        let id = $('.delete_form_r')[0].elements.id.value;
+        let id = $(e.target.closest('td')).find('.delete_form_r')[0].elements.id.value;
         $(e.target.closest('tr')).remove();
         deleteRequest(id, "r");
     });
@@ -127,7 +140,7 @@ document.querySelectorAll('.del_review').forEach(el => {
 document.querySelectorAll('.del_call').forEach(el => {
     el.addEventListener("click", (e)=>{
         e.preventDefault();
-        let id = $('.delete_form_c')[0].elements.id.value;
+        let id = $(e.target.closest('td')).find('.delete_form_c')[0].elements.id.value;
         $(e.target.closest('tr')).remove();
         deleteRequest(id, "c");
     });
@@ -136,7 +149,7 @@ document.querySelectorAll('.del_call').forEach(el => {
 document.querySelectorAll('.del_our_service').forEach(el => {
     el.addEventListener("click", (e)=>{
         e.preventDefault();
-        let id = $('.delete_form_o_s')[0].elements.id.value;
+        let id = $(e.target.closest('td')).find('.delete_form_o_s')[0].elements.id.value;
         $(e.target.closest('tr')).remove();
         deleteRequest(id, "o_s");
     });
@@ -145,7 +158,7 @@ document.querySelectorAll('.del_our_service').forEach(el => {
 document.querySelectorAll('.del_p_d').forEach(el => {
     el.addEventListener("click", (e)=>{
         e.preventDefault();
-        let id = $('.delete_form_p_d')[0].elements.id.value;
+        let id = $(e.target.closest('td')).find('.delete_form_p_d')[0].elements.id.value;
         $(e.target.closest('tr')).remove();
         deleteRequest(id, "p_d");
     });
@@ -154,7 +167,7 @@ document.querySelectorAll('.del_p_d').forEach(el => {
 document.querySelectorAll('.del_car').forEach(el => {
     el.addEventListener("click", (e)=>{
         e.preventDefault();
-        let id = $('.delete_form_a')[0].elements.id.value;
+        let id = $(e.target.closest('td')).find('.delete_form_a')[0].elements.id.value;
         $(e.target.closest('tr')).remove();
         deleteRequest(id, "ca");
     });
@@ -356,4 +369,95 @@ document.querySelector('.edit_order_form').addEventListener("submit", (e) => {
     e.target.goBack.value = "one";
     e.target.done.value = false;
     sendRequest(data);
+});
+
+document.querySelector('.add_email_form').addEventListener("submit", (e) => {
+    e.preventDefault();
+    let data = {};
+    data["insert_email"] = true;
+    data["table"] = "c_e";
+    data["email"] = e.target.elements.email.value;
+    sendRequest(data);
+    clearFormInputs(e.target);
+}); 
+
+document.querySelector('.add_phone_form').addEventListener("submit", (e) => {
+    e.preventDefault();
+    let data = {};
+    let social_media = "";
+    let phone = e.target.elements.phone.value;
+    let operator = e.target.elements.operator.value;
+    let social_media_array = e.target.elements["social_media[]"].selectedOptions;
+    for(let i = 0; i < social_media_array.length; i++){
+        social_media += social_media_array[i].value;
+        if(i < social_media_array.length - 1){
+            social_media += " ";
+        }
+    }
+    data["insert_c_p"] = true;
+    data["operator"] = operator;
+    data["phone"] = phone;
+    data["social_media"] = social_media;
+    data["table"] = "c_p";
+    sendRequest(data);
+    clearFormInputs(e.target);
+}); 
+
+document.querySelector('.edit_email_form').addEventListener("submit", (e) => {
+    //  послідовно задавати масив значень відповідно до таблиці
+    e.preventDefault();
+    let id = e.target.elements.id.value;
+    updateRequest("c_e", id, "email", e.target.elements.email.value);
+    redirect('#edit_contacts');
+    clearFormInputs(e.target);
+}); 
+
+document.querySelector('.edit_phone_form').addEventListener("submit", (e) => {
+    e.preventDefault();
+    let data = {};
+    let social_media = "";
+    let phone = e.target.elements.phone.value;
+    let operator = e.target.elements.operator.value;
+    let social_media_array = e.target.elements["social_media[]"].selectedOptions;
+    for(let i = 0; i < social_media_array.length; i++){
+        social_media += social_media_array[i].value;
+        if(i < social_media_array.length - 1){
+            social_media += " ";
+        }
+    }
+    data["update"] = true;
+    data["id"] = e.target.elements.id.value;
+    data["value"] = [{type: "string", value: phone}, {type: "string", value: operator}, {type: "string", value: social_media}]
+    data["table"] = "c_p";
+    redirect('#edit_contacts');
+    sendRequest(data);
+    clearFormInputs(e.target);
+}); 
+
+document.querySelectorAll('.edit_phone').forEach(el => {
+    el.addEventListener("click", (e) => {
+        e.preventDefault();
+        let data = $(e.target.closest('tr')).find('td');
+        let id = $(data[4]).find('.delete_form_p')[0].elements.id.value;
+        let phone = data[0].textContent;
+        let operator = data[1].textContent;
+        let social_media = data[2].textContent == "" ? " " : data[2].textContent.toLowerCase().split(" ");
+        let form = document.querySelector('.edit_phone_form').elements;
+        form.id.value = id;
+        form.phone.value = phone;
+        form.operator.value = operator.toLowerCase();
+        $(form["social_media[]"]).val(social_media);
+    })
+});
+
+document.querySelectorAll('.edit_email').forEach(el => {
+    el.addEventListener("click", (e) => {
+        e.preventDefault();
+        let data = $(e.target.closest('tr')).find('td');
+        let id = $(data[2]).find('.delete_form_e')[0].elements.id.value;
+        let email = data[0].textContent;
+        let form = document.querySelector('.edit_email_form').elements;
+        form.id.value = id;
+        form.email.value = email;
+    })
 });

@@ -1,12 +1,9 @@
 <?php 
     include 'get_data.php';
     include "index_request_api.php";
-
 ?>
     <?php include "header.php";?>
     <?php include "side_menu.php";?>
-
-
 
     <div id="id-main" class="tabcontent">
         <!-- <h3>Головна</h3> -->
@@ -54,6 +51,7 @@
                 <input type="file" name="image" accept=".png, .jpg, .jpeg">                
                 <div class="submit_block">
                     <button type="submit" class="add_button">Додати</button>
+                    <a id="edit_popular_directions" class="add_button another" data-text='Редагувати "Популярні напрямки"'>Назад</a>
                 </div>
             </form>
         </div>
@@ -101,6 +99,7 @@
                 <input type="file" name="image" accept=".png, .jpg, .jpeg">                
                 <div class="submit_block">
                     <button type="submit" class="add_button">Додати</button>
+                    <a id="edit_our_service" class="add_button another" data-text='Редагувати "Наші послуги"'>Назад</a>
                 </div>
             </form>
         </div>
@@ -178,9 +177,9 @@
                  </div>
                 <div class="submit_block">
                     <button id="orders" type="submit" class="add_button another">Відредагувати</button>
+                    <a id="orders" class="add_button another" data-text="Замовлення">Назад</a>
                 </div>
             </form>
-            <button id="orders" class="add_button another">Назад</button>
         </div>
     </div>
 
@@ -219,6 +218,7 @@
                  </div>
                 <div class="submit_block">
                     <button type="submit" class="add_button">Додати</button>
+                    <a id="orders" class="add_button another" data-text="Замовлення">Назад</a>
                 </div>
             </form>
         </div>
@@ -395,9 +395,9 @@
 
                 <div class="submit_block">
                     <button type="submit" class="add_button">Відредагувати</button>
+                    <a id="edit_autopark" class="add_button another" data-text="Редагувати автопарк">Назад</a>
                 </div>
             </form>
-            <button id="edit_autopark" class="add_button another">Назад</button>
         </div>
     </div>
 
@@ -421,8 +421,10 @@
                  </div>
                 <div class="submit_block">
                     <button type="submit" class="add_button">Додати</button>
+                    <a id="edit_autopark" class="add_button another" data-text="Редагувати автопарк">Назад</a>
                 </div>
             </form>
+
         </div>
     </div>
 
@@ -497,9 +499,102 @@
         </div>
     </div>
 
+    <div id="id-edit_phone" class="tabcontent">
+        <div class="form_container">
+            <form class="edit_phone_form"> 
+                <input type="hidden" name="id"> 
+                <input type="tel" class="phone" name="phone" required> 
+                <div>
+                    <h2>Оператор</h2>
+                    <select name="operator" required>
+                        <?php for($i = 0; $i < count($converted_phone_operators); $i++): ?>
+                            <option value="<?php echo strtolower($converted_phone_operators[$i]["name"]); ?>"><?php echo $converted_phone_operators[$i]["name"]; ?></option>
+                        <?php endfor;?>
+                    </select>  
+                </div>            
+                <div>
+                    <h2>Соціальні мережі</h2>
+                    <select name="social_media[]" multiple required>
+                        <option value=" ">-Нічого-</option>
+                        <?php for($i = 0; $i < count($converted_phone_social_media); $i++): ?>
+                            <option value="<?php echo strtolower($converted_phone_social_media[$i]["name"]); ?>"><?php echo $converted_phone_social_media[$i]["name"]; ?></option>
+                        <?php endfor;?>
+                    </select>  
+                </div>             
+                <div class="submit_block">
+                    <button type="submit" class="add_button">Відредагувати</button>
+                    <a id="edit_contacts" class="add_button another" data-text="Редагувати контакти">Назад</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="id-edit_email" class="tabcontent">
+        <div class="form_container">
+            <form class="edit_email_form">    
+                <input type="hidden" name="id"> 
+                <input placeholder="Введіть email..." type="email" name="email" required>
+                <div class="submit_block">
+                    <button type="submit" class="add_button">Відредагувати</button>
+                    <a id="edit_contacts" class="add_button another" data-text="Редагувати контакти">Назад</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <div id="id-add_phone" class="tabcontent">
+        <div class="form_container">
+            <form class="add_phone_form">            
+                <input type="tel" class="phone" name="phone" required> 
+                <div>
+                    <h2>Оператор</h2>
+                    <select name="operator" required>
+                        <?php for($i = 0; $i < count($converted_phone_operators); $i++): ?>
+                            <option value="<?php echo strtolower($converted_phone_operators[$i]["name"]); ?>"><?php echo $converted_phone_operators[$i]["name"]; ?></option>
+                        <?php endfor;?>
+                    </select>  
+                </div>            
+                <div>
+                    <h2>Соціальні мережі</h2>
+                    <select name="social_media[]" multiple required>
+                        <option value="" selected>-Нічого-</option>
+                        <?php for($i = 0; $i < count($converted_phone_social_media); $i++): ?>
+                            <option value="<?php echo $converted_phone_social_media[$i]["name"]; ?>"><?php echo $converted_phone_social_media[$i]["name"]; ?></option>
+                        <?php endfor;?>
+                    </select>  
+                </div>             
+                <div class="submit_block">
+                    <button type="submit" class="add_button">Додати</button>
+                    <a id="edit_contacts" class="add_button another" data-text="Редагувати контакти">Назад</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="id-add_email" class="tabcontent">
+        <div class="form_container">
+            <form class="add_email_form">            
+                <input placeholder="Введіть email..." type="email" name="email" required>
+                <div class="submit_block">
+                    <button type="submit" class="add_button">Додати</button>
+                    <a id="edit_contacts" class="add_button another" data-text="Редагувати контакти">Назад</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
     <div id="id-edit_contacts" class="tabcontent">
         <div class="content_container">
             <div class="table_container">
+                <div class="add_block">
+                    <div id="add_email" class="another" data-text="Додати Email">
+                        <h3>
+                            <a class="add_link">Додати Email</a> 
+                        </h3> 
+                    </div>
+                </div>
                 <table class="email_table">
                     <tr>
                        <th class="column">Email</th>
@@ -511,6 +606,7 @@
                         <td><?php echo $row["email"]?></td>
                         <td><?php echo $row["date_time"]?></td>
                         <td>
+                            <a id="edit_email" class="edit_button edit_email another">Редагувати</a>
                             <form class="delete_form_e">
                                 <input type="hidden" name="id" value="<?php echo $row["id"]?>">
                             </form>
@@ -522,6 +618,13 @@
             </div>
 
             <div class="table_container">
+                <div class="add_block">
+                    <div id="add_phone" class="another" data-text="Додати телефон">
+                        <h3>
+                            <a class="add_link">Додати телефон</a> 
+                        </h3> 
+                    </div>
+                </div>
                 <table class="phone_table">
                     <tr>
                        <th class="column">Номер телефону</th>
@@ -545,10 +648,11 @@
                         echo '<tr class="'. $classList .'">'; 
                     ?>
                         <td><?php echo $row["phone"]?></td>
-                        <td><?php echo $row["operator"]?></td>
-                        <td><?php echo strtoupper($row["social_media"])?></td>
+                        <td><?php echo ucfirst($row["operator"]);?></td>
+                        <td><?php echo ucfirst($row["social_media"])?></td>
                         <td><?php echo $row["date_time"]?></td>
                         <td>
+                            <a id="edit_phone" class="edit_button edit_phone another">Редагувати</a>
                             <form class="delete_form_p">
                                 <input type="hidden" name="id" value="<?php echo $row["id"]?>">
                             </form>
