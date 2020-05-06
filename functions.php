@@ -93,22 +93,26 @@ function insertQuery(){
     $columns = trim($columns, " ");
     $columns = str_replace (" ", ", ", $columns);
     $value = $_POST["value"];
-    $sql = "";
     $query = "";
-    for($i = 0; $i < count($value); $i++){
-        if($value[$i]["type"] == "string"){
-            $query .= "'" . $value[$i]["value"] . "'";
+    $sql = "";
+    if(is_array($value)){
+        for($i = 0; $i < count($value); $i++){
+            if($value[$i]["type"] == "string"){
+                $query .= "'" . $value[$i]["value"] . "'";
+            }
+            else if($value[$i]["type"] == "number"){
+                $query .= $value[$i]["value"];
+            }
+            if($i !== count($value) - 1){
+                $query .= ", ";
+            }         
         }
-        else if($value[$i]["type"] == "number"){
-            $query .= $value[$i]["value"];
-        }
-        if($i !== count($value) - 1){
-            $query .= ", ";
-        }         
+        $sql = "Insert INTO ". $table ." (". $columns .") VALUES (". $query .")";
     }
-    $sql = "Insert INTO ". $table ." (". $columns .") VALUES (". $query .")";
-    echo $sql;
-    //$result = mysqli_query($conn, $sql);
+    else{
+        $sql = "Insert INTO ". $table ." (". $columns .") VALUES (". $value .")";
+    }
+    $result = mysqli_query($conn, $sql);
     if (!$result) {
         die('Неверный запрос: ' . $conn->sqlstate);
     }
@@ -220,18 +224,6 @@ function insertEmailQuery(){
     $table = getTableName($_POST["table"]);
     $email = $_POST["email"];
     $result = mysqli_query($conn, "Insert INTO ". $table ." ( email ) VALUES ('". $email ."')");
-    mysqli_close($conn);
-}
-function insertPhoneQuery(){
-    $conn = mysqli_connect('localhost', 'root', '', 'luxtur');
-    if (!$conn) {
-        die('Ошибка соединения: ' . mysql_error());
-    }
-    $table = getTableName($_POST["table"]);
-    $phone = $_POST["phone"];
-    $operator = $_POST["operator"];
-    $social_media = $_POST["social_media"];
-    $result = mysqli_query($conn, "Insert INTO ". $table ." ( phone, operator, social_media ) VALUES ('$phone', '$operator', '$social_media')");
     mysqli_close($conn);
 }
 ?>

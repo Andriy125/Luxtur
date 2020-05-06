@@ -16,21 +16,10 @@
     else if(isset($_POST["delete"])){
         deleteQuery();
     }
-    else if(isset($_POST["insert_email"])){
-        insertEmailQuery();
-    }
-    else if(isset($_POST["insert_c_p"])){
-        insertPhoneQuery();
-    }
     else if(isset($_POST["insert"])){
         insertQuery();
     }
-    // else if (isset($_POST["get_data"])) {
-    //     getData();
-    // }
     else{
         error("Something went wrong!");
     }
-
-
 ?>

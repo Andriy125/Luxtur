@@ -26,7 +26,6 @@ const CloseMenu = () => {
 }
 
 const redirect = (selector) => {
-    $(selector).click(); 
     localStorage.setItem('currentTab', selector);      
 }
 
@@ -364,9 +363,9 @@ document.querySelector('.edit_order_form').addEventListener("submit", (e) => {
 document.querySelector('.add_email_form').addEventListener("submit", (e) => {
     e.preventDefault();
     let data = {};
-    data["insert_email"] = true;
+    data["insert"] = true;
     data["table"] = "c_e";
-    data["email"] = e.target.elements.email.value;
+    data["value"] = e.target.elements.email.value;
     sendRequest(data, '#edit_contacts');
     clearFormInputs(e.target);
 }); 
@@ -375,8 +374,8 @@ document.querySelector('.add_phone_form').addEventListener("submit", (e) => {
     e.preventDefault();
     let data = {};
     let social_media = "";
-    let phone = e.target.elements.phone.value;
-    let operator = e.target.elements.operator.value;
+    let phone = {type: "string", value: e.target.elements.phone.value};
+    let operator = {type: "string", value: e.target.elements.operator.value};
     let social_media_array = e.target.elements["social_media[]"].selectedOptions;
     for(let i = 0; i < social_media_array.length; i++){
         social_media += social_media_array[i].value;
@@ -384,10 +383,9 @@ document.querySelector('.add_phone_form').addEventListener("submit", (e) => {
             social_media += " ";
         }
     }
-    data["insert_c_p"] = true;
-    data["operator"] = operator;
-    data["phone"] = phone;
-    data["social_media"] = social_media;
+    let soc_media = {type: "string", value: social_media};
+    data["insert"] = true;
+    data["value"] = [phone, operator, soc_media];
     data["table"] = "c_p";
     sendRequest(data, '#edit_contacts');
     clearFormInputs(e.target);
@@ -397,7 +395,8 @@ document.querySelector('.edit_email_form').addEventListener("submit", (e) => {
     //  послідовно задавати масив значень відповідно до таблиці
     e.preventDefault();
     let id = e.target.elements.id.value;
-    updateRequest("c_e", id, "email", e.target.elements.email.value, '#edit_contacts');
+    let email = e.target.elements.email.value;
+    updateRequest("c_e", id, "email", email, '#edit_contacts');
     clearFormInputs(e.target);
 }); 
 
@@ -405,8 +404,8 @@ document.querySelector('.edit_phone_form').addEventListener("submit", (e) => {
     e.preventDefault();
     let data = {};
     let social_media = "";
-    let phone = e.target.elements.phone.value;
-    let operator = e.target.elements.operator.value;
+    let phone = {type: "string", value: e.target.elements.phone.value};
+    let operator = {type: "string", value: e.target.elements.operator.value};
     let social_media_array = e.target.elements["social_media[]"].selectedOptions;
     for(let i = 0; i < social_media_array.length; i++){
         social_media += social_media_array[i].value;
@@ -414,9 +413,10 @@ document.querySelector('.edit_phone_form').addEventListener("submit", (e) => {
             social_media += " ";
         }
     }
+    let soc_media = {type: "string", value: social_media}
     data["update"] = true;
     data["id"] = e.target.elements.id.value;
-    data["value"] = [{type: "string", value: phone}, {type: "string", value: operator}, {type: "string", value: social_media}]
+    data["value"] = [phone, operator, soc_media];
     data["table"] = "c_p";
     sendRequest(data, '#edit_contacts');
     clearFormInputs(e.target);
@@ -526,4 +526,45 @@ document.querySelectorAll('.edit_p_d').forEach(el => {
         form.id.value = id;
         form.text.value = text;
     })
+});
+
+document.querySelector('.edit_call_form').addEventListener("submit", (e) => {
+    e.preventDefault();
+    let data = {};
+    let id = e.target.elements.id.value;
+    let email = {type:"string", value: e.target.elements.email.value};
+    let name = {type:"string", value: e.target.elements.name.value};
+    let phone = {type:"string", value: e.target.elements.phone.value};
+    data["update"] = true;
+    data["id"] = id;
+    data["value"] = [name, phone, email];
+    data["table"] = "c";
+    sendRequest(data, '#calls');
+}); 
+
+document.querySelector('.add_call_form').addEventListener("submit", (e) => {
+    e.preventDefault();
+    let data = {};
+    let email = {type:"string", value: e.target.elements.email.value};
+    let name = {type:"string", value: e.target.elements.name.value};
+    let phone = {type:"string", value: e.target.elements.phone.value};
+    data["insert"] = true;
+    data["value"] = [name, phone, email];
+    data["table"] = "c";
+    sendRequest(data, '#calls');
+}); 
+
+document.querySelectorAll('.edit_call').forEach(el => {
+    el.addEventListener("click", (e) => {
+        let data = $(e.target.closest('tr')).find('td');
+        let id = $(data[4]).find('.delete_form_c')[0].elements.id.value;
+        let name = data[0].textContent;
+        let phone = data[1].textContent;
+        let email = data[2].textContent;
+        let form = document.querySelector('.edit_call_form').elements;
+        form.id.value = id;
+        form.name.value = name;
+        form.phone.value = phone;
+        form.email.value = email;
+    });
 });

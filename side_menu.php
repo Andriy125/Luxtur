@@ -31,9 +31,9 @@
                 Редагувати автопарк
             </h3> 
         </div>
-        <div id="edit_calls" class="side_menu__item" data-text="Редагувати замовлення дзвінків">
+        <div id="calls" class="side_menu__item" data-text="Замовлення дзвінків">
             <h3>
-                Редагувати замовлення дзвінків
+                Замовлення дзвінків
             </h3> 
         </div>
         <div id="our_service" class="side_menu__item" data-text="Наші послуги">

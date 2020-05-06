@@ -13,9 +13,49 @@
         <!-- <h3>Редагувати Ціни</h3> -->
     </div>
 
-    <div id="id-edit_calls" class="tabcontent">
+    <div id="id-edit_call" class="tabcontent">
+        <div class="form_container">
+            <form class="edit_call_form">            
+                <input type="hidden" name="id">
+                <input type="text" placeholder="Введіть ім'я..." name="name" required>
+				<input type="text" name="phone" class="phone" required>
+				<input type="email" name="email" placeholder="Введіть E-mail..." required>                       
+                <div class="submit_block">
+                    <button type="submit" class="add_button">Відредагувати</button>
+                    <div id="calls" class="another" data-text="Замовлення дзвінків">
+                        <a class="add_button">Назад</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="id-add_call" class="tabcontent">
+        <div class="form_container">
+        <form class="add_call_form">            
+                <input type="text" placeholder="Введіть ім'я..." name="name" required>
+				<input type="text" name="phone" class="phone" required>
+				<input type="email" name="email" placeholder="Введіть E-mail..." required>                       
+                <div class="submit_block">
+                    <button type="submit" class="add_button">Додати</button>
+                    <div id="calls" class="another" data-text="Замовлення дзвінків">
+                        <a class="add_button">Назад</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="id-calls" class="tabcontent">
         <div class="content_container">
             <div class="table_container">
+                <div class="add_block">
+                    <div id="add_call" data-text="Додати Замовлення дзвінка" class="another">
+                        <h3>
+                            <a class="add_link">Додати Замовлення дзвінка</a> 
+                        </h3> 
+                    </div>
+                </div>  
                 <table class="email_table">
                     <tr>
                        <th class="column">Ім'я</th>
@@ -31,9 +71,9 @@
                         <td><?php echo $row["email"]?></td>
                         <td><?php echo $row["date_time"]?></td>
                         <td>
-                            <!-- <div id="edit_call" data-text="Редагувати Замовлення дзвінків" class="another">
-                                <a class="edit_button">Редагувати</a>
-                            </div> -->
+                            <div id="edit_call" data-text="Редагувати Замовлення дзвінків" class="another">
+                                <a class="edit_button edit_call">Редагувати</a>
+                            </div> 
                             <form class="delete_form_c">
                                 <input type="hidden" name="id" value="<?php echo $row["id"]?>">
                             </form>
