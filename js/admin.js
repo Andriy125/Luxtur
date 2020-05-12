@@ -32,9 +32,7 @@ const redirect = (selector) => {
 //  очищення полів форми
 const clearFormInputs = (form) => {
     $(form).find('input, textarea').val("");
-    $(form).find('select').forEach(el => 
-        $(el).find('option:first').prop('selected', true)
-    );
+    $(form).find('select').find('option:first').prop('selected', true);
 }
 
 // відображення контенту після натискання на пункт меню 
@@ -209,7 +207,8 @@ document.querySelectorAll('.del_car').forEach(el => {
 
 $('.edit_order').on("click", (e)=>{
     let data = $(e.target).closest('tr').find(' td ');
-    let id = $(e.target).nextAll(".delete_form_o:first")[0].id.value;
+    let update_form = $(data[10]).find(".update_order")[0].elements;
+    let id = update_form.id.value;
     let name = data[0].textContent;
     let phone = data[1].textContent;
     let email = data[2].textContent;
@@ -220,7 +219,7 @@ $('.edit_order').on("click", (e)=>{
     let passengers = data[6].textContent;
     let car = data[7].textContent;
     let price = parseInt(data[8].textContent);
-    let done = $(data[9].childNodes[1].order_done).prop("checked");
+    let done = $(update_form.order_done).prop("checked");
     let form = document.querySelector('.edit_order_form').elements;
     form.name.value = name;
     form.phone.value = phone;
@@ -321,9 +320,6 @@ document.querySelector('.add_order_form').addEventListener("submit", (e) => {
     data["done"] = done;
     data["add_order"] = true;
     data["table"] = "o";
-    $(e.target).find("input, textarea").val("");
-    e.target.goBack.value = "one";
-    e.target.done.value = false;
     sendRequest(data, '#orders');
 });
 
@@ -346,17 +342,12 @@ document.querySelector('.edit_order_form').addEventListener("submit", (e) => {
     let car = {type:"string", value: form.car.value};
     let price = {type:"number", value: Number(form.price.value)};
     let done = {type:"number", value: $(form.done).prop("checked") == true ? 1 : 0};
-    let addresses = {type:"array", value: getAddressesTextarea(form.addresses.value)};
-    let values = [name, phone, email, date, time, goBack, passengers, car, price, done, addresses];
-    let columns = ["name", "phone", "email", "date", "time", "goBack", "passengers", "car", "price", "done", "addresses"];
+    let addresses = {type:"string", value: getAddressesTextarea(form.addresses.value).join(' -> ')};
+    let values = [name, phone, email, addresses, goBack, date, time, passengers, car, price, done];
     data["id"] = id;
     data["value"] = values;
-    data["column"] = columns;
     data["update"] = true;
     data["table"] = "o";
-    $(e.target).find("input, textarea").val("");
-    e.target.goBack.value = "one";
-    e.target.done.value = false;
     sendRequest(data, '#orders');
 });
 
@@ -429,7 +420,7 @@ document.querySelectorAll('.edit_phone').forEach(el => {
         let id = $(data[4]).find('.delete_form_p')[0].elements.id.value;
         let phone = data[0].textContent;
         let operator = data[1].textContent;
-        let social_media = data[2].textContent == "" ? " " : data[2].textContent.toLowerCase().split(" ");
+        let social_media = data[2].textContent.trim() == "" ? " " : data[2].textContent.toLowerCase().split(" ");
         let form = document.querySelector('.edit_phone_form').elements;
         form.id.value = id;
         form.phone.value = phone;

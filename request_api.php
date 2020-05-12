@@ -4,12 +4,6 @@
     if(isset($_POST["add_order"])){
         insertOrder();
     }   
-    else if(isset($_POST["is_call"])){
-        getCall();
-    }
-    else if(isset($_POST["is_review"])){
-        getReview();
-    }
     else if(isset($_POST["update"])){
         updateQuery();
     }

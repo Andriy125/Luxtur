@@ -10,7 +10,14 @@
     </div>
 
     <div id="id-edit_price" class="tabcontent">
-        <!-- <h3>Редагувати Ціни</h3> -->
+        <div class="content_container">
+            <h2>Ціна за км:</h2>
+            <ul>
+                <?php for($i = 0; $i < count($all_locations); $i++): ?>
+                <li><?php echo  $all_locations[$i]["location"];?> - </li>
+                <?php endfor; ?>
+            </ul>
+        </div>
     </div>
 
     <div id="id-edit_call" class="tabcontent">
@@ -260,17 +267,25 @@
                         <input class="input_time" type="time" name="time" required>
                     </div>
                 </div>
-
                 <input placeholder="Введіть кількість пасажирів..." type="number" min="1" name="passengers" required>
-                <input placeholder="Введіть назву автобуса..." type="text" name="car" required>
+                <div class="direction_block">
+                    <label for="direction">Автобус</label>
+                    <select id="direction" name="car"  required>
+                        <?php for($j = 0; $j < count($all_car); $j++): ?>
+                        <option value="<?php echo $all_car[$j]["name"];?>"><?php echo $all_car[$j]["name"];?></option>
+                        <?php endfor;?>
+                    </select>
+                </div>
                 <input placeholder="Введіть ціну..." type="number" min="0" name="price" required>
                 <div class="done_block">
                     <label for="is_done">Виконано</label>
                     <input id="is_done" type="checkbox" name="done">
                  </div>
                 <div class="submit_block">
-                    <button id="orders" type="submit" class="add_button another">Відредагувати</button>
-                    <a id="orders" class="add_button another" data-text="Замовлення">Назад</a>
+                    <button type="submit" class="add_button">Відредагувати</button>
+                    <div id="orders" class="another" data-text="Замовлення">
+                        <a class="add_button">Назад</a>
+                    </div>
                 </div>
             </form>
         </div>
@@ -303,7 +318,14 @@
                 </div>
 
                 <input placeholder="Введіть кількість пасажирів..." type="number" min="1" name="passengers" required>
-                <input placeholder="Введіть назву автобуса..." type="text" name="car" required>
+                <div class="direction_block">
+                    <label for="direction">Автобус</label>
+                    <select id="direction" name="car"  required>
+                        <?php for($j = 0; $j < count($all_car); $j++): ?>
+                        <option value="<?php echo $all_car[$j]["name"];?>"><?php echo $all_car[$j]["name"];?></option>
+                        <?php endfor;?>
+                    </select>
+                </div>
                 <input placeholder="Введіть ціну..." type="number" min="0" name="price" required>
                 <div class="done_block">
                     <label for="is_done">Виконано</label>
@@ -311,7 +333,9 @@
                  </div>
                 <div class="submit_block">
                     <button type="submit" class="add_button">Додати</button>
-                    <a id="orders" class="add_button another" data-text="Замовлення">Назад</a>
+                    <div id="orders" class="another" data-text="Замовлення">
+                        <a class="add_button">Назад</a>
+                    </div>
                 </div>
             </form>
         </div>
@@ -320,7 +344,7 @@
     <div id="id-orders" class="tabcontent">
         <div class="content_container">
             <div class="add_block">
-                <div id="add_order" class="another">
+                <div id="add_order" data-text="Додати замовлення" class="another">
                     <h3>
                         <a class="add_link">Додати замовлення</a> 
                     </h3> 
@@ -667,7 +691,9 @@
                 </div>             
                 <div class="submit_block">
                     <button type="submit" class="add_button">Відредагувати</button>
-                    <a id="edit_contacts" class="add_button another" data-text="Редагувати контакти">Назад</a>
+                    <div id="edit_contacts" class="another" data-text="Редагувати контакти">
+                        <a class="add_button">Назад</a>
+                    </div>
                 </div>
             </form>
         </div>
@@ -680,7 +706,9 @@
                 <input placeholder="Введіть email..." type="email" name="email" required>
                 <div class="submit_block">
                     <button type="submit" class="add_button">Відредагувати</button>
-                    <a id="edit_contacts" class="add_button another" data-text="Редагувати контакти">Назад</a>
+                    <div id="edit_contacts" class="add_button" data-text="Редагувати контакти">
+                        <a class="add_button">Назад</a>
+                    </div>
                 </div>
             </form>
 
@@ -710,7 +738,9 @@
                 </div>             
                 <div class="submit_block">
                     <button type="submit" class="add_button">Додати</button>
-                    <a id="edit_contacts" class="add_button another" data-text="Редагувати контакти">Назад</a>
+                    <div id="edit_contacts" class="another" data-text="Редагувати контакти">
+                        <a class="add_button">Назад</a>
+                    </div>
                 </div>
             </form>
         </div>
@@ -722,7 +752,9 @@
                 <input placeholder="Введіть email..." type="email" name="email" required>
                 <div class="submit_block">
                     <button type="submit" class="add_button">Додати</button>
-                    <a id="edit_contacts" class="add_button another" data-text="Редагувати контакти">Назад</a>
+                    <div id="edit_contacts" class="add_button" data-text="Редагувати контакти">
+                        <a class="add_button">Назад</a>
+                    </div>
                 </div>
             </form>
 

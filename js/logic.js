@@ -324,15 +324,15 @@ const checkPhone = (value) => {
 //  обробник відправки форми відгуки (в модальному вікні)
 document.querySelector('.form_review').addEventListener('submit', (e)=>{
     e.preventDefault();
-    name = e.target.elements.name.value;
-    if(!checkName(name)){
+    let name = {type:"string", value: e.target.elements.name.value};
+    let email = {type:"string", value: e.target.elements.email.value};
+    let review = {type:"string", value: e.target.elements.review.value};
+    if(!checkName(name.value)){
         return;
     }
     let review = {};
-    review["name"] = name;
-    review["email"] = e.target.elements.email.value;
-    review["review"] = e.target.elements.review.value;
-    review["is_review"] = true;
+    review["value"] = [name, email, review, {type:"number", value: 0}];
+    review["insert"] = true;
     sendRequest(review);
     e.target.elements.name.value = e.target.elements.review.value = e.target.elements.email.value = "";
     $('#modal_review').css("display", "none");
@@ -341,18 +341,18 @@ document.querySelector('.form_review').addEventListener('submit', (e)=>{
 //  обробник відправки форми замовити дзвінок (в модальному вікні)
 document.querySelector('.call_form').addEventListener('submit', (e) => {
     e.preventDefault();
-    name = e.target.elements.name.value;
-    if(!checkName(name)){
+    let name = {type:"string", value: e.target.elements.name.value};
+    let phone = {type:"string", value: e.target.elements.phone.value};
+    let email = {type:"string", value: e.target.elements.email.value};
+    if(!checkName(name.value)){
         return;
     }
-    if(!checkPhone(e.target.elements.phone.value)){
+    if(!checkPhone(phone.value)){
         return;
     }
     let call = {};
-    call["name"] = name;
-    call["phone"] = e.target.elements.phone.value;
-    call["email"] = e.target.elements.email.value;
-    call["is_call"] = true;
+    call["value"] = [name, phone, email];
+    call["insert"] = true;
     sendRequest(call);
     e.target.elements.name.value = e.target.elements.phone.value = e.target.elements.email.value = "";
     $('#modal_call').css("display", "none");
