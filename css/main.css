@@ -667,7 +667,7 @@ a{
 }
 .order_car__img{
     width: 100%;
-    height: 100%;
+    height: 260px;
 }
 .arrow_right{
     transform: rotate(180deg);
@@ -696,12 +696,12 @@ a{
 .auto-order-button-prev{
     position: absolute;
     left: 2%;
-    top: 45%;
+    top: 40%;
 }
 .auto-order-button-next{
     position: absolute;
     right: 2%;
-    top: 45%;
+    top: 40%;
 }
 
 

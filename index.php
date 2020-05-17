@@ -413,24 +413,21 @@
 						</form>
 					</div>
 				</div>
-			</div>
+			</div> 
 
 			<div class="wrap_order_request">
 				<div class="order_request wrap__container">
 					<div class="order_content wrap_bordered_container slider_cont">
 						<h2 class="form_title">Вибір транспорту</h2>
-						<form action="" class="order_form">
+						<form class="order_form">
 							<input type="hidden" name="autopark">
 							<div class="order_slider_car">
-								<div class="order_car">
-									<img class="order_car__img" src="./img/auto_1.png" alt="Mercedes-bens 51">
-									<h2 class="order_car__title">Mercedes-bens 519</h2>
-								</div>
-								<div class="order_car">
-									<img class="order_car__img" src="./img/auto_2.png" alt="Mercedes-bens 316">
-									<h2 class="order_car__title">Mercedes-bens 316</h2>
-								</div>
-	
+								<?php for($i = 0; $i < count($all_car); $i++): ?>
+									<div class="order_car" data-pas="<?php echo $all_car[$i]["passengers"];?>">
+										<img class="order_car__img" src="./<?php echo $all_car[$i]["main_image"];?>" alt="<?php echo $all_car[$i]["name"]?>">
+										<h2 class="order_car__title"><?php echo $all_car[$i]["name"];?></h2>
+									</div>
+								<?php endfor;?>
 							</div>
 							<div class="button_modal_auto">
 								<div class="auto_slider__button auto-order-button-prev btn white_button">

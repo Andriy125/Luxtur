@@ -413,6 +413,10 @@ $('.order_form').on('submit', async (e) => {
     else if(!checkElementUndefined(e.target.elements.passengers)){
         passengers = e.target.elements.passengers;
         order["passenger_count"] = Number(passengers.value);
+        $('.order_slider_car').slick('slickUnfilter');
+        $('.order_slider_car').slick('slickFilter', function() {
+            return $(this).data('pas') >= passengers.value;
+        });
         nextSlide();
     }
     //  перевірка на п'яту форму (автопарк)
