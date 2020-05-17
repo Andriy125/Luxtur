@@ -351,7 +351,7 @@ a{
     line-height: 23px;
     display: flex;
     vertical-align: middle;
-    padding-left: 10px;
+    padding-left: 9px;
     left: -40px;
     top: -5px;
     width: 40px;
@@ -1119,7 +1119,6 @@ input, .input{
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 10px;
 }
 .crud_remove{
     display: none;

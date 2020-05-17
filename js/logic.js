@@ -8,11 +8,13 @@ let calc_form = document.querySelector('.form_calc');
 let apikey_geodata = '303691d597d34232b212232cb93cba14';
 // посилання для запиту (отримання координат)
 let api_url = 'https://api.opencagedata.com/geocode/v1/json';
-let order = {};             //  замовлення
 let usd_tariff = 1;         //  курс долара
 const hasNumber = /\d/;     //  функція перевірки рядка на наявність цифр
-let calc_order_button = document.querySelector('.results_form__button');
-
+let calc_modal_button = document.querySelector('.results_form__button');
+let inputs = [];
+let coords = [];
+let count_of_passengers = 0;
+let goBack = false;
 //  функція для отримання поточного курсу долара
 const getUSD = () => {
     fetch('https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11').then(response => {
@@ -73,7 +75,6 @@ const ErrorClear = () => {
 calc_form.addEventListener('submit', async (e) =>{
 
     e.preventDefault();
-    let inputs = [];
     // якщо одне поле 
     if(document.querySelectorAll('.form__input').length <= 1 || Number($('.passenger_calc')[0].value) <= 0){                   
         ErrorClear();
@@ -85,7 +86,7 @@ calc_form.addEventListener('submit', async (e) =>{
         val = el.value.toLowerCase();
         inputs.push(val.charAt(0).toUpperCase() + val.slice(1));
     });
-
+    count_of_passengers = Number($('.passenger_calc')[0].value);
     calculate.textContent = 'Розрахунок...';
 
     // запуск отримання координат 
@@ -93,11 +94,10 @@ calc_form.addEventListener('submit', async (e) =>{
         let query = '';
         calculate.textContent = 'Розрахувати';
         // якщо одне поле або не всі міста корректно написані
-        // if(arr_obj.length !== inputs.length){   
-                                   
-        //     ErrorClear();
-        //     return;
-        // }
+        if(arr_obj.length !== inputs.length){                
+            ErrorClear();
+            return;
+        }
         // формування запиту
         for(let i = 0; i < arr_obj.length; i++){
             query += arr_obj[i].lat + "," + arr_obj[i].long + ';';                      
@@ -156,7 +156,8 @@ calc_form.addEventListener('submit', async (e) =>{
         });
     }); 
     // очищення масиву координат і полів вводу
-    document.querySelectorAll('.form__input').forEach(el => el.value = '');            
+    document.querySelectorAll('.form__input').forEach(el => el.value = '');  
+    $('#one').prop( "checked" , true);         
     arr_obj = [];
 });
 
@@ -179,7 +180,7 @@ const createResultElement = (from, to, distance, count = 1) => {
 // вирахування вартості поїздки із перевіркою на зворотній шлях
 const getDistancePrice = (arr, objects, passenger_element) => {
     let price = 0;
-    let count_passengers = Number($(passenger_element)[0].value);
+    let count_passengers = Number(document.querySelector(passenger_element).value);
     let uah_tariff = count_passengers <= 8 ? 7 : 10;
     
     let usd_bool = false;
@@ -209,9 +210,9 @@ const getDistancePrice = (arr, objects, passenger_element) => {
         tariff_text += `${usd_bool ? '0.65$/км' : uah_tariff + ' Гривень/км'}`
     }
     $('.results_tariff').text(tariff_text);
-    $('.passenger_calc')[0].value= "";
+    $('.passenger_calc')[0].value = "";
+    goBack = $('#duo').prop( "checked" ) ? true : false;
     return $('#duo').prop( "checked" ) ? price.toFixed(0) * 2 : price.toFixed(0);
-
 }
 
 //  вставка елементів
@@ -221,6 +222,15 @@ const insertElement = (element, appendToElement) => {
 
 const checkElementUndefined = (el) => {
     return el === undefined;
+}
+
+//  функція копіювання масиву об єктів в інший масив
+const CopyObjectsArray = (arr) => {
+    let array = [];
+    for(let i = 0; i < arr.length; i++){
+        array[i] = Object.assign({}, arr[i]);
+    }
+    return array;
 }
 
 //  функція прокрутки слайдеру замовлення
@@ -239,7 +249,7 @@ const nextSlide = () => {
 //  перевірка введених адрес в формі замовлення
 const checkAddressData = async (addresses) => {
     let return_value = true; 
-    let coords = [];
+    
     for(let i = 0; i < addresses.length; i++){
         let request_url = api_url 
         + '?'
@@ -274,12 +284,13 @@ const checkAddressData = async (addresses) => {
             break;
         }
     }
-    return {val: return_value, coords};
+    return return_value;
 }
 
 const getPrice = async (arr) => {
     let price = 0;
     let query = '';
+    console.log(arr);
     // формування запиту
     for(let i = 0; i < arr.length; i++){
         query += arr[i].lat + "," + arr[i].long + ';';                      
@@ -298,7 +309,7 @@ const getPrice = async (arr) => {
     .then(async response => {
         await response.json().then(response => {
             // отримання вартості поїздки
-            price = getDistancePrice(response.distances, arr, '.order_pasengers');                                         
+            price = getDistancePrice(response.distances, arr, '.order_passengers');                                         
         })
     })
     return price;
@@ -362,7 +373,9 @@ document.querySelector('.call_form').addEventListener('submit', (e) => {
 //  обробник відправки форми замовлення
 $('.order_form').on('submit', async (e) => {
     e.preventDefault();
-    let name, addresses = [], date, passengers;
+    let order = {};             //  замовлення
+    let price = 0;
+    let name, addresses = [], date, passengers, coords_price = [];
     //  перевірка на першу форму (контактні дані)
     if(!checkElementUndefined(e.target.elements.name)){
         name = e.target.elements.name.value;
@@ -379,25 +392,22 @@ $('.order_form').on('submit', async (e) => {
     }
     //  перевірка на другу форму (місця і зворотній шлях)
     else if(!checkElementUndefined(e.target.elements.address)){
-        let info_address = [];
+        let info_addresses = [];
         addresses = document.querySelectorAll('.address');
+        addresses.forEach(el=>{
+            info_addresses.push(el.value);
+        }) 
         $('.address_check').html("Перевірка...");
-        let {val, coords} = await checkAddressData(addresses);
+        let val = await checkAddressData(addresses);
         if(!val){
             alert('Введіть коректні пункти!');
             return;
         }
         else{
             $('.address_check').html("Далі");
-            addresses.forEach(el=>{
-                info_address.push(el.value);
-            }) 
-            let price = 0;
-            price = await getPrice(coords);
-            order["addresses"] = info_address;
-            order["goBack"] = $('#duo2').prop('checked');
+            order["addresses"] = info_addresses;
+            order["goBack"] = $('#duo2').prop('checked') ? 1 : 0;
             nextSlide(); 
-            order["price"] = price;
         }
     }
     //  перевірка на третю форму (дата і час)
@@ -416,11 +426,13 @@ $('.order_form').on('submit', async (e) => {
     }
     //  перевірка на п'яту форму (автопарк)
     else if(!checkElementUndefined(e.target.elements.autopark)){
+        price = await getPrice(coords);
         let cars = $('.order_slider_car .order_car');
         let currentSlide = $('.order_slider_car').slick('slickCurrentSlide');
         let car_name = $($(cars[currentSlide])[0].querySelector('.order_car__title'))[0].textContent;
         order["car"] = car_name;
         order["add_order"] = true;
+        order["price"] = order["goBack"] == 1 ? price * 2 : price;
         order["table"] = "o";
         sendRequest(order);
         $('.order_form').find("input[type=text], input[type=number], .order_email, textarea").val("");
@@ -431,8 +443,12 @@ $('.order_form').on('submit', async (e) => {
 });
 
 //  обробник переходу на форму замовлення і заповнення введених полів
-calc_order_button.addEventListener("click", () => {
-    
-
+calc_modal_button.addEventListener("click", () => {
+    let inputs_elements = document.querySelectorAll('.order_form .address');
+    for(let i = 0; i < inputs.length; i++){
+        inputs_elements[i].value = inputs[i];
+    }
+    document.querySelector('.order_form .order_passengers').value = count_of_passengers;
+    goBack ? $('#duo2').prop( "checked", true ) : $('#one1').prop( "checked", true );
     hideModal(modal_calc);
 });

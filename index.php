@@ -350,8 +350,8 @@
 						<h2 class="form_title">Маршрут поїздки</h2>
 						<form class="order_form">
 							<div class="fixed_container order">
-								<input type="text" placeholder="Адреса відправлення..." name="address" class="order_data_input address input" required>
-								<input type="text" placeholder="Адреса прибуття..." name="address" class="order_data_input address input" required>
+								<input type="text" placeholder="Адреса відправлення..." name="address" class="address input" required>
+								<input type="text" placeholder="Адреса прибуття..." name="address" class="address input" required>
 							</div>
 							<div class="crud_buttons">
 								<div class="crud_button order_add">
@@ -405,8 +405,8 @@
 				<div class="order_request wrap__container">
 					<div class="order_content wrap_bordered_container">
 						<h2 class="form_title">Кількість пасажирів</h2>
-						<form action="" class="order_form">
-							<input type="number" min="1" placeholder="Кількість пасажирів" name="passengers" class="order_pasengers" required>
+						<form class="order_form">
+							<input type="number" min="1" placeholder="Кількість пасажирів" name="passengers" class="order_passengers" required>
 							<div class="submit_buttons">
 								<button  class="white_button btn order_form__button prev">Назад</button>
 								<button  class="white_button btn order_form__button next">Далі</button>
