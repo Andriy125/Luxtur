@@ -1,6 +1,6 @@
 // об єкти з широтою і довготою  
 let arr_obj = [];          
-// кнопка розрахунку                                                                                                                                    
+// кнопка розрахунку                                         
 let calculate = document.querySelector('.calculate');  
 //  форма розрахунку                                     
 let calc_form = document.querySelector('.form_calc');                                       
@@ -222,15 +222,6 @@ const insertElement = (element, appendToElement) => {
 
 const checkElementUndefined = (el) => {
     return el === undefined;
-}
-
-//  функція копіювання масиву об єктів в інший масив
-const CopyObjectsArray = (arr) => {
-    let array = [];
-    for(let i = 0; i < arr.length; i++){
-        array[i] = Object.assign({}, arr[i]);
-    }
-    return array;
 }
 
 //  функція прокрутки слайдеру замовлення

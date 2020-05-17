@@ -7,11 +7,10 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>LUX TUR</title>
-	<link  href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto&display=swap" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+	<link href="css/fotorama.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/slick.css"/>
 	<script defer src="./js/all.js"></script>
-	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
 	<!-- блок головний -->
@@ -329,7 +328,7 @@
 	<div class="order_block" id="order">
 		<div class="slider_container">
 
-			 <!-- <div class="wrap_order_request">
+			 <div class="wrap_order_request">
 				<div class="order_request wrap__container">
 					<div class="order_content wrap_bordered_container">
 						<h2 class="form_title">Замовити поїздку</h2>
@@ -342,7 +341,7 @@
 						</form>
 					</div>
 				</div>
-			</div>  -->
+			</div> 
 			
 			<div class="wrap_order_request">
 				<div class="order_request wrap__container">
@@ -543,7 +542,7 @@
 	</div>
 
 	<script src="./js/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+	<script src="js/fotorama.js"></script>
 	<script src="./js/slick.min.js"></script>
     <script src="js/sendRequest.js"></script>
 	<script src="./js/logic.js"></script>

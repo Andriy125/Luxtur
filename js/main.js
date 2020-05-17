@@ -33,6 +33,7 @@ const setLocalDate = () => {
     }
     $('.order_date')[0].value = local_date;
     $('.order_date')[0].min = local_date;
+    $('.order_time')[0].min = `${local.getHours()}:${local.getMinutes() < 10 ? `0${local.getMinutes()}`: local.getMinutes()}`;
     $('.order_time')[0].value = `${local.getHours() + 3}:${local.getMinutes() < 10 ? `0${local.getMinutes()}`: local.getMinutes()}`;    
 }
 setLocalDate();
