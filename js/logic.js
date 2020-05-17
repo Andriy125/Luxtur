@@ -11,21 +11,23 @@ let api_url = 'https://api.opencagedata.com/geocode/v1/json';
 let order = {};             //  замовлення
 let usd_tariff = 1;         //  курс долара
 const hasNumber = /\d/;     //  функція перевірки рядка на наявність цифр
+let calc_order_button = document.querySelector('.results_form__button');
 
 //  функція для отримання поточного курсу долара
-const getUSD = async () => {
-    await fetch('https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11').then(response => {
+const getUSD = () => {
+    fetch('https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11').then(response => {
         response.json().then(response => {
             usd_tariff = response[0].sale * 0.65;
         });
     })
 }
 
+//      після завантаження сторінки виконати функцію і зберігати дані
+//      TODO: download fonts 
 getUSD();
 
 //  функція отримання координат введених адрес
 const getCoordinates = async (cities) => {
-    let objs = [];
     for(let i = 0; i < cities.length; i++){
         // формування повної адреси запиту
         let request_url = api_url 
@@ -51,7 +53,7 @@ const getCoordinates = async (cities) => {
                     'long': obj.geometry.lng,
                     'country': obj.components["ISO_3166-1_alpha-2"]
                 }
-                objs.push(newObj);
+                arr_obj.push(newObj);
             })
         })
         .catch(err => {
@@ -59,13 +61,12 @@ const getCoordinates = async (cities) => {
             return null;
         })
     }
-    return objs;
 }
 
 // виведення помилки та очищення масиву координат для форми "розрахунок"
 const ErrorClear = () => {                                                          
     alert('Помилка! Не вірно вказані дані! Спробуйте знову!');
-    document.querySelector('.passenger_calc')[0].value = ""; 
+    document.querySelector('.passenger_calc').value = ""; 
     arr_obj = [];
 }
 //  розрахунок
@@ -74,7 +75,7 @@ calc_form.addEventListener('submit', async (e) =>{
     e.preventDefault();
     let inputs = [];
     // якщо одне поле 
-    if(document.querySelectorAll('.form__input').length <= 1 || Number($('.passenger_calc')[0].value) <= 0){                      
+    if(document.querySelectorAll('.form__input').length <= 1 || Number($('.passenger_calc')[0].value) <= 0){                   
         ErrorClear();
         return;
     }
@@ -88,14 +89,15 @@ calc_form.addEventListener('submit', async (e) =>{
     calculate.textContent = 'Розрахунок...';
 
     // запуск отримання координат 
-    arr_obj = await getCoordinates(inputs).then(async ()=>{
+    await getCoordinates(inputs).then(async ()=>{
         let query = '';
         calculate.textContent = 'Розрахувати';
         // якщо одне поле або не всі міста корректно написані
-        if(arr_obj.length !== inputs.length){                                        
-            ErrorClear();
-            return;
-        }
+        // if(arr_obj.length !== inputs.length){   
+                                   
+        //     ErrorClear();
+        //     return;
+        // }
         // формування запиту
         for(let i = 0; i < arr_obj.length; i++){
             query += arr_obj[i].lat + "," + arr_obj[i].long + ';';                      
@@ -153,7 +155,6 @@ calc_form.addEventListener('submit', async (e) =>{
             console.log(err);
         });
     }); 
-    
     // очищення масиву координат і полів вводу
     document.querySelectorAll('.form__input').forEach(el => el.value = '');            
     arr_obj = [];
@@ -326,12 +327,12 @@ document.querySelector('.form_review').addEventListener('submit', (e)=>{
     e.preventDefault();
     let name = {type:"string", value: e.target.elements.name.value};
     let email = {type:"string", value: e.target.elements.email.value};
-    let review = {type:"string", value: e.target.elements.review.value};
+    let review_text = {type:"string", value: e.target.elements.review.value};
     if(!checkName(name.value)){
         return;
     }
     let review = {};
-    review["value"] = [name, email, review, {type:"number", value: 0}];
+    review["value"] = [name, email, review_text, {type:"number", value: 0}];
     review["insert"] = true;
     sendRequest(review);
     e.target.elements.name.value = e.target.elements.review.value = e.target.elements.email.value = "";
@@ -427,4 +428,11 @@ $('.order_form').on('submit', async (e) => {
         $('#one1').prop('checked', true);
         nextSlide();
     } 
+});
+
+//  обробник переходу на форму замовлення і заповнення введених полів
+calc_order_button.addEventListener("click", () => {
+    
+
+    hideModal(modal_calc);
 });

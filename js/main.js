@@ -1,4 +1,5 @@
-let add = document.querySelector('.add');                                                   // кнопка додавання полів
+let add = document.querySelector('.add');                                                   // кнопка додавання полів блоку розрахунків
+let add_order_input = document.querySelector('.order_add');                                  // кнопка додавання полів блоку замовлень
 // Get the modal
 let modal_call = document.getElementById("modal_call");                                     //  модальне вікно замовлення дзвінку
 let modal_calc = document.getElementById("modal_calculate");                                //  модальне вікно для відображення результатів розрахунків
@@ -9,12 +10,11 @@ let card_slider = document.querySelector(".auto_img_slider");                   
 let btn = document.getElementById("call");                                                  //  кнопка замовлення дзвінку
 let btn_review = document.getElementById("review_button");                                  //  кнопка додавання відгуку
 
-let fotorama = null;
+let fotorama = null;    // для модалок автопарку
 // Get the <span> element that closes the modal
 let span = document.getElementsByClassName("close")[0];                                     //  кнопка закриття форми замовлення дзвінка
 $('.all_info__input')[0].checked = false;                                                   //  встановлення кнопки "всі дані" в модальному вікні "розрахунки" по замовчування на офф
 $('.order_remove').css('display', 'none');   
-
 
 const setLocalDate = () => {
     let local = new Date();
@@ -51,7 +51,7 @@ btn_review.onclick = function() {
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
-    modal_call.style.display = "none";
+    hideModal(modal_call);
     ClearCallInputs();
 }
 
@@ -89,26 +89,26 @@ const addScroll = (elem) => {
 }
 
 // додавання полів на форму "розрахунок"
-add.addEventListener('click', () =>{                                                                                                      
+add.addEventListener('click', () => {                                  
     let elements = document.querySelectorAll('.form__input');
     if(elements.length > 1){
-        addStyles('.fixed_container.calc', '.minus');
+        changeContainer('.fixed_container.calc', '.form_calc', '.minus');
     }
-    CreateElement('form__input', elements[elements.length - 1])  
+    CreateElement('form__input', elements[elements.length - 1]);  
 });
 
-const addStyles = (container, button) => {
+const addStyles = (container, form, button) => {
     addScroll(container);
     $(button).css('display', 'inline-flex');
-    $('.crud_buttons').css('margin-top', '15px');
-    $('.crud_buttons').css('justify-content', 'space-between');
-    $('.crud_buttons').css('margin-bottom', '0px');
+    $(`${form} .crud_buttons`).css('margin-top', '15px');
+    $(`${form} .crud_buttons`).css('justify-content', 'space-between');
+    $(`${form} .crud_buttons`).css('margin-bottom', '0px');
 }
 
-const removeStyles = (button) => {
+const removeStyles = (button, form) => {
     $(button).css('display', 'none');
-    $('.crud_buttons').css('margin-top', '0px');
-    $('.crud_buttons').css('justify-content', 'center');
+    $(`${form} .crud_buttons`).css('margin-top', '0px');
+    $(`${form} .crud_buttons`).css('justify-content', 'center');
 }
 
 // створення полів
@@ -118,34 +118,41 @@ const CreateElement = ( _class, after ) => {
 }
 
 //  обробник натиснення на кнопку "додати пункт" для форми із замовленням
-document.querySelector('.order_add').addEventListener('click', (e) => {
+add_order_input.addEventListener('click', (e) => {
     let addresses = document.querySelectorAll('.address');
     if(addresses.length > 1){
-        addScroll('.fixed_container');
-        $('.order_remove').css('display', 'inline-flex');
-        $('.crud_buttons').css('margin-top', '15px');
+        changeContainer('.order_form .fixed_container', '.order_form', '.order_remove');
     }
-    $('<input type="text" placeholder="Адреса пункту..." class="order_data_input address" required>')
-    .insertAfter(addresses[addresses.length - 1]);
+    CreateElement('order_data_input address', addresses[addresses.length - 1]);  
 })
 
+//  задання стилів для контейнера 
+const changeContainer = (container, form,  hidden_button) => {
+    addScroll(container);
+    $(hidden_button).css('display', 'inline-flex');
+    $(`${form} .crud_buttons`).css('margin-top', '15px');
+    $(`${form} .crud_buttons`).css('justify-content', 'space-between');
+    $(`${form} .crud_buttons`).css('margin-bottom', '0px');
+}
+
 //  обробник натиснення на кнопку "видалити пункт" для форми із замовленням
-document.querySelector('.order_remove').addEventListener('click', (e) => {
-    let addresses = document.querySelectorAll('.address');
-    if(addresses.length < 4){
-        removeStyles('.order_remove');
-    }
-    addresses[addresses.length - 1].remove();
+document.querySelector('.order_remove').addEventListener('click', () => {
+    deleteLastElement('.address', '.order_remove', '.order_form');
 })
 
 //  обробник подій на кнопку видалення поля на формі "розрахунок"
-document.querySelector('.minus').addEventListener('click', (e) => {
-    let inputs = document.querySelectorAll('.form__input');
-    if(inputs.length < 4){
-        removeStyles('.minus');
-    }
-    inputs[inputs.length - 1].remove();
+document.querySelector('.minus').addEventListener('click', () => {
+    deleteLastElement('.form__input', '.minus', '.form_calc');
 })
+
+//  видалення останнього елемента серед елементів з класом class_elem і приховування removestylesOf
+const deleteLastElement = (elem_class, removestylesOf, form) => {
+    let elements = document.querySelectorAll(elem_class);
+    if(elements.length < 4){
+        removeStyles(removestylesOf, form);
+    }
+    elements[elements.length - 1].remove();
+}
 
 //  обробник на відображення всіх пунктів на модальному вікні "розрахунок"
 document.querySelector('.all_info').addEventListener('click', (e) => {

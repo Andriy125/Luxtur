@@ -163,7 +163,7 @@
 						<input id="info" type="checkbox" checked="false" class="iOS_input all_info__input">
 						<label for="info" class="check_block__text">Всі дані</label>
 					</div>
-					<button type="submit" class="results_form__button btn white_button">Замовити</button>
+					<a href="#order" type="submit" class="results_form__button btn white_button">Замовити</a>
 				</form>
 			</div>
 
@@ -293,7 +293,7 @@
 			</h2>
 			<div class="wrap black_container">
 				<div class="wrap__container wrap_bordered_container">
-					<form class="form_calc" action="" method="GET">
+					<form class="form_calc">
 							<input type="number" min="1" class="passenger_calc" placeholder="Кількість пасажирів" required>
 							<div class="fixed_container calc">
 								<input type="text" placeholder="Адреса відправлення" class="form__input" required>
@@ -329,7 +329,7 @@
 	<div class="order_block" id="order">
 		<div class="slider_container">
 
-			 <div class="wrap_order_request">
+			 <!-- <div class="wrap_order_request">
 				<div class="order_request wrap__container">
 					<div class="order_content wrap_bordered_container">
 						<h2 class="form_title">Замовити поїздку</h2>
@@ -342,14 +342,14 @@
 						</form>
 					</div>
 				</div>
-			</div> 
+			</div>  -->
 			
 			<div class="wrap_order_request">
 				<div class="order_request wrap__container">
 					<div class="order_content wrap_bordered_container">
 						<h2 class="form_title">Маршрут поїздки</h2>
-						<form action="" class="order_form">
-							<div class="fixed_container">
+						<form class="order_form">
+							<div class="fixed_container order">
 								<input type="text" placeholder="Адреса відправлення..." name="address" class="order_data_input address input" required>
 								<input type="text" placeholder="Адреса прибуття..." name="address" class="order_data_input address input" required>
 							</div>

@@ -11,12 +11,37 @@
 
     <div id="id-edit_price" class="tabcontent">
         <div class="content_container">
-            <h2>Ціна за км:</h2>
-            <ul>
-                <?php for($i = 0; $i < count($all_locations); $i++): ?>
-                <li><?php echo  $all_locations[$i]["location"];?> - </li>
-                <?php endfor; ?>
-            </ul>
+            <div>
+                <h2>Ціна за км:</h2>
+                <ul>
+                    <?php for($i = 0; $i < count($all_locations); $i++): ?>
+                    <li><?php echo  $all_locations[$i]["location"];?> - </li>
+                    <?php endfor; ?>
+                </ul>
+            </div>
+            <div class="form_container">
+                <form>
+                    <div class="date-time_block">
+                        <div>
+                            <p>Умова</p>
+                        </div>
+                        <div class="date-time_block__inputs">
+                            <select class="input_date" name="condition" required>
+                                <?php for($i = 0; $i < count($conditions); $i++): ?>
+                                <option value="<?php echo $conditions[$i]["name"]?>"><?php echo $conditions[$i]["name"]?></option>
+                                <?php endfor; ?>
+                            </select>
+                            <select class="input_time" name="operator" required>
+                                <?php for($i = 0; $i < count($condition_operators); $i++): ?>
+                                <option value="<?php echo $condition_operators[$i]["operator"]?>"><?php echo $condition_operators[$i]["name"]?></option>
+                                <?php endfor; ?>
+                            </select>
+                            <input class="input_time" placeholder="Значення" type="text" name="value" required>
+                            <button type="submit" class="add_button">+</button>
+                        </div>                        
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -74,8 +99,8 @@
                     <?php while($row = mysqli_fetch_array($result_calls)):?>
                     <tr>
                         <td><?php echo $row["name"]?></td>
-                        <td><?php echo $row["phone"]?></td>
-                        <td><?php echo $row["email"]?></td>
+                        <td><a href="tel:<?php echo $row["phone"]?>"><?php echo $row["phone"]?></a></td>
+                        <td><a href="mailto:<?php echo $row["email"]?>"><?php echo $row["email"]?></a></td>
                         <td><?php echo $row["date_time"]?></td>
                         <td>
                             <div id="edit_call" data-text="Редагувати Замовлення дзвінків" class="another">
@@ -365,12 +390,12 @@
                 <div>
                 <label for="sort_order">Сортування:</label>
                     <select id="sort_order" class="sort_order">
-                        <?php 
-                            while($row = mysqli_fetch_array($sort_order_options)){
-                                if($row['Field'] !== "done" && $row['Field'] !== "id")
-                                echo '<option value="'. $row['Field'] .'">'. $row['Field'] .'</option>';
-                            }
-                        ?>
+                        <?php for($i = 0; $i < count($order_columns); $i++): 
+                            if($order_columns[$i]['Field'] !== "done" && $order_columns[$i]['Field'] !== "id"){
+                            ?>
+                                <option value="<?php echo $order_columns[$i]['Field']; ?>"><?php echo $order_columns[$i]['Field']; ?></option>
+                            
+                        <?php } endfor;?>
                     </select>
                 </div>
             </div>
@@ -392,8 +417,8 @@
                         echo $order["done"] ? '<tr class="all done">' : '<tr class="all not_completed">';
                 ?>
                             <td><?php echo $order["name"]?></td>
-                            <td><?php echo $order["phone"]?></td>
-                            <td><?php echo $order["email"]?></td>
+                            <td><a href="tel:<?php echo $order["phone"]?>"><?php echo $order["phone"]?></a></td>
+                            <td><a href="mailto:<?php echo $order["email"]?>"><?php echo $order["email"]?></a></td>
                             <td><?php echo $order["addresses"]?></td>
                             <td><?php echo $order["goBack"] ? "Так" : "Ні"?></td>
                             <td><?php echo $order["time"] . "  " . $order["date"]?></td>
@@ -505,7 +530,7 @@
                 <?php while($row = mysqli_fetch_array($result_reviews)):?>
                     <?php echo $row["show_review"] ? '<tr class="all showed">' : '<tr class="all hidden">'; ?>
                         <td><?php echo $row["name"]?></td>
-                        <td><?php echo $row["email"]?></td>
+                        <td><a href="<?php echo $row["email"]?>"><?php echo $row["email"]?></a></td>
                         <td class="wide_cell">"<?php echo $row["review"]?>"</td>
                         <td><?php echo $row["date_time"]?></td>
                         <td>
