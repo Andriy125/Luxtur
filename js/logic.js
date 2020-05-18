@@ -18,7 +18,7 @@ let order = {};             //  замовлення
 
 const hasNumber = /\d/;     //  функція перевірки рядка на наявність цифр
 let calc_modal_button = document.querySelector('.results_form__button');
-let inputs = [];
+let calc_inputs = [];
 let coords = [];
 let count_of_passengers = 0;
 let goBack = false;
@@ -113,7 +113,7 @@ const clearCalculatingData = () => {
     coords = [];
 }
 
-const CreatingResultData = (response) => {
+const CreatingResultData = (response, inputs) => {
     let from = [];
     let to = [];
     let distances = [];
@@ -166,6 +166,7 @@ const ErrorClear = () => {
 //  розрахунок
 calc_form.addEventListener('submit', async (e) =>{
     e.preventDefault();
+    let inputs = [];
     // якщо одне поле 
     if(document.querySelectorAll('.form__input').length <= 1 || Number(passenger_calc_input.value) <= 0){                   
         ErrorClear();
@@ -176,6 +177,7 @@ calc_form.addEventListener('submit', async (e) =>{
         inputs.push(capitalizeInput(el));
     });
     count_of_passengers = Number(passenger_calc_input.value);
+    calc_inputs = inputs;
     calculate.textContent = 'Розрахунок...';
 
     // запуск отримання координат 
@@ -191,7 +193,7 @@ calc_form.addEventListener('submit', async (e) =>{
         query = formingQuery(arr_obj);
         // здійснення запиту / отримання результатів
          await makeRequestForDistances(query).then(response => {
-            CreatingResultData(response); 
+            CreatingResultData(response, inputs); 
             modal_calc.style.display = "block";
         })
         
@@ -462,12 +464,13 @@ $('.order_form').on('submit', async (e) => {
 //  обробник переходу на форму замовлення і заповнення введених полів
 calc_modal_button.addEventListener("click", () => {
     let inputs_elements = document.querySelectorAll('.order_form .address');
-    for(let i = 0; i < inputs.length; i++){
-        inputs_elements[i].value = inputs[i];
+    for(let i = 0; i < calc_inputs.length; i++){
+        inputs_elements[i].value = calc_inputs[i];
     }
     passenger_order_input.value = count_of_passengers;
     goBack ? $('#duo2').prop( "checked", true ) : $('#one1').prop( "checked", true );
     hideModal(modal_calc);
+    calc_inputs = [];
 });
 
 getUSD();
