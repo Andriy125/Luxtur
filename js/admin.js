@@ -103,459 +103,464 @@ const getAddressesTextarea = (str) => {
     return lines;
 }
 
-document.querySelectorAll('.update_review_showing').forEach(el => {
-    el.addEventListener("click", (e) => {
-        let form = e.target.closest('.update_review');
-        let id = form.elements.id.value;
-        let column = "show_review";
-        let is_showing = $(e.target).prop("checked") ? 1 : 0;
-        updateRequest("r", id, column, is_showing);
-    })
-});
-
-document.querySelectorAll('.update_order_done').forEach(el => {
-    el.addEventListener("click", (e) => {
-        let form = e.target.closest('.update_order');
-        let id = form.elements.id.value;
-        let column = "done";
-        let order_done = $(e.target).prop("checked");
-        updateRequest("o", id, column, order_done);
-    })
-});
-
-document.querySelectorAll('.update_car_showing').forEach(el => {
-    el.addEventListener("click", (e) => {
-        let form = e.target.closest('.update_car');
-        let id = form.elements.id.value;
-        let column = "show_car";
-        let show_car = $(e.target).prop("checked");
-        updateRequest("ca", id, column, show_car);
-    })
-});
-
-document.querySelectorAll('.del_phone').forEach(el => {
-    el.addEventListener("click", (e)=>{
-        e.preventDefault();
-        let id = $(e.target.closest('td')).find('.delete_form_p')[0].elements.id.value;
-        $(e.target.closest('tr')).remove();
-        deleteRequest(id, "c_p");
+const eventListeners = () => {
+    document.querySelectorAll('.update_review_showing').forEach(el => {
+        el.addEventListener("click", (e) => {
+            let form = e.target.closest('.update_review');
+            let id = form.elements.id.value;
+            let column = "show_review";
+            let is_showing = $(e.target).prop("checked") ? 1 : 0;
+            updateRequest("r", id, column, is_showing);
+        })
     });
-});
-
-document.querySelectorAll('.del_email').forEach(el => {
-    el.addEventListener("click", (e)=>{
-        e.preventDefault();
-        let id = $(e.target.closest("td")).find('.delete_form_e')[0].elements.id.value;
-        $(e.target.closest('tr')).remove();
-        deleteRequest(id, "c_e");
+    
+    document.querySelectorAll('.update_order_done').forEach(el => {
+        el.addEventListener("click", (e) => {
+            let form = e.target.closest('.update_order');
+            let id = form.elements.id.value;
+            let column = "done";
+            let order_done = $(e.target).prop("checked");
+            updateRequest("o", id, column, order_done);
+        })
     });
-});
-
-document.querySelectorAll('.del_order').forEach(el => {
-    el.addEventListener("click", (e)=>{
-        e.preventDefault();
-        let id = $(e.target.closest('td')).find('.delete_form_o')[0].elements.id.value;
-        $(e.target.closest('tr')).remove();
-        deleteRequest(id, "o");
+    
+    document.querySelectorAll('.update_car_showing').forEach(el => {
+        el.addEventListener("click", (e) => {
+            let form = e.target.closest('.update_car');
+            let id = form.elements.id.value;
+            let column = "show_car";
+            let show_car = $(e.target).prop("checked");
+            updateRequest("ca", id, column, show_car);
+        })
     });
-});
-
-document.querySelectorAll('.del_review').forEach(el => {
-    el.addEventListener("click", (e)=>{
-        e.preventDefault();
-        let id = $(e.target.closest('td')).find('.delete_form_r')[0].elements.id.value;
-        $(e.target.closest('tr')).remove();
-        deleteRequest(id, "r");
+    
+    document.querySelectorAll('.del_phone').forEach(el => {
+        el.addEventListener("click", (e)=>{
+            e.preventDefault();
+            let id = $(e.target.closest('td')).find('.delete_form_p')[0].elements.id.value;
+            $(e.target.closest('tr')).remove();
+            deleteRequest(id, "c_p");
+        });
     });
-});
-
-document.querySelectorAll('.del_call').forEach(el => {
-    el.addEventListener("click", (e)=>{
-        e.preventDefault();
-        let id = $(e.target.closest('td')).find('.delete_form_c')[0].elements.id.value;
-        $(e.target.closest('tr')).remove();
-        deleteRequest(id, "c");
+    
+    document.querySelectorAll('.del_email').forEach(el => {
+        el.addEventListener("click", (e)=>{
+            e.preventDefault();
+            let id = $(e.target.closest("td")).find('.delete_form_e')[0].elements.id.value;
+            $(e.target.closest('tr')).remove();
+            deleteRequest(id, "c_e");
+        });
     });
-});
-
-document.querySelectorAll('.del_our_service').forEach(el => {
-    el.addEventListener("click", (e)=>{
-        e.preventDefault();
-        let id = $(e.target.closest('td')).find('.delete_form_o_s')[0].elements.id.value;
-        $(e.target.closest('tr')).remove();
-        deleteRequest(id, "o_s");
+    
+    document.querySelectorAll('.del_order').forEach(el => {
+        el.addEventListener("click", (e)=>{
+            e.preventDefault();
+            let id = $(e.target.closest('td')).find('.delete_form_o')[0].elements.id.value;
+            $(e.target.closest('tr')).remove();
+            deleteRequest(id, "o");
+        });
     });
-});
-
-document.querySelectorAll('.del_p_d').forEach(el => {
-    el.addEventListener("click", (e)=>{
-        e.preventDefault();
-        let id = $(e.target.closest('td')).find('.delete_form_p_d')[0].elements.id.value;
-        $(e.target.closest('tr')).remove();
-        deleteRequest(id, "p_d");
+    
+    document.querySelectorAll('.del_review').forEach(el => {
+        el.addEventListener("click", (e)=>{
+            e.preventDefault();
+            let id = $(e.target.closest('td')).find('.delete_form_r')[0].elements.id.value;
+            $(e.target.closest('tr')).remove();
+            deleteRequest(id, "r");
+        });
     });
-});
-
-document.querySelectorAll('.del_car').forEach(el => {
-    el.addEventListener("click", (e)=>{
-        e.preventDefault();
-        let id = $(e.target.closest('td')).find('.delete_form_a')[0].elements.id.value;
-        $(e.target.closest('tr')).remove();
-        deleteRequest(id, "ca");
+    
+    document.querySelectorAll('.del_call').forEach(el => {
+        el.addEventListener("click", (e)=>{
+            e.preventDefault();
+            let id = $(e.target.closest('td')).find('.delete_form_c')[0].elements.id.value;
+            $(e.target.closest('tr')).remove();
+            deleteRequest(id, "c");
+        });
     });
-});
-
-$('.edit_order').on("click", (e)=>{
-    let data = $(e.target).closest('tr').find(' td ');
-    let update_form = $(data[10]).find(".update_order")[0].elements;
-    let id = update_form.id.value;
-    let name = data[0].textContent;
-    let phone = data[1].textContent;
-    let email = data[2].textContent;
-    let addresses = data[3].textContent;
-    let goBack = data[4].textContent == "Так" ? "duo" : "one";
-    let time = data[5].textContent.substring(0,5);
-    let date = data[5].textContent.substring(7,17);
-    let passengers = data[6].textContent;
-    let car = data[7].textContent;
-    let price = parseInt(data[8].textContent);
-    let done = $(update_form.order_done).prop("checked");
-    let form = document.querySelector('.edit_order_form').elements;
-    form.name.value = name;
-    form.phone.value = phone;
-    form.email.value = email;
-    form.price.value = price;
-    form.car.value = car;
-    form.passengers.value = passengers;
-    form.time.value = time;
-    form.date.value = date;
-    form.goBack.value = goBack;
-    form.addresses.value = addresses;
-    form.id.value = id;
-    $(form.done).prop("checked", done);
-});
-
-$('.edit_car').on("click", (e)=>{
-    let imgs_containter = $('.edit_car_imgs');
-    let form = document.querySelector('.edit_car_form').elements;
-    let data = $(e.target).closest('tr').find(' td ');
-    let id = $(e.target).nextAll(".delete_form_a:first")[0].id.value;
-    let name = data[0].textContent;
-    let locations = data[1].textContent.replace(/\s+/g, " ").trim().split(' ');
-    let passengers = data[2].textContent;
-    let main_image = data[3].firstChild.src;
-    let images = data[4].textContent.replace(/\s+/g, " ").trim().split(' ');
-    let imgs_element = '';
-    for(let i = 0; i < images.length; i++){
-        imgs_element += `<img class="car_image" src="./img/${images[i]}" alt="">`;
-    }
-    for(let i = 0; i < locations.length; i++){
-        $(`#locs option[value='${locations[i]}']`).prop('selected', true);
-    }
-    $(imgs_element).appendTo(imgs_containter);
-    let advantages = data[5].textContent;
-    let is_show = $(data[7].childNodes[1].is_showing).prop("checked");
-    form.name.value = name;
-    form.passengers.value = passengers;
-    form.advantages.value = advantages;
-    $('.edit_car_main_image').attr("src", main_image);
-    form.id.value = id;
-    $(form.show).prop("checked", is_show);
-
-});
-
-document.querySelector('.filter_review').addEventListener("change", (e)=>{
-    e.preventDefault();
-    let filter_by = e.target.value;
-    filterTrByClass(filter_by, '.review_table');
-});
-
-document.querySelector('.sort_review').addEventListener("change", (e)=>{
-    let table = document.querySelector('.review_table');
-    let sort_by = e.target.selectedIndex;
-    sortTable(table, sort_by);
-});
-
-document.querySelector('.filter_order').addEventListener("change", (e)=>{
-    e.preventDefault();
-    let filter_by = e.target.value;
-    filterTrByClass(filter_by, '.order_table');
-});
-
-document.querySelector('.sort_order').addEventListener("change", (e)=>{
-    let table = document.querySelector('.order_table');
-    let sort_by = e.target.selectedIndex;
-    sortTable(table, sort_by);
-});
-
-document.querySelector('.add_order_form').addEventListener("submit", (e) => {
-    e.preventDefault();
-    let form = e.target.elements;
-    if(hasNumber.test(form.name.value)){
-        alert("Невірні дані!");
-        return;
-    }
-    let data = {};
-    let name = form.name.value;
-    let phone = form.phone.value;
-    let email = form.email.value;
-    let date = form.date.value;
-    let time = form.time.value;
-    let goBack = form.goBack.value == "duo" ? 1 : 0;
-    let passengers =  Number(form.passengers.value);
-    let car = form.car.value;
-    let price = Number(form.price.value);
-    let done = $(form.done).prop("checked") == true ? 1 : 0;
-    let addresses = getAddressesTextarea(form.addresses.value);
-    data["name"] = name;
-    data["phone"] = phone;
-    data["email"] = email;
-    data["date"] = date;
-    data["time"] = time;
-    data["addresses"] = addresses;
-    data["goBack"] = goBack;
-    data["passenger_count"] = passengers;
-    data["car"] = car;
-    data["price"] = price;
-    data["done"] = done;
-    data["add_order"] = true;
-    data["table"] = "o";
-    sendRequest(data, '#orders');
-});
-
-document.querySelector('.edit_order_form').addEventListener("submit", (e) => {
-    e.preventDefault();
-    let form = e.target.elements;
-    if(hasNumber.test(form.name.value)){
-        alert("Невірні дані!");
-        return;
-    }
-    let data = {};
-    let id = form.id.value;
-    let name = {type:"string", value: form.name.value};
-    let phone = {type:"string", value: form.phone.value};
-    let email = {type:"string", value: form.email.value};
-    let date = {type:"string", value: form.date.value};
-    let time = {type:"string", value: form.time.value};
-    let goBack = {type:"number", value: form.goBack.value == "duo" ? 1 : 0};
-    let passengers = {type:"number", value: form.passengers.value};
-    let car = {type:"string", value: form.car.value};
-    let price = {type:"number", value: Number(form.price.value)};
-    let done = {type:"number", value: $(form.done).prop("checked") == true ? 1 : 0};
-    let addresses = {type:"string", value: getAddressesTextarea(form.addresses.value).join(' -> ')};
-    let values = [name, phone, email, addresses, goBack, date, time, passengers, car, price, done];
-    data["id"] = id;
-    data["value"] = values;
-    data["update"] = true;
-    data["table"] = "o";
-    sendRequest(data, '#orders');
-});
-
-document.querySelector('.add_email_form').addEventListener("submit", (e) => {
-    e.preventDefault();
-    let data = {};
-    data["insert"] = true;
-    data["table"] = "c_e";
-    data["value"] = e.target.elements.email.value;
-    sendRequest(data, '#edit_contacts');
-    clearFormInputs(e.target);
-}); 
-
-document.querySelector('.add_phone_form').addEventListener("submit", (e) => {
-    e.preventDefault();
-    let data = {};
-    let social_media = "";
-    let phone = {type: "string", value: e.target.elements.phone.value};
-    let operator = {type: "string", value: e.target.elements.operator.value};
-    let social_media_array = e.target.elements["social_media[]"].selectedOptions;
-    for(let i = 0; i < social_media_array.length; i++){
-        social_media += social_media_array[i].value;
-        if(i < social_media_array.length - 1){
-            social_media += " ";
-        }
-    }
-    let soc_media = {type: "string", value: social_media};
-    data["insert"] = true;
-    data["value"] = [phone, operator, soc_media];
-    data["table"] = "c_p";
-    sendRequest(data, '#edit_contacts');
-    clearFormInputs(e.target);
-}); 
-
-document.querySelector('.edit_email_form').addEventListener("submit", (e) => {
-    //  послідовно задавати масив значень відповідно до таблиці
-    e.preventDefault();
-    let id = e.target.elements.id.value;
-    let email = e.target.elements.email.value;
-    updateRequest("c_e", id, "email", email, '#edit_contacts');
-    clearFormInputs(e.target);
-}); 
-
-document.querySelector('.edit_phone_form').addEventListener("submit", (e) => {
-    e.preventDefault();
-    let data = {};
-    let social_media = "";
-    let phone = {type: "string", value: e.target.elements.phone.value};
-    let operator = {type: "string", value: e.target.elements.operator.value};
-    let social_media_array = e.target.elements["social_media[]"].selectedOptions;
-    for(let i = 0; i < social_media_array.length; i++){
-        social_media += social_media_array[i].value;
-        if(i < social_media_array.length - 1){
-            social_media += " ";
-        }
-    }
-    let soc_media = {type: "string", value: social_media}
-    data["update"] = true;
-    data["id"] = e.target.elements.id.value;
-    data["value"] = [phone, operator, soc_media];
-    data["table"] = "c_p";
-    sendRequest(data, '#edit_contacts');
-    clearFormInputs(e.target);
-}); 
-
-document.querySelectorAll('.edit_phone').forEach(el => {
-    el.addEventListener("click", (e) => {
-        e.preventDefault();
-        let data = $(e.target.closest('tr')).find('td');
-        let id = $(data[4]).find('.delete_form_p')[0].elements.id.value;
-        let phone = data[0].textContent;
-        let operator = data[1].textContent;
-        let social_media = data[2].textContent.trim() == "" ? " " : data[2].textContent.toLowerCase().split(" ");
-        let form = document.querySelector('.edit_phone_form').elements;
-        form.id.value = id;
-        form.phone.value = phone;
-        form.operator.value = operator.toLowerCase();
-        $(form["social_media[]"]).val(social_media);
-    })
-});
-
-document.querySelectorAll('.edit_email').forEach(el => {
-    el.addEventListener("click", (e) => {
-        e.preventDefault();
-        let data = $(e.target.closest('tr')).find('td');
-        let id = $(data[2]).find('.delete_form_e')[0].elements.id.value;
-        let email = data[0].textContent;
-        let form = document.querySelector('.edit_email_form').elements;
-        form.id.value = id;
-        form.email.value = email;
-    })
-});
-
-document.querySelectorAll('.edit_review').forEach(el => {
-    el.addEventListener("click", (e) => {
-        e.preventDefault();
-        let data = $(e.target.closest('tr')).find('td');
-        let update_form = $(data[4]).find('.update_review')[0].elements;
+    
+    document.querySelectorAll('.del_our_service').forEach(el => {
+        el.addEventListener("click", (e)=>{
+            e.preventDefault();
+            let id = $(e.target.closest('td')).find('.delete_form_o_s')[0].elements.id.value;
+            $(e.target.closest('tr')).remove();
+            deleteRequest(id, "o_s");
+        });
+    });
+    
+    document.querySelectorAll('.del_p_d').forEach(el => {
+        el.addEventListener("click", (e)=>{
+            e.preventDefault();
+            let id = $(e.target.closest('td')).find('.delete_form_p_d')[0].elements.id.value;
+            $(e.target.closest('tr')).remove();
+            deleteRequest(id, "p_d");
+        });
+    });
+    
+    document.querySelectorAll('.del_car').forEach(el => {
+        el.addEventListener("click", (e)=>{
+            e.preventDefault();
+            let id = $(e.target.closest('td')).find('.delete_form_a')[0].elements.id.value;
+            $(e.target.closest('tr')).remove();
+            deleteRequest(id, "ca");
+        });
+    });
+    
+    $('.edit_order').on("click", (e)=>{
+        let data = $(e.target).closest('tr').find(' td ');
+        let update_form = $(data[10]).find(".update_order")[0].elements;
         let id = update_form.id.value;
-        let name = data[0].textContent;
-        let email = data[1].textContent;
-        let review = data[2].textContent.slice(1,-1);
-        let show_review = $(update_form.is_showing).prop('checked');
-        let form = document.querySelector('.edit_review_form').elements;
-        form.id.value = id;
-        form.email.value = email;
-        form.name.value = name;
-        form.review.value = review;
-        $(form.show_review).prop("checked", show_review);
-    })
-});
-
-document.querySelector('.edit_review_form').addEventListener("submit", (e) => {
-    e.preventDefault();
-    let data = {};
-    let email = {type:"string", value: e.target.elements.email.value};
-    let id = e.target.elements.id.value;
-    let name = {type:"string", value: e.target.elements.name.value};
-    let review = {type:"string", value: e.target.elements.review.value};
-    let show_review = {type:"number", value: $(e.target.elements.show_review).prop("checked") ? 1 : 0};
-    data["update"] = true;
-    data["id"] = id;
-    data["value"] = [name, email, review, show_review];
-    data["table"] = "r";
-    sendRequest(data, '#reviews');
-}); 
-
-document.querySelector('.add_review_form').addEventListener("submit", (e) => {
-    e.preventDefault();
-    let data = {};
-    let email = {type:"string", value: e.target.elements.email.value};
-    let name = {type:"string", value: e.target.elements.name.value};
-    let review = {type:"string", value: e.target.elements.review.value};
-    let show_review = {type:"number", value: $(e.target.elements.show_review).prop("checked") ? 1 : 0};
-    data["insert"] = true;
-    data["value"] = [name, email, review, show_review];
-    data["table"] = "r";
-    sendRequest(data, '#reviews');
-}); 
-
-document.querySelectorAll('.edit_o_s').forEach(el => {
-    el.addEventListener("click", (e) => {
-        e.preventDefault();
-        let data = $(e.target.closest('tr')).find('td');
-        console.log(data);
-        let id = $(data[4]).find('.delete_form_o_s')[0].elements.id.value;
-        let title = data[1].textContent;
-        let text = data[2].textContent;
-        let img_url = $(data[0].firstChild).prop("src");
-        let form = document.querySelector('.edit_our_service_form').elements;
-        form.id.value = id;
-        form.text.value = text;
-        form.title.value = title;
-        $('.e_o_s_img').prop("src", img_url);
-    })
-});
-
-document.querySelectorAll('.edit_p_d').forEach(el => {
-    el.addEventListener("click", (e) => {
-        e.preventDefault();
-        let data = $(e.target.closest('tr')).find('td');
-        let id = $(data[3]).find('.delete_form_p_d')[0].elements.id.value;
-        let text = data[1].textContent;
-        let img = $(data[0].firstChild).prop("src");
-        $('.edit_p_d_img').prop("src", img);
-        let form = document.querySelector('.edit_review_form').elements;
-        form.id.value = id;
-        form.text.value = text;
-    })
-});
-
-document.querySelector('.edit_call_form').addEventListener("submit", (e) => {
-    e.preventDefault();
-    let data = {};
-    let id = e.target.elements.id.value;
-    let email = {type:"string", value: e.target.elements.email.value};
-    let name = {type:"string", value: e.target.elements.name.value};
-    let phone = {type:"string", value: e.target.elements.phone.value};
-    data["update"] = true;
-    data["id"] = id;
-    data["value"] = [name, phone, email];
-    data["table"] = "c";
-    sendRequest(data, '#calls');
-}); 
-
-document.querySelector('.add_call_form').addEventListener("submit", (e) => {
-    e.preventDefault();
-    let data = {};
-    let email = {type:"string", value: e.target.elements.email.value};
-    let name = {type:"string", value: e.target.elements.name.value};
-    let phone = {type:"string", value: e.target.elements.phone.value};
-    data["insert"] = true;
-    data["value"] = [name, phone, email];
-    data["table"] = "c";
-    sendRequest(data, '#calls');
-}); 
-
-document.querySelectorAll('.edit_call').forEach(el => {
-    el.addEventListener("click", (e) => {
-        let data = $(e.target.closest('tr')).find('td');
-        let id = $(data[4]).find('.delete_form_c')[0].elements.id.value;
         let name = data[0].textContent;
         let phone = data[1].textContent;
         let email = data[2].textContent;
-        let form = document.querySelector('.edit_call_form').elements;
-        form.id.value = id;
+        let addresses = data[3].textContent;
+        let goBack = data[4].textContent == "Так" ? "duo" : "one";
+        let time = data[5].textContent.substring(0,5);
+        let date = data[5].textContent.substring(7,17);
+        let passengers = data[6].textContent;
+        let car = data[7].textContent;
+        let price = parseInt(data[8].textContent);
+        let done = $(update_form.order_done).prop("checked");
+        let form = document.querySelector('.edit_order_form').elements;
         form.name.value = name;
         form.phone.value = phone;
         form.email.value = email;
+        form.price.value = price;
+        form.car.value = car;
+        form.passengers.value = passengers;
+        form.time.value = time;
+        form.date.value = date;
+        form.goBack.value = goBack;
+        form.addresses.value = addresses;
+        form.id.value = id;
+        $(form.done).prop("checked", done);
     });
-});
+    
+    $('.edit_car').on("click", (e)=>{
+        let imgs_containter = $('.edit_car_imgs');
+        let form = document.querySelector('.edit_car_form').elements;
+        let data = $(e.target).closest('tr').find(' td ');
+        let id = $(e.target).nextAll(".delete_form_a:first")[0].id.value;
+        let name = data[0].textContent;
+        let locations = data[1].textContent.replace(/\s+/g, " ").trim().split(' ');
+        let passengers = data[2].textContent;
+        let main_image = data[3].firstChild.src;
+        let images = data[4].textContent.replace(/\s+/g, " ").trim().split(' ');
+        let imgs_element = '';
+        for(let i = 0; i < images.length; i++){
+            imgs_element += `<img class="car_image" src="./img/${images[i]}" alt="">`;
+        }
+        for(let i = 0; i < locations.length; i++){
+            $(`#locs option[value='${locations[i]}']`).prop('selected', true);
+        }
+        $(imgs_element).appendTo(imgs_containter);
+        let advantages = data[5].textContent;
+        let is_show = $(data[7].childNodes[1].is_showing).prop("checked");
+        form.name.value = name;
+        form.passengers.value = passengers;
+        form.advantages.value = advantages;
+        $('.edit_car_main_image').attr("src", main_image);
+        form.id.value = id;
+        $(form.show).prop("checked", is_show);
+    
+    });
+    
+    document.querySelector('.filter_review').addEventListener("change", (e)=>{
+        e.preventDefault();
+        let filter_by = e.target.value;
+        filterTrByClass(filter_by, '.review_table');
+    });
+    
+    document.querySelector('.sort_review').addEventListener("change", (e)=>{
+        let table = document.querySelector('.review_table');
+        let sort_by = e.target.selectedIndex;
+        sortTable(table, sort_by);
+    });
+    
+    document.querySelector('.filter_order').addEventListener("change", (e)=>{
+        e.preventDefault();
+        let filter_by = e.target.value;
+        filterTrByClass(filter_by, '.order_table');
+    });
+    
+    document.querySelector('.sort_order').addEventListener("change", (e)=>{
+        let table = document.querySelector('.order_table');
+        let sort_by = e.target.selectedIndex;
+        sortTable(table, sort_by);
+    });
+    
+    document.querySelector('.add_order_form').addEventListener("submit", (e) => {
+        e.preventDefault();
+        let form = e.target.elements;
+        if(hasNumber.test(form.name.value)){
+            alert("Невірні дані!");
+            return;
+        }
+        let data = {};
+        let name = form.name.value;
+        let phone = form.phone.value;
+        let email = form.email.value;
+        let date = form.date.value;
+        let time = form.time.value;
+        let goBack = form.goBack.value == "duo" ? 1 : 0;
+        let passengers =  Number(form.passengers.value);
+        let car = form.car.value;
+        let price = Number(form.price.value);
+        let done = $(form.done).prop("checked") == true ? 1 : 0;
+        let addresses = getAddressesTextarea(form.addresses.value);
+        data["name"] = name;
+        data["phone"] = phone;
+        data["email"] = email;
+        data["date"] = date;
+        data["time"] = time;
+        data["addresses"] = addresses;
+        data["goBack"] = goBack;
+        data["passenger_count"] = passengers;
+        data["car"] = car;
+        data["price"] = price;
+        data["done"] = done;
+        data["add_order"] = true;
+        data["table"] = "o";
+        sendRequest(data, '#orders');
+    });
+    
+    document.querySelector('.edit_order_form').addEventListener("submit", (e) => {
+        e.preventDefault();
+        let form = e.target.elements;
+        if(hasNumber.test(form.name.value)){
+            alert("Невірні дані!");
+            return;
+        }
+        let data = {};
+        let id = form.id.value;
+        let name = {type:"string", value: form.name.value};
+        let phone = {type:"string", value: form.phone.value};
+        let email = {type:"string", value: form.email.value};
+        let date = {type:"string", value: form.date.value};
+        let time = {type:"string", value: form.time.value};
+        let goBack = {type:"number", value: form.goBack.value == "duo" ? 1 : 0};
+        let passengers = {type:"number", value: form.passengers.value};
+        let car = {type:"string", value: form.car.value};
+        let price = {type:"number", value: Number(form.price.value)};
+        let done = {type:"number", value: $(form.done).prop("checked") == true ? 1 : 0};
+        let addresses = {type:"string", value: getAddressesTextarea(form.addresses.value).join(' -> ')};
+        let values = [name, phone, email, addresses, goBack, date, time, passengers, car, price, done];
+        data["id"] = id;
+        data["value"] = values;
+        data["update"] = true;
+        data["table"] = "o";
+        sendRequest(data, '#orders');
+    });
+    
+    document.querySelector('.add_email_form').addEventListener("submit", (e) => {
+        e.preventDefault();
+        let data = {};
+        data["insert"] = true;
+        data["table"] = "c_e";
+        data["value"] = e.target.elements.email.value;
+        sendRequest(data, '#edit_contacts');
+        clearFormInputs(e.target);
+    }); 
+    
+    document.querySelector('.add_phone_form').addEventListener("submit", (e) => {
+        e.preventDefault();
+        let data = {};
+        let social_media = "";
+        let phone = {type: "string", value: e.target.elements.phone.value};
+        let operator = {type: "string", value: e.target.elements.operator.value};
+        let social_media_array = e.target.elements["social_media[]"].selectedOptions;
+        for(let i = 0; i < social_media_array.length; i++){
+            social_media += social_media_array[i].value;
+            if(i < social_media_array.length - 1){
+                social_media += " ";
+            }
+        }
+        let soc_media = {type: "string", value: social_media};
+        data["insert"] = true;
+        data["value"] = [phone, operator, soc_media];
+        data["table"] = "c_p";
+        sendRequest(data, '#edit_contacts');
+        clearFormInputs(e.target);
+    }); 
+    
+    document.querySelector('.edit_email_form').addEventListener("submit", (e) => {
+        //  послідовно задавати масив значень відповідно до таблиці
+        e.preventDefault();
+        let id = e.target.elements.id.value;
+        let email = e.target.elements.email.value;
+        updateRequest("c_e", id, "email", email, '#edit_contacts');
+        clearFormInputs(e.target);
+    }); 
+    
+    document.querySelector('.edit_phone_form').addEventListener("submit", (e) => {
+        e.preventDefault();
+        let data = {};
+        let social_media = "";
+        let phone = {type: "string", value: e.target.elements.phone.value};
+        let operator = {type: "string", value: e.target.elements.operator.value};
+        let social_media_array = e.target.elements["social_media[]"].selectedOptions;
+        for(let i = 0; i < social_media_array.length; i++){
+            social_media += social_media_array[i].value;
+            if(i < social_media_array.length - 1){
+                social_media += " ";
+            }
+        }
+        let soc_media = {type: "string", value: social_media}
+        data["update"] = true;
+        data["id"] = e.target.elements.id.value;
+        data["value"] = [phone, operator, soc_media];
+        data["table"] = "c_p";
+        sendRequest(data, '#edit_contacts');
+        clearFormInputs(e.target);
+    }); 
+    
+    document.querySelectorAll('.edit_phone').forEach(el => {
+        el.addEventListener("click", (e) => {
+            e.preventDefault();
+            let data = $(e.target.closest('tr')).find('td');
+            let id = $(data[4]).find('.delete_form_p')[0].elements.id.value;
+            let phone = data[0].textContent;
+            let operator = data[1].textContent;
+            let social_media = data[2].textContent.trim() == "" ? " " : data[2].textContent.toLowerCase().split(" ");
+            let form = document.querySelector('.edit_phone_form').elements;
+            form.id.value = id;
+            form.phone.value = phone;
+            form.operator.value = operator.toLowerCase();
+            $(form["social_media[]"]).val(social_media);
+        })
+    });
+    
+    document.querySelectorAll('.edit_email').forEach(el => {
+        el.addEventListener("click", (e) => {
+            e.preventDefault();
+            let data = $(e.target.closest('tr')).find('td');
+            let id = $(data[2]).find('.delete_form_e')[0].elements.id.value;
+            let email = data[0].textContent;
+            let form = document.querySelector('.edit_email_form').elements;
+            form.id.value = id;
+            form.email.value = email;
+        })
+    });
+    
+    document.querySelectorAll('.edit_review').forEach(el => {
+        el.addEventListener("click", (e) => {
+            e.preventDefault();
+            let data = $(e.target.closest('tr')).find('td');
+            let update_form = $(data[4]).find('.update_review')[0].elements;
+            let id = update_form.id.value;
+            let name = data[0].textContent;
+            let email = data[1].textContent;
+            let review = data[2].textContent.slice(1,-1);
+            let show_review = $(update_form.is_showing).prop('checked');
+            let form = document.querySelector('.edit_review_form').elements;
+            form.id.value = id;
+            form.email.value = email;
+            form.name.value = name;
+            form.review.value = review;
+            $(form.show_review).prop("checked", show_review);
+        })
+    });
+    
+    document.querySelector('.edit_review_form').addEventListener("submit", (e) => {
+        e.preventDefault();
+        let data = {};
+        let email = {type:"string", value: e.target.elements.email.value};
+        let id = e.target.elements.id.value;
+        let name = {type:"string", value: e.target.elements.name.value};
+        let review = {type:"string", value: e.target.elements.review.value};
+        let show_review = {type:"number", value: $(e.target.elements.show_review).prop("checked") ? 1 : 0};
+        data["update"] = true;
+        data["id"] = id;
+        data["value"] = [name, email, review, show_review];
+        data["table"] = "r";
+        sendRequest(data, '#reviews');
+    }); 
+    
+    document.querySelector('.add_review_form').addEventListener("submit", (e) => {
+        e.preventDefault();
+        let data = {};
+        let email = {type:"string", value: e.target.elements.email.value};
+        let name = {type:"string", value: e.target.elements.name.value};
+        let review = {type:"string", value: e.target.elements.review.value};
+        let show_review = {type:"number", value: $(e.target.elements.show_review).prop("checked") ? 1 : 0};
+        data["insert"] = true;
+        data["value"] = [name, email, review, show_review];
+        data["table"] = "r";
+        sendRequest(data, '#reviews');
+    }); 
+    
+    document.querySelectorAll('.edit_o_s').forEach(el => {
+        el.addEventListener("click", (e) => {
+            e.preventDefault();
+            let data = $(e.target.closest('tr')).find('td');
+            console.log(data);
+            let id = $(data[4]).find('.delete_form_o_s')[0].elements.id.value;
+            let title = data[1].textContent;
+            let text = data[2].textContent;
+            let img_url = $(data[0].firstChild).prop("src");
+            let form = document.querySelector('.edit_our_service_form').elements;
+            form.id.value = id;
+            form.text.value = text;
+            form.title.value = title;
+            $('.e_o_s_img').prop("src", img_url);
+        })
+    });
+    
+    document.querySelectorAll('.edit_p_d').forEach(el => {
+        el.addEventListener("click", (e) => {
+            e.preventDefault();
+            let data = $(e.target.closest('tr')).find('td');
+            let id = $(data[3]).find('.delete_form_p_d')[0].elements.id.value;
+            let text = data[1].textContent;
+            let img = $(data[0].firstChild).prop("src");
+            $('.edit_p_d_img').prop("src", img);
+            let form = document.querySelector('.edit_review_form').elements;
+            form.id.value = id;
+            form.text.value = text;
+        })
+    });
+    
+    document.querySelector('.edit_call_form').addEventListener("submit", (e) => {
+        e.preventDefault();
+        let data = {};
+        let id = e.target.elements.id.value;
+        let email = {type:"string", value: e.target.elements.email.value};
+        let name = {type:"string", value: e.target.elements.name.value};
+        let phone = {type:"string", value: e.target.elements.phone.value};
+        data["update"] = true;
+        data["id"] = id;
+        data["value"] = [name, phone, email];
+        data["table"] = "c";
+        sendRequest(data, '#calls');
+    }); 
+    
+    document.querySelector('.add_call_form').addEventListener("submit", (e) => {
+        e.preventDefault();
+        let data = {};
+        let email = {type:"string", value: e.target.elements.email.value};
+        let name = {type:"string", value: e.target.elements.name.value};
+        let phone = {type:"string", value: e.target.elements.phone.value};
+        data["insert"] = true;
+        data["value"] = [name, phone, email];
+        data["table"] = "c";
+        sendRequest(data, '#calls');
+    }); 
+    
+    document.querySelectorAll('.edit_call').forEach(el => {
+        el.addEventListener("click", (e) => {
+            let data = $(e.target.closest('tr')).find('td');
+            let id = $(data[4]).find('.delete_form_c')[0].elements.id.value;
+            let name = data[0].textContent;
+            let phone = data[1].textContent;
+            let email = data[2].textContent;
+            let form = document.querySelector('.edit_call_form').elements;
+            form.id.value = id;
+            form.name.value = name;
+            form.phone.value = phone;
+            form.email.value = email;
+        });
+    });
+
+}
+
+eventListeners();

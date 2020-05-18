@@ -2,6 +2,18 @@
     include 'get_data.php';
     include "index_request_api.php";
 ?>
+<!DOCTYPE html>
+<html lang="ua">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>LUX TUR</title>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto&display=swap" rel="stylesheet">
+    <script defer src="./js/all.js"></script>
+	<link rel="stylesheet" href="css/input.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
     <?php include "header.php";?>
     <?php include "side_menu.php";?>
 
@@ -871,4 +883,9 @@
         </div>
     </div>
 
-<?php include "footer.php";?>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/jquery.mask.js"></script>
+    <script src="js/sendRequest.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
