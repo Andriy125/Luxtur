@@ -1,32 +1,61 @@
 // об єкти з широтою і довготою  
 let arr_obj = [];          
 // кнопка розрахунку                                         
-let calculate = document.querySelector('.calculate');  
+let calculate = document.querySelector('.calculate'); 
+//  поле кількість пасажирів на формі розрахунків
+let passenger_calc_input = document.querySelector('.passenger_calc'); 
+//  поле кількість пасажирів на формі замовлення
+let passenger_order_input = document.querySelector('.order_passengers');  
 //  форма розрахунку                                     
 let calc_form = document.querySelector('.form_calc');                                       
 // ключ для отримання координатів міст                                    
 let apikey_geodata = '303691d597d34232b212232cb93cba14';
 // посилання для запиту (отримання координат)
 let api_url = 'https://api.opencagedata.com/geocode/v1/json';
-let usd_tariff = 1;         //  курс долара
+let usd = 1;         //  курс долара
+let usd_tariff = 0.65;  //  загран тариф
+let order = {};             //  замовлення
+
 const hasNumber = /\d/;     //  функція перевірки рядка на наявність цифр
 let calc_modal_button = document.querySelector('.results_form__button');
 let inputs = [];
 let coords = [];
 let count_of_passengers = 0;
 let goBack = false;
+
 //  функція для отримання поточного курсу долара
-const getUSD = () => {
-    fetch('https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11').then(response => {
-        response.json().then(response => {
-            usd_tariff = response[0].sale * 0.65;
-        });
-    })
+const getUSD =  () => {
+    $.ajax({
+        url: 'https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11',
+        type: "GET",  
+        success: function (response) {
+            usd = response[0].sale * usd_tariff;
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
+         }
+    });
 }
 
-//      після завантаження сторінки виконати функцію і зберігати дані
-//      TODO: download fonts 
-getUSD();
+const makeRequestForDistances = async (query) => {
+    return await fetch("https://trueway-matrix.p.rapidapi.com/CalculateDrivingMatrix?destinations="
+    + encodeURIComponent(query) + 
+    "&origins=" + encodeURIComponent(query), {
+        "method": "GET",
+        "headers": {
+            "x-rapidapi-host": "trueway-matrix.p.rapidapi.com",
+            "x-rapidapi-key": "07f42e69cbmshe9b66757eca013dp10519bjsn718397e16c42"
+        }
+    })
+    .then(async response => {
+        return await response.json().then(async data => {
+            return await data;
+        })
+    })
+    .catch(err => {
+        console.log(err);
+    });
+}
 
 //  функція отримання координат введених адрес
 const getCoordinates = async (cities) => {
@@ -65,28 +94,88 @@ const getCoordinates = async (cities) => {
     }
 }
 
+const formingQuery = (arr) => {
+    let query = "";
+    for(let i = 0; i < arr.length; i++){
+        query += arr[i].lat + "," + arr[i].long + ';';                      
+    }
+    return query;
+}
+
+const calculatingDistance = (arr, i) => {
+    return arr.distances[i][i+1] / 1000 > 0 ? (arr.distances[i][i+1] / 1000).toFixed(0) : (arr.distances[i][i+1] / 1000).toFixed(2);
+}
+
+const clearCalculatingData = () => {
+    document.querySelectorAll('.form__input').forEach(el => el.value = '');  
+    $('#one').prop( "checked" , true);         
+    arr_obj = [];
+    coords = [];
+}
+
+const CreatingResultData = (response) => {
+    let from = [];
+    let to = [];
+    let distances = [];
+    // обнулення загальної відстані
+    let distance_global = 0;
+    // очистка попередніх елементів 
+    $('.results_distances__text').remove();
+    // отримання вартості поїздки
+    let price = getDistancePrice(response.distances, arr_obj, passenger_calc_input);
+    for (let i = 0; i < inputs.length - 1; i++){                            
+        // отримання відстані з сервера
+        let distance = calculatingDistance(response, i);
+        // додавання елементів в масив для подальшого опрацювання і додавання елементів
+        from.push(inputs[i]);
+        to.push(inputs[i+1]);
+        distances.push(distance);
+        // загальна відстань
+        distance_global += Number(distance);
+    }                                                                       
+    // додавання елементів в пункті "всі дані" в модальне вікно результатів розрахунку
+    insertElement(createResultElement(from, to, distances, distances.length), '.results_distances__all');
+
+    // відображення голового шляху (від початкового місця до кінцевого)
+    insertElement(createResultElement(from[0], to[to.length - 1], distance_global), '.results_distances__standard'); 
+    if(inputs.length < 3){
+        // приховувати кнопку "всі дані" коли пунктів тільки два
+        $('.all_info').css('display', 'none');                              
+    }
+    else{
+        $('.all_info').css('display', 'flex');
+    }
+    // додавання вартості 
+    $('.results_price__text').html(`Сума: ${price} грн`);
+}
+
+const capitalizeInput = (el) => {
+    let val = el.value;
+    val = el.value.toLowerCase();
+    return val.charAt(0).toUpperCase() + val.slice(1);
+}
+
 // виведення помилки та очищення масиву координат для форми "розрахунок"
 const ErrorClear = () => {                                                          
     alert('Помилка! Не вірно вказані дані! Спробуйте знову!');
-    document.querySelector('.passenger_calc').value = ""; 
+    passenger_calc_input.value = ""; 
     arr_obj = [];
+    coords = [];
 }
+
 //  розрахунок
 calc_form.addEventListener('submit', async (e) =>{
-
     e.preventDefault();
     // якщо одне поле 
-    if(document.querySelectorAll('.form__input').length <= 1 || Number($('.passenger_calc')[0].value) <= 0){                   
+    if(document.querySelectorAll('.form__input').length <= 1 || Number(passenger_calc_input.value) <= 0){                   
         ErrorClear();
         return;
     }
-    // формування та форматування масиву адрес для подальшого використання
+    // формування та форматування масиву адрес
     document.querySelectorAll('.form__input').forEach((el) => {
-        let val = el.value;
-        val = el.value.toLowerCase();
-        inputs.push(val.charAt(0).toUpperCase() + val.slice(1));
+        inputs.push(capitalizeInput(el));
     });
-    count_of_passengers = Number($('.passenger_calc')[0].value);
+    count_of_passengers = Number(passenger_calc_input.value);
     calculate.textContent = 'Розрахунок...';
 
     // запуск отримання координат 
@@ -99,69 +188,19 @@ calc_form.addEventListener('submit', async (e) =>{
             return;
         }
         // формування запиту
-        for(let i = 0; i < arr_obj.length; i++){
-            query += arr_obj[i].lat + "," + arr_obj[i].long + ';';                      
-        }
-        // здійснення запиту
-        await fetch("https://trueway-matrix.p.rapidapi.com/CalculateDrivingMatrix?destinations="
-        + encodeURIComponent(query) + 
-        "&origins=" + encodeURIComponent(query), {
-            "method": "GET",
-            "headers": {
-                "x-rapidapi-host": "trueway-matrix.p.rapidapi.com",
-                "x-rapidapi-key": "07f42e69cbmshe9b66757eca013dp10519bjsn718397e16c42"
-            }
+        query = formingQuery(arr_obj);
+        // здійснення запиту / отримання результатів
+         await makeRequestForDistances(query).then(response => {
+            CreatingResultData(response); 
+            modal_calc.style.display = "block";
         })
-        // отримання результатів
-        .then(async response => {
-            await response.json().then(response => {
-                let from = [];
-                let to = [];
-                let distances = [];
-                // обнулення загальної відстані
-                let distance_global = 0;
-                // очистка попередніх елементів 
-                $('.results_distances__text').remove();
-                // отримання вартості поїздки
-                let price = getDistancePrice(response.distances, arr_obj, '.passenger_calc');
-                for (let i = 0; i < inputs.length - 1; i++){                            
-                    // отримання відстані з сервера
-                    let distance = response.distances[i][i+1] / 1000 > 0 ? (response.distances[i][i+1] / 1000).toFixed(0) : (response.distances[i][i+1] / 1000).toFixed(2);
-                    // додавання елементів в масив для подальшого опрацювання і додавання елементів
-                    from.push(inputs[i]);
-                    to.push(inputs[i+1]);
-                    distances.push(distance);
-                    // загальна відстань
-                    distance_global += Number(distance);
-                }                                                                       
-                // додавання елементів в пункті "всі дані" в модальне вікно результатів розрахунку
-                insertElement(createResultElement(from, to, distances, distances.length), '.results_distances__all');
-
-                // відображення голового шляху (від початкового місця до кінцевого)
-                insertElement(createResultElement(from[0], to[to.length - 1], distance_global), '.results_distances__standard');        
-                if(inputs.length < 3){
-                    // приховувати кнопку "всі дані" коли пунктів тільки два
-                    $('.all_info').css('display', 'none');                              
-                }
-                else{
-                    $('.all_info').css('display', 'flex');
-                }
-                // додавання вартості 
-                $('.results_price__text').html(`Сума: ${price} грн`);  
-                modal_calc.style.display = "block";
-            })
-        })
-        .catch(err => {
-            console.log(err);
-        });
+        
     }); 
     // очищення масиву координат і полів вводу
-    document.querySelectorAll('.form__input').forEach(el => el.value = '');  
-    $('#one').prop( "checked" , true);         
-    arr_obj = [];
+    clearCalculatingData();
 });
 
-// створення елементів з результатом
+// створення елементів з результатом для модального вікна розрахунків
 const createResultElement = (from, to, distance, count = 1) => {
     let element = '';
     for(let i = 0; i < count; i++){
@@ -180,17 +219,13 @@ const createResultElement = (from, to, distance, count = 1) => {
 // вирахування вартості поїздки із перевіркою на зворотній шлях
 const getDistancePrice = (arr, objects, passenger_element) => {
     let price = 0;
-    let count_passengers = Number(document.querySelector(passenger_element).value);
+    let count_passengers = Number(passenger_element.value);
     let uah_tariff = count_passengers <= 8 ? 7 : 10;
-    
     let usd_bool = false;
     let uah_bool = false;
     let tariff_text = "Тариф: ";
 
-    for(let i = 0; i < arr.length; i++){
-        if(i + 1 === arr.length){
-            break;
-        }
+    for(let i = 0; i < arr.length - 1; i++){
         if(objects[i+1].country !== "UA"){
             usd_bool = true;
         }
@@ -201,16 +236,19 @@ const getDistancePrice = (arr, objects, passenger_element) => {
         // якщо по Україні
         ? (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * uah_tariff : uah_tariff 
         // якщо не по Україні
-        : (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * usd_tariff : usd_tariff;
+        : (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * usd : usd;
     }
     if(uah_bool && usd_bool){
-        tariff_text += `${'0.65$/км + ' + uah_tariff + ' Гривень/км'}`
+        //  TODO: змінити 0.65 на динамічну змінну для можливих змін
+        tariff_text += `${`${usd_tariff}$/км /` + uah_tariff + ' Гривень/км'}`
     }
     else {
-        tariff_text += `${usd_bool ? '0.65$/км' : uah_tariff + ' Гривень/км'}`
+        tariff_text += `${usd_bool ? `${usd_tariff}$/км` : uah_tariff + ' Гривень/км'}`
     }
+    //  задання тарифу 
     $('.results_tariff').text(tariff_text);
-    $('.passenger_calc')[0].value = "";
+    //  очищення поля кількості пасажирів
+    passenger_element.value = "";
     goBack = $('#duo').prop( "checked" ) ? true : false;
     return $('#duo').prop( "checked" ) ? price.toFixed(0) * 2 : price.toFixed(0);
 }
@@ -281,29 +319,14 @@ const checkAddressData = async (addresses) => {
 const getPrice = async (arr) => {
     let price = 0;
     let query = '';
-    console.log(arr);
     // формування запиту
-    for(let i = 0; i < arr.length; i++){
-        query += arr[i].lat + "," + arr[i].long + ';';                      
-    }
+    query = formingQuery(arr);
     // здійснення запиту
-    await fetch("https://trueway-matrix.p.rapidapi.com/CalculateDrivingMatrix?destinations="
-    + encodeURIComponent(query) + 
-    "&origins=" + encodeURIComponent(query), {
-        "method": "GET",
-        "headers": {
-            "x-rapidapi-host": "trueway-matrix.p.rapidapi.com",
-            "x-rapidapi-key": "07f42e69cbmshe9b66757eca013dp10519bjsn718397e16c42"
-        }
+    return await makeRequestForDistances(query).then(response => {
+        // отримання вартості поїздки
+        price = getDistancePrice(response.distances, arr, passenger_order_input); 
+        return price;
     })
-    // отримання результатів
-    .then(async response => {
-        await response.json().then(response => {
-            // отримання вартості поїздки
-            price = getDistancePrice(response.distances, arr, '.order_passengers');                                         
-        })
-    })
-    return price;
 }
 
 //  функція перевірки на коректність поля ім'я
@@ -364,9 +387,7 @@ document.querySelector('.call_form').addEventListener('submit', (e) => {
 //  обробник відправки форми замовлення
 $('.order_form').on('submit', async (e) => {
     e.preventDefault();
-    let order = {};             //  замовлення
-    let price = 0;
-    let name, addresses = [], date, passengers, coords_price = [];
+    let name, addresses = [], date, passengers;
     //  перевірка на першу форму (контактні дані)
     if(!checkElementUndefined(e.target.elements.name)){
         name = e.target.elements.name.value;
@@ -421,19 +442,20 @@ $('.order_form').on('submit', async (e) => {
     }
     //  перевірка на п'яту форму (автопарк)
     else if(!checkElementUndefined(e.target.elements.autopark)){
-        price = await getPrice(coords);
-        let cars = $('.order_slider_car .order_car');
-        let currentSlide = $('.order_slider_car').slick('slickCurrentSlide');
-        let car_name = $($(cars[currentSlide])[0].querySelector('.order_car__title'))[0].textContent;
-        order["car"] = car_name;
-        order["add_order"] = true;
-        order["price"] = order["goBack"] == 1 ? price * 2 : price;
-        order["table"] = "o";
-        sendRequest(order);
-        $('.order_form').find("input[type=text], input[type=number], .order_email, textarea").val("");
-        $('.order_slider_car').slick("slickGoTo", 0, true);
-        $('#one1').prop('checked', true);
-        nextSlide();
+        await getPrice(coords).then(price => {
+            let cars = $('.order_slider_car .order_car');
+            let currentSlide = $('.order_slider_car').slick('slickCurrentSlide');
+            let car_name = $($(cars[currentSlide])[0].querySelector('.order_car__title'))[0].textContent;
+            order["car"] = car_name;
+            order["add_order"] = true;
+            order["price"] = Number(order["goBack"] == 1 ? price * 2 : price);
+            order["table"] = "o";
+            sendRequest(order);
+            $('.order_form').find("input[type=text], input[type=number], .order_email, textarea").val("");
+            $('.order_slider_car').slick("slickGoTo", 0, true);
+            $('#one1').prop('checked', true);
+            nextSlide();
+        })        
     } 
 });
 
@@ -443,7 +465,9 @@ calc_modal_button.addEventListener("click", () => {
     for(let i = 0; i < inputs.length; i++){
         inputs_elements[i].value = inputs[i];
     }
-    document.querySelector('.order_form .order_passengers').value = count_of_passengers;
+    passenger_order_input.value = count_of_passengers;
     goBack ? $('#duo2').prop( "checked", true ) : $('#one1').prop( "checked", true );
     hideModal(modal_calc);
 });
+
+getUSD();
