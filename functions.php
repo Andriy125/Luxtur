@@ -24,7 +24,9 @@ function getTableName($str){
         case 'ca':
             $table_name = "cars";
             break;
-            
+        case 'p':
+            $table_name = "prices";
+            break;            
         default:
             # code...
             break;
@@ -124,7 +126,6 @@ function updateQuery(){
         die('Ошибка соединения: ' . mysql_error());
     }
     $table = getTableName($_POST["table"]);
-    
     $id = $_POST["id"];
     $value = $_POST["value"];
     $sql = "";
@@ -139,7 +140,8 @@ function updateQuery(){
         $columns = trim($columns, " ");
         $columns = explode(" ", $columns);
         $update_query = "";
-        for($i = 0; $i < count($columns); $i++){
+        $iterations_count = isset($_POST["iterations"]) ? $_POST["iterations"] : count($columns);
+        for($i = 0; $i < $iterations_count; $i++){
             if($value[$i]["type"] == "string"){
                 $update_query .= $columns[$i] . " = '" . $value[$i]["value"] . "'";
             }
@@ -161,7 +163,6 @@ function updateQuery(){
             $sql = "UPDATE ". $table ." SET ". $column ." = ". $value ." WHERE id = ". $id .";";
         }
     } 
-    echo $sql;
     $result = mysqli_query($conn, $sql);
     if (!$result) {
         die('Неверный запрос: ' . $conn->sqlstate);

@@ -551,6 +551,7 @@
 		let eu_car_array = <?php echo json_encode($eu_car); ?>;
 		let ukr_car_array = <?php echo json_encode($ukr_car); ?>;
 		let array_of_auto_imgs = <?php echo json_encode($array_of_auto_imgs); ?>;
+		usd_tariff = Number(<?php echo json_encode($usd_tariff); ?>["value"]);
 	</script>
 </body>
 </html>

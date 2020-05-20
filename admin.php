@@ -23,14 +23,16 @@
 
     <div id="id-edit_price" class="tabcontent">
         <div class="content_container">
+
             <div>
                 <h2>Ціна за км:</h2>
                 <ul>
                     <?php for($i = 0; $i < count($all_locations); $i++): ?>
-                    <li><?php echo  $all_locations[$i]["location"];?> - </li>
+                    <li><?php echo $all_locations[$i]["location"];?> - </li>
                     <?php endfor; ?>
                 </ul>
             </div>
+
             <div class="form_container">
                 <form>
                     <div class="date-time_block">
@@ -48,12 +50,28 @@
                                 <option value="<?php echo $condition_operators[$i]["operator"]?>"><?php echo $condition_operators[$i]["name"]?></option>
                                 <?php endfor; ?>
                             </select>
-                            <input class="input_time" placeholder="Значення" type="text" name="value" required>
+                            <input class="input_time" placeholder="Значення..." type="text" name="value" required>
                             <button type="submit" class="add_button">+</button>
                         </div>                        
                     </div>
                 </form>
             </div>
+
+            <div class="form_container">
+                <form class="set-dolar-tariff">
+                    <div class="date-time_block">
+                        <div>
+                            <p>Задати множник закордонного тарифу</p>
+                        </div>
+                        <div class="date-time_block__inputs">
+                                    <input type="hidden" name="id" value="1">
+                            <input class="input_date" placeholder="Значення..." type="text" min="0.01" name="value" required>
+                            <button type="submit" class="add_button">Застосувати</button>
+                        </div>                        
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
 

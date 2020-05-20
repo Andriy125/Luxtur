@@ -13,7 +13,7 @@ let apikey_geodata = '303691d597d34232b212232cb93cba14';
 // посилання для запиту (отримання координат)
 let api_url = 'https://api.opencagedata.com/geocode/v1/json';
 let usd = 1;         //  курс долара
-let usd_tariff = 0.65;  //  загран тариф
+let usd_tariff = 1;  //  загран тариф
 let order = {};             //  замовлення
 
 const hasNumber = /\d/;     //  функція перевірки рядка на наявність цифр
@@ -29,7 +29,8 @@ const getUSD =  () => {
         url: 'https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11',
         type: "GET",  
         success: function (response) {
-            usd = response[0].sale * usd_tariff;
+            usd = (response[0].sale * usd_tariff).toFixed(2);
+            console.log(usd);
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log(textStatus, errorThrown);
