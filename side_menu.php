@@ -11,6 +11,11 @@
         <div id="main" class="side_menu__item" data-text="Головна">
             <h3>Головна</h3>
         </div>
+        <div id="users" class="side_menu__item" data-text="Користувачі">
+            <h3>
+                Користувачі
+            </h3> 
+        </div>
         <div id="edit_price" class="side_menu__item" data-text="Редагувати ціни">
             <h3>
                 Редагувати ціни

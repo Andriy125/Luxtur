@@ -13,6 +13,12 @@
     else if(isset($_POST["insert"])){
         insertQuery();
     }
+    else if(isset($_POST["e_user"])){
+        editUser();
+    }
+    else if(isset($_POST["c_user"])){
+        createUser();
+    }
     else{
         error("Something went wrong!");
     }

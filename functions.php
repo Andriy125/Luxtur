@@ -1,5 +1,4 @@
 <?php 
-
 function getTableName($str){
     $table_name = "";
     switch ($str) {
@@ -26,7 +25,10 @@ function getTableName($str){
             break;
         case 'p':
             $table_name = "prices";
-            break;            
+            break;   
+        case 'u':
+            $table_name = "users";
+            break;          
         default:
             # code...
             break;
@@ -181,5 +183,69 @@ function deleteQuery(){
         die('Неверный запрос: ' . $conn->sqlstate);
     }
     mysqli_close($conn);
+}
+function authUser(){
+    $email = $_POST["email"];
+    $conn = mysqli_connect('localhost', 'root', '', 'luxtur');
+    if (!$conn) {
+        die('Ошибка соединения: ' . mysql_error());
+    }
+    $result = mysqli_query($conn, "SELECT id, hash FROM users WHERE user = '". $email ."'");
+    if (!$result) {
+        die('Неверный запрос: ' . $conn->sqlstate);
+    }
+    mysqli_close($conn);
+
+    $user = mysqli_fetch_array($result);
+    $user_hash = $user["hash"];
+
+    $pass = $_POST["pass"];
+    $hashed_pass = generatePassword($pass);
+    if(password_verify($hashed_pass, $user_hash)){
+        //echo $user["id"];
+        //echo hash_hmac('sha1', $pass, $email);
+        return true;
+        header("Location: /admin");
+    }
+    else{
+        //echo -1;
+        return false;
+    }
+    
+}
+function createUser(){
+    $email = $_POST["email"];
+    $pass = $_POST["pass"];
+    $pass_hash = generateHash(generatePassword($pass));
+    $conn = mysqli_connect('localhost', 'root', '', 'luxtur');
+    if (!$conn) {
+        die('Ошибка соединения: ' . mysql_error());
+    }
+    $result = mysqli_query($conn, "INSERT INTO users (user, hash) VALUES ('". $email ."', '". $pass_hash ."')");
+    if (!$result) {
+        die('Неверный запрос: ' . $conn->sqlstate);
+    }
+    mysqli_close($conn);
+}
+function editUser(){
+    $id = $_POST["id"];
+    $email = $_POST["email"];
+    $pass = $_POST["pass"];
+    $pass_hash = generateHash(generatePassword($pass));
+    $conn = mysqli_connect('localhost', 'root', '', 'luxtur');
+    if (!$conn) {
+        die('Ошибка соединения: ' . mysql_error());
+    }
+    $result = mysqli_query($conn, "UPDATE users SET user = '". $email ."', hash = '". $pass_hash ."' WHERE ID = ". $id ."");
+    if (!$result) {
+        die('Неверный запрос: ' . $conn->sqlstate);
+    }
+    mysqli_close($conn);
+}
+function generatePassword($pass){
+    return md5(md5($pass) . md5("luxturforever"));
+}
+function generateHash($pass){
+    return password_hash($pass, PASSWORD_DEFAULT);
 }
 ?>

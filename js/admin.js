@@ -74,12 +74,12 @@ const filterTrByClass = (filter_by, where) => {
     $(`${where} tr.${filter_by}`).css('display', 'table-row');
 }
 
-const deleteRequest = (id, table_name) => {
+const deleteRequest = (id, table_name, leaveToTab="") => {
     let data = {};
     data["id"] = id;
     data["table"] = table_name;
     data["delete"] = true;
-    sendRequest(data);
+    sendRequest(data, leaveToTab);
 }
 
 const updateRequest = (table_name, id, value, currTab="", column="", iterations=0) => {
@@ -144,7 +144,7 @@ const eventListeners = () => {
             e.preventDefault();
             let id = $(e.target.closest('td')).find('.delete_form_p')[0].elements.id.value;
             $(e.target.closest('tr')).remove();
-            deleteRequest(id, "c_p");
+            deleteRequest(id, "c_p", "#edit_contacts");
         });
     });
     
@@ -153,7 +153,7 @@ const eventListeners = () => {
             e.preventDefault();
             let id = $(e.target.closest("td")).find('.delete_form_e')[0].elements.id.value;
             $(e.target.closest('tr')).remove();
-            deleteRequest(id, "c_e");
+            deleteRequest(id, "c_e", "#edit_contacts");
         });
     });
     
@@ -162,7 +162,7 @@ const eventListeners = () => {
             e.preventDefault();
             let id = $(e.target.closest('td')).find('.delete_form_o')[0].elements.id.value;
             $(e.target.closest('tr')).remove();
-            deleteRequest(id, "o");
+            deleteRequest(id, "o", "#orders");
         });
     });
     
@@ -171,7 +171,7 @@ const eventListeners = () => {
             e.preventDefault();
             let id = $(e.target.closest('td')).find('.delete_form_r')[0].elements.id.value;
             $(e.target.closest('tr')).remove();
-            deleteRequest(id, "r");
+            deleteRequest(id, "r", "#reviews");
         });
     });
     
@@ -180,7 +180,7 @@ const eventListeners = () => {
             e.preventDefault();
             let id = $(e.target.closest('td')).find('.delete_form_c')[0].elements.id.value;
             $(e.target.closest('tr')).remove();
-            deleteRequest(id, "c");
+            deleteRequest(id, "c", "#calls");
         });
     });
     
@@ -189,7 +189,7 @@ const eventListeners = () => {
             e.preventDefault();
             let id = $(e.target.closest('td')).find('.delete_form_o_s')[0].elements.id.value;
             $(e.target.closest('tr')).remove();
-            deleteRequest(id, "o_s");
+            deleteRequest(id, "o_s", "#our_service");
         });
     });
     
@@ -198,7 +198,7 @@ const eventListeners = () => {
             e.preventDefault();
             let id = $(e.target.closest('td')).find('.delete_form_p_d')[0].elements.id.value;
             $(e.target.closest('tr')).remove();
-            deleteRequest(id, "p_d");
+            deleteRequest(id, "p_d", "#popular_directions");
         });
     });
     
@@ -207,7 +207,7 @@ const eventListeners = () => {
             e.preventDefault();
             let id = $(e.target.closest('td')).find('.delete_form_a')[0].elements.id.value;
             $(e.target.closest('tr')).remove();
-            deleteRequest(id, "ca");
+            deleteRequest(id, "ca", "#edit_autopark");
         });
     });
     
@@ -552,6 +552,47 @@ const eventListeners = () => {
         const value = Number(usd_tariff);
         updateRequest("p", id, value, '#edit_price', "value");
     });
+
+    document.querySelector('.add_user_form').addEventListener("submit", (e) => {
+        e.preventDefault();
+        let data = {};
+        data["c_user"] = true;
+        data["email"] = e.target.elements.email.value;
+        data["pass"] = e.target.elements.pass.value;
+        sendRequest(data, "#users");
+    });
+
+    document.querySelectorAll('.del_u').forEach(el => {
+        el.addEventListener("click", (e) => {
+            const id = $(e.target.closest('td')).find('.delete_form_u')[0].elements.id.value;
+            deleteRequest(id, "u", "#users");
+        });
+    });
+
+    document.querySelectorAll('.edit_user').forEach(el => {
+        el.addEventListener("click", (e) => {
+            const data = $(e.target.closest('tr')).find('td');
+            const id = $(data[2]).find('.delete_form_u')[0].elements.id.value;
+            const email = data[0].textContent;
+            let form = document.querySelector('.edit_user_form').elements;
+            form.id.value = id; 
+            form.email.value = email; 
+        })
+    });
+
+    document.querySelector('.edit_user_form').addEventListener("submit", (e) => {
+        e.preventDefault();
+        let data = {};
+        data["id"] = e.target.elements.id.value;
+        data["e_user"] = true;
+        data["email"] = e.target.elements.email.value;
+        data["pass"] = e.target.elements.pass.value;
+        sendRequest(data, "#users");
+    });
+
+    document.querySelector('.admin_button').addEventListener("click", (e) => {
+        $('.logout_form')[0].submit();
+    })
 
 }
 

@@ -8,7 +8,6 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>LUX TUR</title>
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto&display=swap" rel="stylesheet">
     <script defer src="./js/all.js"></script>
 	<link rel="stylesheet" href="css/input.css">
     <link rel="stylesheet" href="css/admin.css">
@@ -19,6 +18,74 @@
 
     <div id="id-main" class="tabcontent">
         <!-- <h3>Головна</h3> -->
+    </div>
+    
+    <div id="id-add_users" class="tabcontent">
+        <div class="form_container">
+            <form class="add_user_form">     
+                <input type="hidden" name="id">       
+                <input type="email" placeholder="Введіть email..." name="email" required>
+				<input type="password" name="pass" placeholder="Введіть пароль..." required>                   
+                <div class="submit_block">
+                    <button type="submit" class="add_button">Додати</button>
+                    <div id="users" class="another" data-text="Користувачі">
+                        <a class="add_button">Назад</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="id-edit_users" class="tabcontent">
+        <div class="form_container">
+            <form class="edit_user_form">      
+                <input type="hidden" name="id">      
+                <input type="email" placeholder="Введіть email..." name="email" required>
+				<input type="password" name="pass" placeholder="Введіть пароль..." required>                   
+                <div class="submit_block">
+                    <button type="submit" class="add_button">Відредагувати</button>
+                    <div id="users" class="another" data-text="Користувачі">
+                        <a class="add_button">Назад</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="id-users" class="tabcontent">
+        <div class="content_container">
+            <div class="table_container">
+                <div class="add_block">
+                    <div id="add_users" data-text="Додати Користувача" class="another">
+                        <h3>
+                            <a class="add_link">Додати Користувача</a> 
+                        </h3> 
+                    </div>
+                </div>  
+                <table class="email_table">
+                    <tr>
+                       <th class="column">Email</th>
+                       <th class="column">Додано</th>
+                       <th class="column">Дії</th>
+                    </tr>
+                    <?php for($i = 0; $i < count($converted_users); $i++):?>
+                    <tr>
+                        <td><?php echo $converted_users[$i]["user"]?></td>
+                        <td><?php echo $converted_users[$i]["date_time"]?></td>
+                        <td>
+                            <div id="edit_users" data-text="Редагувати Користувача" class="another">
+                                <a class="edit_button edit_user">Редагувати</a>
+                            </div> 
+                            <form class="delete_form_u">
+                                <input type="hidden" name="id" value="<?php echo $converted_users[$i]["id"]?>">
+                            </form>
+                            <a class="delete_button del_u">Видалити</a>
+                        </td>  
+                    </tr>
+                    <?php endfor;?>
+                </table>
+            </div>
+        </div>
     </div>
 
     <div id="id-edit_price" class="tabcontent">
@@ -94,7 +161,7 @@
 
     <div id="id-add_call" class="tabcontent">
         <div class="form_container">
-        <form class="add_call_form">            
+            <form class="add_call_form">            
                 <input type="text" placeholder="Введіть ім'я..." name="name" required>
 				<input type="text" name="phone" class="phone" required>
 				<input type="email" name="email" placeholder="Введіть E-mail..." required>                       
@@ -901,7 +968,7 @@
         </div>
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/jquery.min.js"></script>
     <script src="js/jquery.mask.js"></script>
     <script src="js/sendRequest.js"></script>
     <script src="js/admin.js"></script>

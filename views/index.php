@@ -539,18 +539,18 @@
 	</div>
 
 	<script src="./js/jquery.min.js"></script>
-	<script src="js/fotorama.js"></script>
+	<script src="./js/fotorama.js"></script>
 	<script src="./js/slick.min.js"></script>
-    <script src="js/sendRequest.js"></script>
+    <script src="./js/sendRequest.js"></script>
 	<script src="./js/logic.js"></script>
 	<script src="./js/sliders.js"></script>
 	<script src="./js/jquery.mask.js"></script>
 	<script src="./js/main.js"></script>
 	<script>
-		let all_car_array = <?php echo json_encode($all_car); ?>;
-		let eu_car_array = <?php echo json_encode($eu_car); ?>;
-		let ukr_car_array = <?php echo json_encode($ukr_car); ?>;
-		let array_of_auto_imgs = <?php echo json_encode($array_of_auto_imgs); ?>;
+		// let all_car_array = <?php echo json_encode($all_car); ?>;
+		// let eu_car_array = <?php echo json_encode($eu_car); ?>;
+		// let ukr_car_array = <?php echo json_encode($ukr_car); ?>;
+		 let array_of_auto_imgs = <?php echo json_encode($array_of_auto_imgs); ?>;
 		usd_tariff = Number(<?php echo json_encode($usd_tariff); ?>["value"]);
 	</script>
 </body>

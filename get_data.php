@@ -26,6 +26,7 @@
         $result_car_location = mysqli_query($con, "SELECT location FROM car_location");
         $result_operators = mysqli_query($con, "SELECT * FROM operators");
         $result_prices = mysqli_query($con, "SELECT * FROM prices");
+        $result_users = mysqli_query($con, "SELECT * FROM users");
 
         if (!$result_phones) {
             die('Неверный запрос: ' . $con->sqlstate);
@@ -79,4 +80,5 @@
         $converted_phone_social_media = convertDataToArray($result_phone_social_media);
         $converted_prices = convertDataToArray($result_prices);
         $usd_tariff = $converted_prices[0];
+        $converted_users = convertDataToArray($result_users);
 ?>
