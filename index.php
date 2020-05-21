@@ -14,7 +14,7 @@ switch ($request) {
             header("Location: /auth");
             exit();
         }
-        else if($_COOKIE["auth"] == 1){
+        else if(isset($_COOKIE["auth"]) && $_COOKIE["auth"] == 1){
             require __DIR__ . '/views/admin.php';
         }
         break;
@@ -22,11 +22,12 @@ switch ($request) {
         if(isset($_POST["auth"])){
             $result = authUser();
             if($result){
-                setcookie("auth", 1, time() + 3600 * 24);
+                setcookie("auth", 1, generateCookieTime());
                 header("Location: /admin");
             }
             else{
-                setcookie("auth", 0, time() - 3600 * 24);
+                setcookie("auth", "", -generateCookieTime());
+                setcookie("id", "", -generateCookieTime());
                 header("Location: /auth");
             }
         }

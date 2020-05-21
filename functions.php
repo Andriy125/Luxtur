@@ -202,7 +202,7 @@ function authUser(){
     $pass = $_POST["pass"];
     $hashed_pass = generatePassword($pass);
     if(password_verify($hashed_pass, $user_hash)){
-        //echo $user["id"];
+        setcookie("id", $user["id"], generateCookieTime());
         //echo hash_hmac('sha1', $pass, $email);
         return true;
         header("Location: /admin");
@@ -247,5 +247,8 @@ function generatePassword($pass){
 }
 function generateHash($pass){
     return password_hash($pass, PASSWORD_DEFAULT);
+}
+function generateCookieTime(){
+    return time() + 3600 * 24;
 }
 ?>
