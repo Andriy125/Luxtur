@@ -16,9 +16,9 @@
                 Користувачі
             </h3> 
         </div>
-        <div id="edit_price" class="side_menu__item" data-text="Редагувати ціни">
+        <div id="prices" class="side_menu__item" data-text="Тарифи">
             <h3>
-                Редагувати ціни
+                Тарифи
             </h3> 
         </div>
         <div id="orders" class="side_menu__item" data-text="Замовлення">

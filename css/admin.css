@@ -327,6 +327,11 @@ td{
     text-align: left;
     min-width: 150px;
 }
+
+.center_text{
+    text-align: center;
+}
+
 /* add form styles  */
 
 .form_container{

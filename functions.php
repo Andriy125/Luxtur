@@ -203,7 +203,6 @@ function authUser(){
     $hashed_pass = generatePassword($pass);
     if(password_verify($hashed_pass, $user_hash)){
         setOwnCookie($user["id"]);
-        //echo hash_hmac('sha1', $pass, $email);
         return true;
     }
     else{

@@ -88,55 +88,194 @@
         </div>
     </div>
 
+    <div id="id-add_price" class="tabcontent">
+        <div class="form_container">
+            <form class="add_price_form input_date">
+                <div class="date-time_block__inputs form_container">
+                    <div>
+                        <p>Назва (валюта)</p>
+                    </div>
+                    <select class="input_time" name="currency_name">
+                        <option value="uah">uah</option>
+                        <option value="usd">usd</option>
+                    </select>
+                </div>
+                <input type="text" name="tariff" placeholder="Введіть новий тариф..." required>
+                <div class="date-time_block">
+                    <div>
+                        <p>Умова</p>
+                    </div>
+                    <div class="date-time_block__inputs">
+                        <select class="input_date" name="condition_parametr">
+                            <option value=" ">Відсутній</option>
+                            <?php for($i = 0; $i < count($conditions); $i++): ?>
+                            <option value="<?php echo $conditions[$i]["name"]?>"><?php echo $conditions[$i]["name"]?></option>
+                            <?php endfor; ?>
+                        </select>
+                        <select class="input_time" name="operator">
+                            <option value=" ">Відсутній</option>
+                            <?php for($i = 0; $i < count($condition_operators); $i++): ?>
+                            <option value="<?php echo $condition_operators[$i]["operator"]?>"><?php echo $condition_operators[$i]["name"]?></option>
+                            <?php endfor; ?>
+                        </select>
+                        <input class="input_time" placeholder="Значення..." type="text" name="condition_value">
+                    </div>   
+                    <div class="content_container">
+                        <input class="input_date" placeholder="Значення при умові..." type="text" name="condition_tariff">                    
+                    </div>
+                </div>
+                <div class="submit_block">
+                    <button type="submit" class="add_button">Додати</button>
+                    <div id="prices" class="another" data-text="Тарифи">
+                        <a class="add_button">Назад</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="id-edit_price" class="tabcontent">
+        <div class="form_container">
+            <form class="edit_price_form input_date">
+                <input type="hidden" name="id">
+                <div class="date-time_block__inputs form_container">
+                    <div>
+                        <p>Назва (валюта)</p>
+                    </div>
+                    <select class="input_time" name="currency_name">
+                        <option value="uah">uah</option>
+                        <option value="usd">usd</option>
+                    </select>
+                </div>
+                <input type="text" name="tariff" placeholder="Введіть новий тариф..." required>
+                <div class="date-time_block">
+                    <div>
+                        <p>Умова</p>
+                    </div>
+                    <div class="date-time_block__inputs">
+                        <select class="input_date" name="condition_parametr">
+                            <option value=" ">Відсутній</option>
+                            <?php for($i = 0; $i < count($conditions); $i++): ?>
+                            <option value="<?php echo $conditions[$i]["name"]?>"><?php echo $conditions[$i]["name"]?></option>
+                            <?php endfor; ?>
+                        </select>
+                        <select class="input_time" name="operator">
+                            <option value=" ">Відсутній</option>
+                            <?php for($i = 0; $i < count($condition_operators); $i++): ?>
+                            <option value="<?php echo $condition_operators[$i]["operator"]?>"><?php echo $condition_operators[$i]["name"]?></option>
+                            <?php endfor; ?>
+                        </select>
+                        <input class="input_time" placeholder="Значення..." type="text" name="condition_value">
+                    </div>
+                    <div class="content_container">
+                        <input class="input_date" placeholder="Значення при умові..." type="text" name="condition_tariff">                    
+                    </div>
+                </div>
+                <div class="submit_block">
+                    <button type="submit" class="add_button">Відредагувати</button>
+                    <div id="prices" class="another" data-text="Тарифи">
+                        <a class="add_button">Назад</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="id-prices" class="tabcontent">
         <div class="content_container">
-
-            <div>
-                <h2>Ціна за км:</h2>
-                <ul>
-                    <?php for($i = 0; $i < count($all_locations); $i++): ?>
-                    <li><?php echo $all_locations[$i]["location"];?> - </li>
-                    <?php endfor; ?>
-                </ul>
-            </div>
-
-            <div class="form_container">
-                <form>
-                    <div class="date-time_block">
-                        <div>
-                            <p>Умова</p>
-                        </div>
-                        <div class="date-time_block__inputs">
-                            <select class="input_date" name="condition" required>
-                                <?php for($i = 0; $i < count($conditions); $i++): ?>
-                                <option value="<?php echo $conditions[$i]["name"]?>"><?php echo $conditions[$i]["name"]?></option>
-                                <?php endfor; ?>
-                            </select>
-                            <select class="input_time" name="operator" required>
-                                <?php for($i = 0; $i < count($condition_operators); $i++): ?>
-                                <option value="<?php echo $condition_operators[$i]["operator"]?>"><?php echo $condition_operators[$i]["name"]?></option>
-                                <?php endfor; ?>
-                            </select>
-                            <input class="input_time" placeholder="Значення..." type="text" name="value" required>
-                            <button type="submit" class="add_button">+</button>
-                        </div>                        
+            <div class="table_container">
+                <div class="add_block">
+                    <div id="add_price" data-text="Додати Тариф" class="another">
+                        <h3>
+                            <a class="add_link">Додати Тариф</a> 
+                        </h3> 
                     </div>
-                </form>
-            </div>
-
-            <div class="form_container">
-                <form class="set-dolar-tariff">
-                    <div class="date-time_block">
-                        <div>
-                            <p>Задати множник закордонного тарифу</p>
-                        </div>
-                        <div class="date-time_block__inputs">
-                            <input type="hidden" name="id" value="1">
-                            <input class="input_date" placeholder="Значення..." type="text" name="value" required>
-                            <button type="submit" class="add_button">Застосувати</button>
-                        </div>                        
-                    </div>
-                </form>
+                </div>  
+                <div class="content_container">
+                    <h2>Ціна за км:</h2>
+                    <ul>
+                        <?php for($i = 0; $i < count($converted_prices); $i++): ?>
+                        <li class="center_text">
+                            <?php 
+                                $elem = $converted_prices[$i];
+                                if(trim($elem["condition_"]) == ""){
+                                    if($elem["name"] == "usd"){
+                                        echo ("Європа - " . $elem["value"] . "$");
+                                    }
+                                    else{
+                                        echo ("Україна - " . $elem["value"] . " грн");
+                                    }
+                                }
+                                else{
+                                    if($elem["name"] == "usd"){
+                                        echo ("Європа - " . $elem["value"] . "$");
+                                    }
+                                    else{
+                                        echo ("Україна - " . $elem["value"] . " грн");
+                                    }
+                                    $arr = explode(" ", $converted_prices[$i]["condition_"]);
+                                    $operator_name = "";
+                                    for($b = 0; $b < count($condition_operators); $b++){
+                                        if($condition_operators[$b]["operator"] == $arr[1]){
+                                            $operator_name = $condition_operators[$b]["name"];
+                                            break;
+                                        }
+                                    }
+                                    echo "<br>";
+                                    $condition_output = "Якщо <b>" . mb_strtolower($arr[0]) . "</b>  <i>" . mb_strtolower($operator_name) . "</i>  <b>" . $arr[2] . "</b> - " . $elem["value_2"];
+                                    $condition_output .= $elem["name"] == "usd" ? "$" : " грн";
+                                    echo $condition_output;
+                                }
+                            ?> 
+                        </li>
+                        <?php endfor; ?>
+                    </ul>
+                </div>
+                <table>
+                    <tr>
+                       <th class="column">Ім'я</th>
+                       <th class="column">Значення</th>
+                       <th class="column">Умова</th>
+                       <th class="column">Значення при умові</th>
+                       <th class="column">Додано</th>
+                       <th class="column">Дії</th>
+                    </tr>
+                    <?php for($i = 0; $i < count($converted_prices); $i++):?>
+                    <tr>
+                        <td><?php echo $converted_prices[$i]["name"]?></td>
+                        <td><?php echo $converted_prices[$i]["value"]?></td>
+                        <td>
+                        <?php 
+                            $arr = explode(" ", $converted_prices[$i]["condition_"]);
+                            $operator_name = "";
+                            for($b = 0; $b < count($condition_operators); $b++){
+                                if($condition_operators[$b]["operator"] == $arr[1]){
+                                    $operator_name = mb_strtolower($condition_operators[$b]["name"]);
+                                    break;
+                                }
+                            }
+                            echo $arr[0] . " - " . $operator_name . " - " . $arr[2];
+                        ?></td>
+                        <td>
+                            <?php echo 
+                                $converted_prices[$i]["value_2"] == 0 
+                                    ? "" 
+                                    : $converted_prices[$i]["value_2"];
+                            ?>
+                        </td>
+                        <td><?php echo $converted_prices[$i]["date_time"]?></td>
+                        <td>
+                            <div id="edit_price" data-text="Редагувати Тариф" class="another">
+                                <a class="edit_button edit_price">Редагувати</a>
+                            </div> 
+                            <form class="delete_form_p">
+                                <input type="hidden" name="id" value="<?php echo $converted_prices[$i]["id"]?>">
+                            </form>
+                            <a class="delete_button del_price">Видалити</a>
+                        </td>  
+                    </tr>
+                    <?php endfor;?>
+                </table>
             </div>
 
         </div>

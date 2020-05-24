@@ -545,15 +545,95 @@ const eventListeners = () => {
         });
     });
 
-    document.querySelector('.set-dolar-tariff').addEventListener("submit", (e) => {
+    document.querySelector('.edit_price_form').addEventListener("submit", (e) => {
         e.preventDefault();
-        const value = e.target.elements.value.value;
-        if(!$.isNumeric(value)){
+        const value = e.target.elements.tariff.value;
+        const condition_tariff = e.target.elements.condition_tariff.value.trim();
+        if(!$.isNumeric(value) || (condition_tariff !== "" && !$.isNumeric(condition_tariff))){
             alert("Некоректне значення! Введіть число!");
             return;
         }
+        const condition_parametr = e.target.elements.condition_parametr.value.trim();
+        const operator = e.target.elements.operator.value.trim();
+        const condition_value = e.target.elements.condition_value.value.trim();
+        let condition = "";
+        if( condition_parametr !== "" && operator !== "" && condition_value !== ""){
+            condition = `${condition_parametr} ${operator} ${condition_value}`;
+        }
+        const name = e.target.elements.currency_name.value;
+        const newName = {type: "string", value: name};
+        const newTariff = {type: "number", value: Number(value)};
+        const newConditionTariff = {type: "number", value: Number(condition_tariff)};
+        const newCondition = {type: "string", value: condition};
         const id = e.target.elements.id.value;
-        updateRequest("p", id, Number(value), '#edit_price', "value");
+        const values = [newName, newTariff, newConditionTariff, newCondition];
+        console.log(values);
+        updateRequest("p", id, values, '#prices');
+    });
+
+    document.querySelectorAll('.del_price').forEach(el => {
+        el.addEventListener("click", (e) => {
+            const id = $(e.target.closest('td')).find('.delete_form_p')[0].elements.id.value;
+            deleteRequest(id, "p", "#prices");
+        });
+    });
+
+    document.querySelectorAll('.edit_price').forEach(el => {
+        el.addEventListener("click", (e) => {
+            const id = $(e.target.closest('td')).find('.delete_form_p')[0].elements.id.value;
+            const data = $(e.target.closest('tr')).find('td');
+            const name = data[0].textContent;
+            const tariff = data[1].textContent;
+            
+            let form = document.querySelector('.edit_price_form').elements;
+            let conditionArray = data[2].textContent.trim().split(" ");
+            const conditionName = conditionArray[0] ?? " ";
+            const conditionOperator = conditionArray[1] ?? " ";
+            const conditionValue = conditionArray[2] ?? "";
+
+            const conditionTariff = data[3].textContent == 0 ? "" : data[3].textContent;
+            form.id.value = id;
+            form.currency_name.value = name;
+            form.tariff.value = tariff;
+            if(conditionName.trim() == "" || conditionOperator.trim() == ""){
+                form.condition_parametr.selectedIndex = 0;
+                form.operator.selectedIndex = 0;
+            }
+            else{
+                form.condition_parametr.value = conditionName;
+                form.operator.value = conditionOperator;
+            }
+            form.condition_tariff.value = conditionTariff.trim();
+            form.condition_value.value = conditionValue.trim();
+        });
+    });
+
+    document.querySelector('.add_price_form').addEventListener("submit", (e) => {
+        e.preventDefault();
+        const value = e.target.elements.tariff.value;
+        const condition_tariff = e.target.elements.condition_tariff.value.trim();
+        if(!$.isNumeric(value) || (condition_tariff !== "" && !$.isNumeric(condition_tariff))){
+            alert("Некоректне значення! Введіть число!");
+            return;
+        }
+        let data = {};
+        const condition_parametr = e.target.elements.condition_parametr.value.trim();
+        const operator = e.target.elements.operator.value.trim();
+        const condition_value = e.target.elements.condition_value.value.trim();
+        let condition = "";
+        if( condition_parametr !== "" && operator !== "" && condition_value !== ""){
+            condition = `${condition_parametr} ${operator} ${condition_value}`;
+        }
+        const name = e.target.elements.currency_name.value;
+        const newName = {type: "string", value: name};
+        const newTariff = {type: "number", value: Number(value)};
+        const newConditionTariff = {type: "number", value: Number(condition_tariff)};
+        const newCondition = {type: "string", value: condition};
+        data["table"] = "p";
+        data["value"] = [newName, newTariff, newConditionTariff, newCondition];
+        data["insert"] = true;
+        console.log(data);
+        sendRequest(data, '#prices');
     });
 
     document.querySelector('.add_user_form').addEventListener("submit", (e) => {
