@@ -547,10 +547,13 @@ const eventListeners = () => {
 
     document.querySelector('.set-dolar-tariff').addEventListener("submit", (e) => {
         e.preventDefault();
-        const usd_tariff = e.target.elements.value.value;
+        const value = e.target.elements.value.value;
+        if(!$.isNumeric(value)){
+            alert("Некоректне значення! Введіть число!");
+            return;
+        }
         const id = e.target.elements.id.value;
-        const value = Number(usd_tariff);
-        updateRequest("p", id, value, '#edit_price', "value");
+        updateRequest("p", id, Number(value), '#edit_price', "value");
     });
 
     document.querySelector('.add_user_form').addEventListener("submit", (e) => {

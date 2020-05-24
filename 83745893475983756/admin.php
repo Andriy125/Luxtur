@@ -131,8 +131,8 @@
                             <p>Задати множник закордонного тарифу</p>
                         </div>
                         <div class="date-time_block__inputs">
-                                    <input type="hidden" name="id" value="1">
-                            <input class="input_date" placeholder="Значення..." type="text" min="0.01" name="value" required>
+                            <input type="hidden" name="id" value="1">
+                            <input class="input_date" placeholder="Значення..." type="text" name="value" required>
                             <button type="submit" class="add_button">Застосувати</button>
                         </div>                        
                     </div>

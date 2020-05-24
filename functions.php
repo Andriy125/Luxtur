@@ -202,13 +202,12 @@ function authUser(){
     $pass = $_POST["pass"];
     $hashed_pass = generatePassword($pass);
     if(password_verify($hashed_pass, $user_hash)){
-        setcookie("id", $user["id"], generateCookieTime());
+        setOwnCookie($user["id"]);
         //echo hash_hmac('sha1', $pass, $email);
         return true;
-        header("Location: /admin");
     }
     else{
-        //echo -1;
+        unsetOwnCookie();
         return false;
     }
     
@@ -250,5 +249,13 @@ function generateHash($pass){
 }
 function generateCookieTime(){
     return time() + 3600 * 24;
+}
+function setOwnCookie($user_id){
+    setcookie("id", $user["id"], generateCookieTime());
+    setcookie("auth", 1, generateCookieTime());
+}
+function unsetOwnCookie(){
+    setcookie("auth", "", -generateCookieTime());
+    setcookie("id", "", -generateCookieTime());
 }
 ?>
