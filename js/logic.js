@@ -13,7 +13,6 @@ let apikey_geodata = '303691d597d34232b212232cb93cba14';
 // посилання для запиту (отримання координат)
 let api_url = 'https://api.opencagedata.com/geocode/v1/json';
 let usd = 1;         //  курс долара
-let usd_tariff = 1;  //  загран тариф
 let order = {};             //  замовлення
 
 const hasNumber = /\d/;     //  функція перевірки рядка на наявність цифр
@@ -23,19 +22,111 @@ let coords = [];
 let count_of_passengers = 0;
 let goBack = false;
 
+const makeTariffObject = (currency) => {
+	let tariffObject = {};
+    for(let i = 0; i < prices.length; i++){
+        if(prices[i]["name"] == currency && prices[i]["value"] != null){
+            tariffObject.tariff = Number(prices[i]["value"]);
+            if(prices[i]["condition_"].trim() != ""){
+                const {conditionName, operator, conditionValue} = decomposeCondition(prices[i]["condition_"]);
+                tariffObject.conditionName = conditionName;
+                tariffObject.operator = operator;
+                tariffObject.conditionValue = Number(conditionValue);
+                tariffObject.conditionTariff = Number(prices[i]["value_2"]);
+            }
+        }
+    }
+    return tariffObject;
+}
+
+const decomposeCondition = (conditionString) => {
+    const decomposedValues = {};
+    const condiotionParts = conditionString.split(" ");
+    decomposedValues.conditionName = condiotionParts[0];
+    decomposedValues.operator = condiotionParts[1];
+    decomposedValues.conditionValue = condiotionParts[2];
+    return decomposedValues;
+}
+
 //  функція для отримання поточного курсу долара
 const getUSD =  () => {
     $.ajax({
         url: 'https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11',
         type: "GET",  
         success: function (response) {
-            usd = (response[0].sale * usd_tariff).toFixed(2);
-            console.log(usd);
+            usd = Number(response[0].sale).toFixed(2);
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log(textStatus, errorThrown);
          }
     });
+}
+
+const getOperatorFunction = (operator) => {
+    switch(operator){
+        case ">":
+            return function(currentValue, tariffObject){
+                return currentValue > tariffObject.conditionValue 
+                ? tariffObject.conditionTariff 
+                : tariffObject.tariff;
+            }
+        case "<":
+            return function(currentValue, tariffObject){
+                return currentValue < tariffObject.conditionValue 
+                ? tariffObject.conditionTariff 
+                : tariffObject.tariff;
+            }
+        case "==":
+            return function(currentValue, tariffObject){
+                return currentValue == tariffObject.conditionValue 
+                ? tariffObject.conditionTariff 
+                : tariffObject.tariff;
+            }
+        case ">=":
+            return function(currentValue, tariffObject){
+                return currentValue >= tariffObject.conditionValue 
+                ? tariffObject.conditionTariff 
+                : tariffObject.tariff;
+            }
+        case "<=":
+            return function(currentValue, tariffObject){
+                return currentValue <= tariffObject.conditionValue 
+                ? tariffObject.conditionTariff 
+                : tariffObject.tariff;
+            }
+        case "!=":
+            return function(currentValue, tariffObject){
+                return currentValue != tariffObject.conditionValue 
+                ? tariffObject.conditionTariff 
+                : tariffObject.tariff;
+            }
+    }
+}
+
+//  TODO: test
+const getTariff = (tariffObject, conditionElement=null) => {
+    if(tariffObject.conditionName == null)  return tariffObject.tariff;
+    switch(tariffObject.conditionName.toLowerCase())
+    {
+        case "пасажири": {
+            const getTariffFunction = getOperatorFunction(tariffObject.operator);
+            const currentValue = conditionElement?.value;
+            return getTariffFunction(currentValue, tariffObject);
+        }
+        case "автобус": {
+            const getTariffFunction = getOperatorFunction(tariffObject.operator);
+            const currentValue = element?.value;
+            return getTariffFunction(currentValue, tariffObject);
+        }
+        case "локація": {
+            const getTariffFunction = getOperatorFunction(tariffObject.operator);
+            const currentValue = element?.value;
+            return getTariffFunction(currentValue, tariffObject);
+        }
+        default: {
+            return tariffObject.tariff;
+        }
+    }
 }
 
 const makeRequestForDistances = async (query) => {
@@ -222,8 +313,11 @@ const createResultElement = (from, to, distance, count = 1) => {
 // вирахування вартості поїздки із перевіркою на зворотній шлях
 const getDistancePrice = (arr, objects, passenger_element) => {
     let price = 0;
-    let count_passengers = Number(passenger_element.value);
-    let uah_tariff = count_passengers <= 8 ? 7 : 10;
+    let usdTariffObject = makeTariffObject("usd");  //  загран тариф
+    let uahTariffObject = makeTariffObject("uah");  //  укр тариф
+    const graivnaTariff = getTariff(uahTariffObject, passenger_element);
+    const usdTariff = (getTariff(usdTariffObject, passenger_element) * usd).toFixed(2);
+
     let usd_bool = false;
     let uah_bool = false;
     let tariff_text = "Тариф: ";
@@ -237,16 +331,15 @@ const getDistancePrice = (arr, objects, passenger_element) => {
         }
         price += objects[i+1].country == "UA" 
         // якщо по Україні
-        ? (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * uah_tariff : uah_tariff 
+        ? (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * graivnaTariff : graivnaTariff 
         // якщо не по Україні
-        : (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * usd : usd;
+        : (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * usdTariff : usdTariff;
     }
     if(uah_bool && usd_bool){
-        //  TODO: змінити 0.65 на динамічну змінну для можливих змін
-        tariff_text += `${`${usd_tariff}$/км /` + uah_tariff + ' Гривень/км'}`
+        tariff_text += `${`${usdTariffObject.tariff}$/км / ` + graivnaTariff + ' Гривень/км'}`;
     }
     else {
-        tariff_text += `${usd_bool ? `${usd_tariff}$/км` : uah_tariff + ' Гривень/км'}`
+        tariff_text += `${usd_bool ? `${usdTariffObject.tariff}$/км` : graivnaTariff + ' Гривень/км'}`;
     }
     //  задання тарифу 
     $('.results_tariff').text(tariff_text);
@@ -458,7 +551,7 @@ $('.order_form').on('submit', async (e) => {
             $('.order_slider_car').slick("slickGoTo", 0, true);
             $('#one1').prop('checked', true);
             nextSlide();
-        })        
+        });        
     } 
 });
 
