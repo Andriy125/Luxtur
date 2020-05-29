@@ -37,6 +37,10 @@ switch ($request) {
             require __DIR__ . '/'. $folder .'/authorization.php';
         }
         break;
+    case '/index_request_api':
+        include_once "index_request_api.php";
+        header("Location: /admin");
+        break;
     default:
         http_response_code(404);
         require __DIR__ . '/'. $folder .'/404.php';

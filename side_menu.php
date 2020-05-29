@@ -8,53 +8,6 @@
         </div>
     </div>
     <div class="side_menu__content">
-        <div id="main" class="side_menu__item" data-text="Головна">
-            <h3>Головна</h3>
-        </div>
-        <div id="users" class="side_menu__item" data-text="Користувачі">
-            <h3>
-                Користувачі
-            </h3> 
-        </div>
-        <div id="prices" class="side_menu__item" data-text="Тарифи">
-            <h3>
-                Тарифи
-            </h3> 
-        </div>
-        <div id="orders" class="side_menu__item" data-text="Замовлення">
-            <h3>
-                Замовлення
-            </h3> 
-        </div>
-        <div id="reviews" class="side_menu__item" data-text="Редагувати відгуки">
-            <h3>
-                Редагувати відгуки
-            </h3> 
-        </div>
-        <div id="edit_autopark" class="side_menu__item" data-text="Редагувати автопарк">
-            <h3>
-                Редагувати автопарк
-            </h3> 
-        </div>
-        <div id="calls" class="side_menu__item" data-text="Замовлення дзвінків">
-            <h3>
-                Замовлення дзвінків
-            </h3> 
-        </div>
-        <div id="our_service" class="side_menu__item" data-text="Наші послуги">
-            <h3>
-                Наші послуги
-            </h3> 
-        </div>
-        <div id="popular_directions" class="side_menu__item" data-text="Популярні напрямки">
-            <h3>
-                Популярні напрямки
-            </h3> 
-        </div>
-        <div id="edit_contacts" class="side_menu__item" data-text="Редагувати контакти">
-            <h3>
-                Редагувати контакти
-            </h3> 
-        </div>
+        <?php renderMenu($converted_menu);?>
     </div>
 </div>

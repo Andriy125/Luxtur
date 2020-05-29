@@ -6,6 +6,41 @@
         }
         return $result_array;
     }
+    function renderMenu($arr){
+        for($i = 0; $i < count($arr); $i++){
+            echo '<div id="'. $arr[$i]["tag_id"] .'" class="side_menu__item" data-text="'. $arr[$i]["title"] .'">
+                        <h3>'. $arr[$i]["title"] .'</h3>
+                    </div>';
+        }
+    }
+    function renderMenuOnMainTab($arr){
+        $grid_count = 3;
+        $len = count($arr);
+		$count_of_rows = $len;
+		for($i = 0; $i < $len / $grid_count; $i++){
+			echo '<div class="menu_row">';
+            $line_count = $count_of_rows >= $grid_count ? $grid_count : $count_of_rows;
+            for($j = 0, $index = $i * $grid_count; $j < $line_count; $j++, $index++){
+                    echo '<div class="menu_item">';
+                        echo '<div id="'. $arr[$index]["tag_id"] .'" class="another" data-text="'. $arr[$index]["title"] .'">';
+                            echo '<h2>'. $arr[$index]["title"] .'</h2>';
+                        echo '</div>';
+                    echo '</div>';
+			}
+			$count_of_rows-= $grid_count;
+			echo '</div>';
+	    } 			
+    }
+    function convertArrayElementsToString($arr, $indexFrom, $indexTo){
+        $resultString = "";
+        for($i = $indexFrom; $i < $indexTo; $i++){
+            $resultString .= $arr[$i];
+            if($i != $indexTo - 1){
+                $resultString .= " ";
+            }
+        }
+        return $resultString;
+    }
     $con = mysqli_connect('localhost', 'root', '', 'luxtur');
         if (!$con) {
             die('Ошибка соединения: ' . mysql_error());
@@ -27,6 +62,7 @@
         $result_operators = mysqli_query($con, "SELECT * FROM operators");
         $result_prices = mysqli_query($con, "SELECT * FROM prices");
         $result_users = mysqli_query($con, "SELECT * FROM users");
+        $result_menu = mysqli_query($con, "SELECT * FROM menu");
 
         if (!$result_phones) {
             die('Неверный запрос: ' . $con->sqlstate);
@@ -58,6 +94,9 @@
         else if (!$result_car_location) {
             die('Неверный запрос: ' . $con->sqlstate);
         }
+        else if (!$result_menu) {
+            die('Неверный запрос: ' . $con->sqlstate);
+        }
         mysqli_close($con);
         
         $eu_car = [];
@@ -79,6 +118,6 @@
         $converted_phone_operators = convertDataToArray($result_phone_operators);
         $converted_phone_social_media = convertDataToArray($result_phone_social_media);
         $converted_prices = convertDataToArray($result_prices);
-        $usd_tariff = $converted_prices[0];
         $converted_users = convertDataToArray($result_users);
+        $converted_menu = convertDataToArray($result_menu);
 ?>

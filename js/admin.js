@@ -108,6 +108,35 @@ const getAddressesTextarea = (str) => {
     return lines;
 }
 
+const getOperatorFromName = (operatorName) => {
+    switch(operatorName){
+        case "більшерівне": 
+            return ">=";
+        case "меньшерівне": 
+            return "<=";
+        case "більше": 
+            return ">";
+        case "меньше": 
+            return "<";
+        case "дорівнює": 
+            return "==";
+        case "недорівнює": 
+            return "!=";
+        default: 
+            return null;
+    }
+}
+
+const showSelectHideInput = (selectSelector, inputSelector, reverse=false) => {
+    if(reverse){
+        selectSelector.style.display = "none";
+       inputSelector.style.display = "block";
+        return;
+    }
+    selectSelector.style.display = "block";
+    inputSelector.style.display = "none";
+}
+
 const eventListeners = () => {
     document.querySelectorAll('.update_review_showing').forEach(el => {
         el.addEventListener("click", (e) => {
@@ -124,7 +153,7 @@ const eventListeners = () => {
             let form = e.target.closest('.update_order');
             let id = form.elements.id.value;
             let column = "done";
-            let order_done = $(e.target).prop("checked");
+            let order_done = $(e.target).prop("checked") ? 1 : 0;
             updateRequest("o", id, order_done, "#orders", column);
         })
     });
@@ -134,7 +163,7 @@ const eventListeners = () => {
             let form = e.target.closest('.update_car');
             let id = form.elements.id.value;
             let column = "show_car";
-            let show_car = $(e.target).prop("checked");
+            let show_car = $(e.target).prop("checked") ? 1 : 0;
             updateRequest("ca", id, show_car, "#edit_autopark", column);
         })
     });
@@ -563,7 +592,7 @@ const eventListeners = () => {
         const name = e.target.elements.currency_name.value;
         const newName = {type: "string", value: name};
         const newTariff = {type: "number", value: Number(value)};
-        const newConditionTariff = {type: "number", value: Number(condition_tariff)};
+        const newConditionTariff = {type: "string", value: Number(condition_tariff).toFixed(2)};
         const newCondition = {type: "string", value: condition};
         const id = e.target.elements.id.value;
         const values = [newName, newTariff, newConditionTariff, newCondition];
@@ -589,7 +618,11 @@ const eventListeners = () => {
             let conditionArray = data[2].textContent.trim().split(" ");
             const conditionName = conditionArray[0] ?? " ";
             const conditionOperator = conditionArray[1] ?? " ";
-            const conditionValue = conditionArray[2] ?? "";
+            let endOfCondition = "";
+            for(let i = 2; i < conditionArray?.length ?? 2; i++){
+                endOfCondition += `${conditionArray[i]} `;
+            }
+            const conditionValue = endOfCondition ?? "";
 
             const conditionTariff = data[3].textContent == 0 ? "" : data[3].textContent;
             form.id.value = id;
@@ -601,10 +634,10 @@ const eventListeners = () => {
             }
             else{
                 form.condition_parametr.value = conditionName;
-                form.operator.value = conditionOperator;
+                form.operator.value = getOperatorFromName(conditionOperator);
             }
-            form.condition_tariff.value = conditionTariff.trim();
             form.condition_value.value = conditionValue.trim();
+            form.condition_tariff.value = conditionTariff.trim();    
         });
     });
 
@@ -632,7 +665,6 @@ const eventListeners = () => {
         data["table"] = "p";
         data["value"] = [newName, newTariff, newConditionTariff, newCondition];
         data["insert"] = true;
-        console.log(data);
         sendRequest(data, '#prices');
     });
 
@@ -672,10 +704,6 @@ const eventListeners = () => {
         data["pass"] = e.target.elements.pass.value;
         sendRequest(data, "#users");
     });
-
-    document.querySelector('.admin_button').addEventListener("click", (e) => {
-        $('.logout_form')[0].submit();
-    })
 
 }
 

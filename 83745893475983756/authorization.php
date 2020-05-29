@@ -20,6 +20,5 @@
     </div>
     <script src="js/jquery.min.js"></script>
     <script src="js/sendRequest.js"></script>
-    <script src="js/auth.js"></script>
 </body>
 </html>

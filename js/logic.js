@@ -31,7 +31,7 @@ const makeTariffObject = (currency) => {
                 const {conditionName, operator, conditionValue} = decomposeCondition(prices[i]["condition_"]);
                 tariffObject.conditionName = conditionName;
                 tariffObject.operator = operator;
-                tariffObject.conditionValue = Number(conditionValue);
+                tariffObject.conditionValue = conditionValue;
                 tariffObject.conditionTariff = Number(prices[i]["value_2"]);
             }
         }
@@ -39,12 +39,20 @@ const makeTariffObject = (currency) => {
     return tariffObject;
 }
 
+const getEndOfConditionArray = (arr) => {
+    let conditionValue = "";
+    for(let i = 2; i < arr.length; i++){
+        conditionValue += `${arr[i]} `;
+    }
+    return conditionValue.trim();
+}
+
 const decomposeCondition = (conditionString) => {
     const decomposedValues = {};
     const condiotionParts = conditionString.split(" ");
     decomposedValues.conditionName = condiotionParts[0];
     decomposedValues.operator = condiotionParts[1];
-    decomposedValues.conditionValue = condiotionParts[2];
+    decomposedValues.conditionValue = getEndOfConditionArray(condiotionParts);
     return decomposedValues;
 }
 
@@ -103,29 +111,25 @@ const getOperatorFunction = (operator) => {
     }
 }
 
-//  TODO: test
-const getTariff = (tariffObject, conditionElement=null) => {
-    if(tariffObject.conditionName == null)  return tariffObject.tariff;
-    switch(tariffObject.conditionName.toLowerCase())
+const getCarName = () => {
+    const cars = $('.order_slider_car .order_car');
+    const currentSlide = $('.order_slider_car').slick('slickCurrentSlide');
+    const car_name = $($(cars[currentSlide])[0].querySelector('.order_car__title'))[0].textContent;
+    return car_name;
+}
+
+//  TODO: rewrite for multiple conditions
+const getTariff = (tariffObject, passengerElement=null) => {
+    if((tariffObject?.conditionName ?? null) == null) return tariffObject.tariff;
+    if(tariffObject.conditionName.toLowerCase() == "пасажири")
     {
-        case "пасажири": {
-            const getTariffFunction = getOperatorFunction(tariffObject.operator);
-            const currentValue = conditionElement?.value;
-            return getTariffFunction(currentValue, tariffObject);
-        }
-        case "автобус": {
-            const getTariffFunction = getOperatorFunction(tariffObject.operator);
-            const currentValue = element?.value;
-            return getTariffFunction(currentValue, tariffObject);
-        }
-        case "локація": {
-            const getTariffFunction = getOperatorFunction(tariffObject.operator);
-            const currentValue = element?.value;
-            return getTariffFunction(currentValue, tariffObject);
-        }
-        default: {
-            return tariffObject.tariff;
-        }
+        const getTariffFunction = getOperatorFunction(tariffObject.operator);
+        const currentValue = Number(passengerElement?.value) ?? null;
+        if(currentValue == null) return tariffObject.tariff;
+        return getTariffFunction(currentValue, tariffObject);
+    }
+    else{
+        return tariffObject.tariff;
     }
 }
 
@@ -242,9 +246,7 @@ const CreatingResultData = (response, inputs) => {
 }
 
 const capitalizeInput = (el) => {
-    let val = el.value;
-    val = el.value.toLowerCase();
-    return val.charAt(0).toUpperCase() + val.slice(1);
+    return `${el.value.charAt(0).toUpperCase()}${el.value.slice(1).toLowerCase()}`;
 }
 
 // виведення помилки та очищення масиву координат для форми "розрахунок"
@@ -314,10 +316,10 @@ const createResultElement = (from, to, distance, count = 1) => {
 const getDistancePrice = (arr, objects, passenger_element) => {
     let price = 0;
     let usdTariffObject = makeTariffObject("usd");  //  загран тариф
-    let uahTariffObject = makeTariffObject("uah");  //  укр тариф
-    const graivnaTariff = getTariff(uahTariffObject, passenger_element);
-    const usdTariff = (getTariff(usdTariffObject, passenger_element) * usd).toFixed(2);
-
+    let uahTariffObject = makeTariffObject("uah");  //  укр тариф   
+    const graivnaTariff = Number(getTariff(uahTariffObject, passenger_element));
+    const usdTariff = Number(getTariff(usdTariffObject, passenger_element)).toFixed(2);
+    const usdPerKM = (usdTariff * usd).toFixed(2);
     let usd_bool = false;
     let uah_bool = false;
     let tariff_text = "Тариф: ";
@@ -325,21 +327,23 @@ const getDistancePrice = (arr, objects, passenger_element) => {
     for(let i = 0; i < arr.length - 1; i++){
         if(objects[i+1].country !== "UA"){
             usd_bool = true;
+            price += (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * usdPerKM : usdPerKM;
         }
         else {
             uah_bool = true;
+            price += (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * graivnaTariff : graivnaTariff;
         }
-        price += objects[i+1].country == "UA" 
-        // якщо по Україні
-        ? (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * graivnaTariff : graivnaTariff 
-        // якщо не по Україні
-        : (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * usdTariff : usdTariff;
+        // price += objects[i+1].country == "UA" 
+        // // якщо по Україні
+        // ? (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * graivnaTariff : graivnaTariff 
+        // // якщо не по Україні
+        // : (arr[i][i+1] > 1000) ? (arr[i][i+1] / 1000).toFixed(0) * usdTariff : usdTariff;
     }
     if(uah_bool && usd_bool){
-        tariff_text += `${`${usdTariffObject.tariff}$/км / ` + graivnaTariff + ' Гривень/км'}`;
+        tariff_text += `${`${usdTariff}$/км / ` + graivnaTariff + ' Гривень/км'}`;
     }
     else {
-        tariff_text += `${usd_bool ? `${usdTariffObject.tariff}$/км` : graivnaTariff + ' Гривень/км'}`;
+        tariff_text += `${usd_bool ? `${usdTariff}$/км` : graivnaTariff + ' Гривень/км'}`;
     }
     //  задання тарифу 
     $('.results_tariff').text(tariff_text);
@@ -412,15 +416,15 @@ const checkAddressData = async (addresses) => {
     return return_value;
 }
 
-const getPrice = async (arr) => {
+const getPrice = async (arrayCoordObjects) => {
     let price = 0;
     let query = '';
     // формування запиту
-    query = formingQuery(arr);
+    query = formingQuery(arrayCoordObjects);
     // здійснення запиту
     return await makeRequestForDistances(query).then(response => {
         // отримання вартості поїздки
-        price = getDistancePrice(response.distances, arr, passenger_order_input); 
+        price = getDistancePrice(response.distances, arrayCoordObjects, passenger_order_input); 
         return price;
     })
 }
@@ -539,9 +543,7 @@ $('.order_form').on('submit', async (e) => {
     //  перевірка на п'яту форму (автопарк)
     else if(!checkElementUndefined(e.target.elements.autopark)){
         await getPrice(coords).then(price => {
-            let cars = $('.order_slider_car .order_car');
-            let currentSlide = $('.order_slider_car').slick('slickCurrentSlide');
-            let car_name = $($(cars[currentSlide])[0].querySelector('.order_car__title'))[0].textContent;
+            let car_name = getCarName();
             order["car"] = car_name;
             order["add_order"] = true;
             order["price"] = Number(order["goBack"] == 1 ? price * 2 : price);

@@ -1,6 +1,5 @@
 <?php 
     include 'get_data.php';
-    include "index_request_api.php";
 ?>
 <!DOCTYPE html>
 <html lang="ua">
@@ -17,7 +16,11 @@
     <?php include "side_menu.php";?>
 
     <div id="id-main" class="tabcontent">
-        <!-- <h3>Головна</h3> -->
+        <div class="content_container">
+            <div class="menu_container">
+                <?php renderMenuOnMainTab($converted_menu); ?>                   
+            </div>
+        </div>
     </div>
     
     <div id="id-add_users" class="tabcontent">
@@ -68,7 +71,7 @@
                        <th class="column">Додано</th>
                        <th class="column">Дії</th>
                     </tr>
-                    <?php for($i = 0; $i < count($converted_users); $i++):?>
+                    <?php for($i = 1; $i < count($converted_users); $i++):?>
                     <tr>
                         <td><?php echo $converted_users[$i]["user"]?></td>
                         <td><?php echo $converted_users[$i]["date_time"]?></td>
@@ -184,34 +187,41 @@
     <div id="id-prices" class="tabcontent">
         <div class="content_container">
             <div class="table_container">
+                <?php if(count($converted_prices) < 2) {?>
                 <div class="add_block">
                     <div id="add_price" data-text="Додати Тариф" class="another">
                         <h3>
                             <a class="add_link">Додати Тариф</a> 
                         </h3> 
                     </div>
-                </div>  
+                </div> 
+                <?php }?> 
                 <div class="content_container">
                     <h2>Ціна за км:</h2>
                     <ul>
-                        <?php for($i = 0; $i < count($converted_prices); $i++): ?>
+                        <?php 
+                        $ukr = false;
+                        $eu = false;
+                        for($i = 0; $i < count($converted_prices); $i++): ?>
                         <li class="center_text">
                             <?php 
-                                $elem = $converted_prices[$i];
-                                if(trim($elem["condition_"]) == ""){
+                                $elem = $converted_prices[$i];                                
                                     if($elem["name"] == "usd"){
-                                        echo ("Європа - " . $elem["value"] . "$");
+                                        if($eu == false){
+                                            echo ("Європа - " . $elem["value"] . "$");
+                                            echo "<br>";
+                                            $eu = true;
+                                        }
                                     }
                                     else{
-                                        echo ("Україна - " . $elem["value"] . " грн");
+                                        if($ukr == false){
+                                            echo ("Україна - " . $elem["value"] . " грн");
+                                            echo "<br>";
+                                            $ukr = true;
+                                        }
                                     }
-                                }
-                                else{
-                                    if($elem["name"] == "usd"){
-                                        echo ("Європа - " . $elem["value"] . "$");
-                                    }
-                                    else{
-                                        echo ("Україна - " . $elem["value"] . " грн");
+                                    if(trim($elem["condition_"]) == ""){
+                                        continue;
                                     }
                                     $arr = explode(" ", $converted_prices[$i]["condition_"]);
                                     $operator_name = "";
@@ -221,11 +231,11 @@
                                             break;
                                         }
                                     }
-                                    echo "<br>";
-                                    $condition_output = "Якщо <b>" . mb_strtolower($arr[0]) . "</b>  <i>" . mb_strtolower($operator_name) . "</i>  <b>" . $arr[2] . "</b> - " . $elem["value_2"];
+                                    $condition_output = "Якщо <b>" . mb_strtolower($arr[0]) . "</b>  <i>" . mb_strtolower($operator_name) . "</i>  <b>" . convertArrayElementsToString($arr, 2, count($arr))
+                                    . "</b> - " . $elem["value_2"];
                                     $condition_output .= $elem["name"] == "usd" ? "$" : " грн";
                                     echo $condition_output;
-                                }
+                                
                             ?> 
                         </li>
                         <?php endfor; ?>
@@ -254,7 +264,7 @@
                                     break;
                                 }
                             }
-                            echo $arr[0] . " - " . $operator_name . " - " . $arr[2];
+                            echo $arr[0] . " " . $operator_name . " " . convertArrayElementsToString($arr, 2, count($arr));
                         ?></td>
                         <td>
                             <?php echo 
@@ -356,7 +366,7 @@
 
     <div id="id-edit_popular_directions" class="tabcontent">
         <div class="form_container">
-            <form class="edit_popular_directions_form" method="POST" action="admin.php" enctype="multipart/form-data">
+            <form class="edit_popular_directions_form" method="POST" action="index_request_api" enctype="multipart/form-data">
                 <input type="hidden" name="e_p_d">                
                 <input type="hidden" name="id">                
                 <input placeholder="Введіть назву місця..." type="text" name="text" required>
@@ -376,7 +386,7 @@
 
     <div id="id-add_popular_directions" class="tabcontent">
         <div class="form_container">
-            <form class="add_popular_directions_form" method="POST" action="admin.php" enctype="multipart/form-data">
+            <form class="add_popular_directions_form" method="POST" action="index_request_api" enctype="multipart/form-data">
                 <input type="hidden" name="p_d">                
                 <input placeholder="Введіть назву місця..." type="text" name="text" required>                
                 <input type="file" name="image" accept=".png, .jpg, .jpeg">                
@@ -428,7 +438,7 @@
 
     <div id="id-edit_our_service" class="tabcontent">
         <div class="form_container">
-            <form class="edit_our_service_form" method="POST" action="admin.php" enctype="multipart/form-data">
+            <form class="edit_our_service_form" method="POST" action="index_request_api" enctype="multipart/form-data">
                 <input type="hidden" name="e_o_s">                
                 <input type="hidden" name="id">                
                 <input placeholder="Введіть заголовок..." type="text" name="title" required>  
@@ -449,7 +459,7 @@
 
     <div id="id-add_our_service" class="tabcontent">
         <div class="form_container">
-            <form class="add_popular_directions_form" method="POST" action="admin.php" enctype="multipart/form-data">
+            <form class="add_popular_directions_form" method="POST" action="index_request_api" enctype="multipart/form-data">
                 <input type="hidden" name="o_s">                
                 <input placeholder="Введіть заголовок..." type="text" name="title" required>                
                 <textarea placeholder="Введіть текст..." class="order_addresses" name="text" required></textarea>               
@@ -797,7 +807,7 @@
 
     <div id="id-edit_car" class="tabcontent">
         <div class="form_container">
-            <form class="edit_car_form" method="POST" action="admin.php" enctype="multipart/form-data">
+            <form class="edit_car_form" method="POST" action="index_request_api" enctype="multipart/form-data">
                 <input type="hidden" name="id">                
                 <input type="hidden" name="edit_car">                
                 <input placeholder="Введіть назву автобус..." type="text" name="name" >                
@@ -824,7 +834,7 @@
 
                 <div class="submit_block">
                     <button type="submit" class="add_button">Відредагувати</button>
-                    <a id="edit_autopark" class="add_button another" data-text="Редагувати автопарк">Назад</a>
+                    <a id="cars" class="add_button another" data-text="Aвтопарк">Назад</a>
                 </div>
             </form>
         </div>
@@ -832,7 +842,7 @@
 
     <div id="id-add_car" class="tabcontent">
         <div class="form_container">
-            <form class="add_car_form" method="POST" action="admin.php" enctype="multipart/form-data">
+            <form class="add_car_form" method="POST" action="index_request_api" enctype="multipart/form-data">
                 <input type="hidden" name="car">                
                 <input placeholder="Введіть назву автобус..." type="text" name="name" >                
                 <input placeholder="Введіть кількість пасажирів..." type="number" min="1" name="passengers" >                
@@ -850,14 +860,14 @@
                  </div>
                 <div class="submit_block">
                     <button type="submit" class="add_button">Додати</button>
-                    <a id="edit_autopark" class="add_button another" data-text="Редагувати автопарк">Назад</a>
+                    <a id="cars" class="add_button another" data-text="Автопарк">Назад</a>
                 </div>
             </form>
 
         </div>
     </div>
 
-    <div id="id-edit_autopark" class="tabcontent">
+    <div id="id-cars" class="tabcontent">
         <div class="content_container">
             <div class="add_block">
                 <div id="add_car" class="another">
