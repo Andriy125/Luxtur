@@ -1,25 +1,24 @@
-let add = document.querySelector('.add');                                                   // кнопка додавання полів блоку розрахунків
-let add_order_input = document.querySelector('.order_add');                                  // кнопка додавання полів блоку замовлень
-// Get the modal
-let modal_call = document.getElementById("modal_call");                                     //  модальне вікно замовлення дзвінку
-let modal_calc = document.getElementById("modal_calculate");                                //  модальне вікно для відображення результатів розрахунків
-let modal_review = document.getElementById("modal_review");                                 //  модальне вікно для додавання відгуку
-let modal_autopark = document.getElementById("modal_autopark");                             //  модальне вікно автопарку 
-let card_slider = document.querySelector(".auto_img_slider");                             //  слайдер в карточці 
-// Get the button that opens the modal
-let btn_call = document.getElementById("call");                                                  //  кнопка замовлення дзвінку
-let btn_review = document.getElementById("review_button");                                  //  кнопка додавання відгуку
-let fotorama = null;    // для модалок автопарку
-// Get the <span> element that closes the modal
-let span = document.getElementsByClassName("close")[0];                                     //  кнопка закриття форми замовлення дзвінка 
-
-//  задання маски для полів із телефоном
-$('.phone').mask('+38 (000) 000 00 00', {placeholder: "Номер телефону"});
-$('.all_info__input')[0].checked = false;                                                   //  встановлення кнопки "всі дані" в модальному вікні "розрахунки" по замовчування на офф
-$('.order_remove').css('display', 'none');   
-$('.minus').css('display', 'none'); 
+let add = document.querySelector('.add');                                                   //  getting button for adding inputs for calculation block
+let add_order_input = document.querySelector('.order_add');                                 //  getting button for adding inputs for order form block
+                                                                                            //  Get the modals
+let modal_call = document.getElementById("modal_call");                                     //  modal window for ordering call
+let modal_calc = document.getElementById("modal_calculate");                                //  modal window for calculation results
+let modal_review = document.getElementById("modal_review");                                 //  modal window for adding review
+let modal_autopark = document.getElementById("modal_autopark");                             //  modal window of autopark 
+let card_slider = document.querySelector(".auto_img_slider");                               //  slider of autopark (cards) 
+                                                                                            //  Get the button that opens the modal
+let btn_call = document.getElementById("call");                                             //  button of ordering call
+let btn_review = document.getElementById("review_button");                                  //  button of adding review
+                                                                                            //  Get the <span> element that closes the modal
+let span = document.getElementsByClassName("close")[0];                                     //  button for closing ordering call modal 
+                                                                                            
+$('.phone').mask('+38 (000) 000 00 00', {placeholder: "Номер телефону"});                   //  setting mask for phone inputs
+$('.all_info__input')[0].checked = false;                                                   //  setting "all data" in result calculation modal window to false
+$('.order_remove').css('display', 'none');                                                  //  hide button "delete address" in order form 
+$('.minus').css('display', 'none');                                                         //  hide button "delete address" in calculation block
 
 const setLocalDate = () => {
+    //  setting current date and current time + 3h to order form
     let local = new Date();
     let local_date = local.getFullYear() + '-';
     if(local.getMonth() < 10){
@@ -48,14 +47,17 @@ const hideModal = (showElem) => {
 }
 
 const ClearCallInputs = () => {
+    //  clearing inputs for call modal
     document.querySelectorAll('.call_form__input').forEach(el => {el.value = "";});
 }
 
 const addScroll = (elem) => {
+    //  adding scroll to entered element
     $(elem).css('overflow-y', 'auto');
 }
 
 const createInput = (class_name, container_name, delete_button_class) =>{
+    //  creating input by class name, container name and showing delete button if inputs are more than 2
     let elements = document.querySelectorAll(`.${class_name}`);
     if(elements.length > 1){
         changeContainer(container_name, delete_button_class);
@@ -63,39 +65,47 @@ const createInput = (class_name, container_name, delete_button_class) =>{
     CreateElement(class_name, elements[elements.length - 1]); 
 }
 
-// скидання стилів для crud_buttons
 const removeStyles = (button, form) => {
+    //  reseting styles for crud buttons (order from and calculation block)
     $(button).css('display', 'none');
     $(`.${form} .crud_buttons`).css('margin-top', '0px');
     $(`.${form} .crud_buttons`).css('justify-content', 'center');
 }
 
-// створення полів
-const CreateElement = ( _class, after ) => {                                                     
+const CreateElement = ( _class, after ) => {      
+    //  create i8nput element and paste it after                                               
     $('<input type="text" placeholder="Адреса пункту..." class="' + _class + '" name="address" required>')
     .insertAfter(after);
 }
 
-//  задання стилів для контейнера 
 const changeContainer = (container, hidden_button) => {
+    //  change container styles
+    //  add scroll
     addScroll(container);
+    //  get the wrapper of the container to set styles for correct crud buttons
     let wrapper = document.querySelector(container).parentElement.getAttribute("class");
+    //  show "delete button"
     $(hidden_button).css('display', 'inline-flex');
     $(`.${wrapper} .crud_buttons`).css('margin-top', '15px');
     $(`.${wrapper} .crud_buttons`).css('justify-content', 'space-between');
 }
 
-//  видалення останнього елемента серед елементів з класом class_elem і приховування removestylesOf
 const deleteLastElement = (elem_class, removestylesOf) => {
+    //  delete last element wuth class "elem_class" and hide "delete button"
+    //  get all elements with 'elem_class'
     let elements = document.querySelectorAll(elem_class);
-    let form = document.querySelector(elem_class).closest('form').getAttribute("class");
+    //  get form class of these elements
+    let form_class = document.querySelector(elem_class).closest('form').getAttribute("class");
     if(elements.length < 4){
-        removeStyles(removestylesOf, form);
+        //  if elements less than 4 - hide "delete button"
+        removeStyles(removestylesOf, form_class);
     }
+    //  delete last elements
     elements[elements.length - 1].remove();
 }
 
 const eventListeners = () => {
+    //  storing event listeners
 
     // When the user clicks on the button, open the modal
     btn_call.onclick = function() {
@@ -129,50 +139,55 @@ const eventListeners = () => {
         }
     }
 
-    // додавання полів на форму "розрахунок"
-    add.addEventListener('click', () => {                                  
+    add.addEventListener('click', () => {
+        //  handler of adding inputs to the calculation block and to order form                                  
         createInput('form__input', '.fixed_container.calc', '.minus');
         createInput('address', '.fixed_container.order', '.order_remove');
     });
 
-    //  обробник натиснення на кнопку "додати пункт" для форми із замовленням
     add_order_input.addEventListener('click', (e) => {
+        //  handler of adding input to order form
         createInput('address', '.fixed_container.order', '.order_remove');
     })
 
-    //  обробник натиснення на кнопку "видалити пункт" для форми із замовленням
     document.querySelector('.order_remove').addEventListener('click', () => {
+        //  handler of deleting input on order form
         deleteLastElement('.address', '.order_remove');
     })
 
-    //  обробник подій на кнопку видалення поля на формі "розрахунок"
     document.querySelector('.minus').addEventListener('click', () => {
+        //  handler of deleting inputs on calculation block
+        //  delete input on calculation block
         deleteLastElement('.form__input', '.minus');
+        //  delete input on order form
         deleteLastElement('.address', '.order_remove');
     })
 
-    //  обробник на відображення всіх пунктів на модальному вікні "розрахунок"
     document.querySelector('.all_info').addEventListener('click', (e) => {
+        //  show or hide 'all info' about calculation results on modal
         if($('.all_info__input')[0].checked){
+            //  if checkbox is disable - show global distance
             $('.results_distances__standard').css('display', 'none');
             $('.results_distances__all').css('display', 'block');
         }
         else{
+            //  if checkbox is active - show all addresses
             $('.results_distances__standard').css('display', 'block');
             $('.results_distances__all').css('display', 'none');
         }
     })
 
-    //  обобник на бургер меню
     document.querySelector('.burger_icon').addEventListener('click', (e) => {
+        //  handler of burger menu
         if(document.querySelector('.burger_icon').classList.contains('change')){
-            $('.burger_icon').toggleClass('change', false)
-            $('.header_right__ul').toggleClass('burger_active', false)
+            //  if burger menu active - hide menu and show burger
+            $('.burger_icon').toggleClass('change', false);
+            $('.header_right__ul').toggleClass('burger_active', false);
         }
         else{
-            $('.burger_icon').toggleClass('change', true)
-            $('.header_right__ul').toggleClass('burger_active', true)
-
+            //  if burger menu hide - show menu and hide burger
+            $('.burger_icon').toggleClass('change', true);
+            $('.header_right__ul').toggleClass('burger_active', true);
         }
     })
 

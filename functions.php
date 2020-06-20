@@ -161,8 +161,7 @@ function updateQuery(){
         $columns = getColumnsString($result_columns);
         $columns = explode(" ", $columns);
         $update_query = "";
-        $iterations_count = isset($_POST["iterations"]) ? $_POST["iterations"] : count($columns);
-        for($i = 0; $i < $iterations_count; $i++){
+        for($i = 0; $i < count($columns); $i++){
             if($value[$i]["type"] == "string"){
                 $update_query .= $columns[$i] . " = '" . $value[$i]["value"] . "'";
             }

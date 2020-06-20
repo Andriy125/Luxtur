@@ -1,43 +1,49 @@
 // додавання обробників івентів
 $(document).ready(function(){
     document.querySelector('.menu_icon').addEventListener('click', (e) => {
+        //  add active class to menu icon
         $('.side_menu').toggleClass('active', true);
     })
     document.querySelector('.close_icon').addEventListener('click', (e) => {
+        //  handler of close icon on side menu
         CloseMenu();
     })
     document.querySelectorAll('.side_menu__item').forEach((el) => {
+        //  handler of each side menu item
         el.addEventListener('click', (e) => ShowContent(e, `id-${el.getAttribute('id')}`));
     });
 
     document.querySelectorAll('.another').forEach((el) => {
+        //  handler of another link which connect with tabs and menu
         el.addEventListener('click', (e) => ShowContent(e, `id-${el.getAttribute('id')}`));
     });
-
+    //  load current tab from local storage or load main tab
     $(localStorage.getItem('currentTab') || '#main').click();
+    //  mask for phone inputs
     $('.phone').mask('+38 (000) 000 00 00', {placeholder: "Номер телефону"});
 });
 
-const hasNumber = /\d/;     //  функція перевірки рядка на наявність цифр
+const hasNumber = /\d/;     //  check is string has a number
 
-// закриття меню
 const CloseMenu = () => {
     $('.side_menu').toggleClass('active', false);
 }
 
 const redirect = (selector) => {
+    //  save current tab to local storage
     localStorage.setItem('currentTab', selector);      
 }
 
-//  очищення полів форми
 const clearFormInputs = (form) => {
+    //  clear all inputs of entered form
     $(form).find('input, textarea').val("");
+    //  select first option of select input
     $(form).find('select').find('option:first').prop('selected', true);
 }
 
-// відображення контенту після натискання на пункт меню 
 const ShowContent = (e, name) => {
-    // Declare all variables
+    //  Showing content after clicking to link (side menu or 'another' link)
+    //  Declare all variables
     let tabcontent, tablinks;
 
     // Get all elements with class="tabcontent" and hide them
@@ -55,14 +61,17 @@ const ShowContent = (e, name) => {
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(name).style.display = "block";
     if(e.target.closest('div').getAttribute('id') !== null){
+        //  save to local storage clicked tab link
         localStorage.setItem("currentTab", `#${e.target.closest('div').getAttribute('id')}`);
     }
     $(e.currentTarget).toggleClass("active", true);
+    //  connect text of the link to the header title
     $('.admin_main_title').html($(e.currentTarget).data("text"));
     CloseMenu();
 }
 
 const sortTable = (table, sort_by) => {
+    //  simple sort for table
     let sortedRows = Array.from(table.rows)
     .slice(1)
     .sort((rowA, rowB) => rowA.cells[sort_by].innerHTML > rowB.cells[sort_by].innerHTML ? 1 : -1);  
@@ -70,7 +79,10 @@ const sortTable = (table, sort_by) => {
 }
 
 const filterTrByClass = (filter_by, where) => {
+    //  filter line by class
+    //  hide all 'tr'
     $(`${where} tr.all`).css('display', 'none');
+    //  show correct 'tr'
     $(`${where} tr.${filter_by}`).css('display', 'table-row');
 }
 
@@ -82,22 +94,20 @@ const deleteRequest = (id, table_name, leaveToTab="") => {
     sendRequest(data, leaveToTab);
 }
 
-const updateRequest = (table_name, id, value, currTab="", column="", iterations=0) => {
+const updateRequest = (table_name, id, value, currTab="", column="") => {
     let data = {};
     data["id"] = id;
     data["update"] = true;
     data["table"] = table_name;
     data["value"] = value;
-    if(iterations !== 0){
-        data["iterations"] = iterations;
-    }
     if(column !== ""){
         data["column"] = column;
     }
     sendRequest(data, currTab);
 }
 
-const getAddressesTextarea = (str) => {    
+const getAddressesTextarea = (str) => { 
+    //  convert addresses from textarea separeted with \n to array of strings(addresses)   
     let split = str.split('\n');
     let lines = [];
     for (let i = 0; i < split.length; i++){
@@ -109,6 +119,7 @@ const getAddressesTextarea = (str) => {
 }
 
 const getOperatorFromName = (operatorName) => {
+    //  get name of the condition operator 
     switch(operatorName){
         case "більшерівне": 
             return ">=";
@@ -127,17 +138,8 @@ const getOperatorFromName = (operatorName) => {
     }
 }
 
-const showSelectHideInput = (selectSelector, inputSelector, reverse=false) => {
-    if(reverse){
-        selectSelector.style.display = "none";
-       inputSelector.style.display = "block";
-        return;
-    }
-    selectSelector.style.display = "block";
-    inputSelector.style.display = "none";
-}
-
 const eventListeners = () => {
+    //  adding event listeners
     document.querySelectorAll('.update_review_showing').forEach(el => {
         el.addEventListener("click", (e) => {
             let form = e.target.closest('.update_review');

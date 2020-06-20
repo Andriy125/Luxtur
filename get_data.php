@@ -1,5 +1,6 @@
 <?php
     function convertDataToArray($arr){
+        //  converting object of arrays to array
         $result_array = [];
         while($row = mysqli_fetch_array($arr)){
             $result_array[] = $row;
@@ -7,13 +8,15 @@
         return $result_array;
     }
     function renderMenu($arr){
+        //  render side menu
         for($i = 0; $i < count($arr); $i++){
             echo '<div id="'. $arr[$i]["tag_id"] .'" class="side_menu__item" data-text="'. $arr[$i]["title"] .'">
-                        <h3>'. $arr[$i]["title"] .'</h3>
-                    </div>';
+                    <h3>'. $arr[$i]["title"] .'</h3>
+                </div>';
         }
     }
     function renderMenuOnMainTab($arr){
+        //  render menu in main tab called "Main" on side menu
         $grid_count = 3;
         $len = count($arr);
 		$count_of_rows = $len;
@@ -32,6 +35,8 @@
 	    } 			
     }
     function convertArrayElementsToString($arr, $indexFrom, $indexTo){
+        //  convert array "from" elements "to" elements by index to string
+        //  it needs for converting end of condition in table
         $resultString = "";
         for($i = $indexFrom; $i < $indexTo; $i++){
             $resultString .= $arr[$i];
@@ -45,24 +50,24 @@
         if (!$con) {
             die('Ошибка соединения: ' . mysql_error());
         }
-        $result_phones = mysqli_query($con, "SELECT * FROM contact_phones");
-        $result_emails = mysqli_query($con, "SELECT * FROM contact_emails");
-        $result_phone_operators = mysqli_query($con, "SELECT * FROM phone_operators");
-        $result_phone_social_media = mysqli_query($con, "SELECT * FROM phone_social_media");
-        $result_reviews = mysqli_query($con, "SELECT * FROM review");
-        $sort_review_options = mysqli_query($con, "SHOW COLUMNS FROM review");
-        $sort_order_options = mysqli_query($con, "SHOW COLUMNS FROM orders");
-        $result_orders = mysqli_query($con, "SELECT * FROM orders");
-        $result_calls = mysqli_query($con, "SELECT * FROM calls");
-        $result_popular_directions = mysqli_query($con, "SELECT * FROM popular_directions");
-        $result_our_services = mysqli_query($con, "SELECT * FROM our_service");
-        $result_cars = mysqli_query($con, "SELECT * FROM cars");
-        $result_price_conditions = mysqli_query($con, "SELECT * FROM condition_names");
-        $result_car_location = mysqli_query($con, "SELECT location FROM car_location");
-        $result_operators = mysqli_query($con, "SELECT * FROM operators");
-        $result_prices = mysqli_query($con, "SELECT * FROM prices");
-        $result_users = mysqli_query($con, "SELECT * FROM users");
-        $result_menu = mysqli_query($con, "SELECT * FROM menu");
+        $result_phones = mysqli_query($con, "SELECT * FROM contact_phones");                    //  get contact phones from db
+        $result_emails = mysqli_query($con, "SELECT * FROM contact_emails");                    //  get contact emails from db
+        $result_phone_operators = mysqli_query($con, "SELECT * FROM phone_operators");          //  get phone operators from db
+        $result_phone_social_media = mysqli_query($con, "SELECT * FROM phone_social_media");    //  get socials media for phone number from db
+        $result_reviews = mysqli_query($con, "SELECT * FROM review");                           //  get all reviews from db
+        $sort_review_options = mysqli_query($con, "SHOW COLUMNS FROM review");                  //  get columns names of reviews from db
+        $sort_order_options = mysqli_query($con, "SHOW COLUMNS FROM orders");                   //  get columns names of orders from db
+        $result_orders = mysqli_query($con, "SELECT * FROM orders");                            //  get orders from db
+        $result_calls = mysqli_query($con, "SELECT * FROM calls");                              //  get ordering calls from db
+        $result_popular_directions = mysqli_query($con, "SELECT * FROM popular_directions");    //  get popular directions from db 
+        $result_our_services = mysqli_query($con, "SELECT * FROM our_service");                 //  get our service from db
+        $result_cars = mysqli_query($con, "SELECT * FROM cars");                                //  get autopark (cars info) from db
+        $result_price_conditions = mysqli_query($con, "SELECT * FROM condition_names");         //  get conditions name from db
+        $result_car_location = mysqli_query($con, "SELECT location FROM car_location");         //  get locations of the car from db
+        $result_operators = mysqli_query($con, "SELECT * FROM operators");                      //  get operators for conditions from db
+        $result_prices = mysqli_query($con, "SELECT * FROM prices");                            //  get prices info (tariffs) from db
+        $result_users = mysqli_query($con, "SELECT * FROM users");                              //  get users from db
+        $result_menu = mysqli_query($con, "SELECT * FROM menu");                                //  get menu items from db
 
         if (!$result_phones) {
             die('Неверный запрос: ' . $con->sqlstate);
@@ -102,6 +107,7 @@
         $eu_car = [];
         $ukr_car = [];
         $all_car = [];
+        //  converting cars from database to arrays with certain location
         while($row = mysqli_fetch_array($result_cars)){
             if(strpos($row["location"], 'Україна') !== false){
                 $ukr_car[] = $row;
@@ -111,6 +117,7 @@
             }
             $all_car[] = $row;
         }
+        //  converting result object of the sql request with arrays to array
         $condition_operators = convertDataToArray($result_operators);
         $conditions = convertDataToArray($result_price_conditions);
         $order_columns = convertDataToArray($sort_order_options);
